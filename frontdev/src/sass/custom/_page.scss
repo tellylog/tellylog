@@ -1,0 +1,31 @@
+body{
+    background-color: $base-background-color;
+}
+.wrapper{
+    @include outer-container;
+
+    header{
+        @include row();
+        text-align: center;
+    }
+    .main{
+        @include row();
+        .image{
+            @include span-columns(3);
+        }
+        p{
+            @include span-columns(9);
+            @include omega();
+        }
+    }
+
+    footer{
+        @include row;
+        height: 3em;
+        background-color: $darkgreen;
+        div{
+            @include span-columns(4 of 12);
+            text-align: center;
+        }
+    }
+}

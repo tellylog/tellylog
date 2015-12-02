@@ -1,0 +1,48 @@
+// Typography
+$base-font-family: $roboto , sans-serif;
+$heading-font-family: $roboto-serif , serif;
+
+// Font Sizes
+$base-font-size: 1em;
+$heading-font-size: 1.5em;
+
+// Line height
+$base-line-height: 1.5;
+$heading-line-height: 1.3;
+
+// Other Sizes
+$base-border-radius: 3px;
+$base-spacing: $base-line-height * 1em;
+$small-spacing: $base-spacing / 2;
+$base-z-index: 0;
+
+// Colors
+$darkblue: #031634;
+$darkgreen: #033649;
+$lightgreen: #036564;
+$brown: #cdb380;
+$lightbrown: #e8ddcb;
+$blue: #477dca;
+$dark-gray: #333;
+$medium-gray: #999;
+$light-gray: #ddd;
+
+// Font Colors
+$base-font-color: $lightbrown;
+$action-color: $lightgreen;
+
+// Border
+$base-border-color: $brown;
+$base-border: 1px solid $base-border-color;
+
+// Background Colors
+$base-background-color: $darkblue;
+$secondary-background-color: $darkgreen;
+
+// Forms
+$form-box-shadow: inset 0 1px 3px rgba(#000, 0.06);
+$form-box-shadow-focus: $form-box-shadow, 0 0 5px adjust-color($action-color, $lightness: -5%, $alpha: -0.3);
+
+// Animations
+$base-duration: 150ms;
+$base-timing: ease;
