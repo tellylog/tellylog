@@ -1,9 +1,6 @@
 from django.db import models
 
 
-
-
-
 class Series(models.Model):
 
     series_name = models.CharField(max_length=255)
@@ -42,7 +39,10 @@ class Episode(models.Model):
     series = models.ForeignKey(Series, on_delete=models.CASCADE)
     relative_number = models.IntegerField()
     absolute_number = models.IntegerField()
+    name = models.CharField(255)
     overview = models.TextField()
+    lastupdated = models.IntegerField()
+
 
     class Meta:
         verbose_name = "Episode"
@@ -57,6 +57,31 @@ class Genre(models.Model):
     class Meta:
         verbose_name = "Genre"
         verbose_name_plural = "Genres"
+
+    def __str__(self):
+        pass
+
+
+class Department(models.Model):
+
+    name = models.CharField(255)
+
+    class Meta:
+        verbose_name = "Department"
+        verbose_name_plural = "Departments"
+
+    def __str__(self):
+        pass
+
+
+class Job(models.Model):
+
+    department = models.ForeignKey(Department, on_delete=models.CASCADE)
+    name = models.CharField(255)
+
+    class Meta:
+        verbose_name = "Job"
+        verbose_name_plural = "Jobs"
 
     def __str__(self):
         pass
