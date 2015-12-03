@@ -3,10 +3,23 @@ from urllib2 import Request, urlopen
 from django.conf import settings
 
 
-class TMDB(object):
-    """docstring for TMDB"""
+class TvTMDB(object):
+    """
+    Class to make calls for TV Information to The Movie Database
+    JSON responses are converted to Objects
+    """
+    BASE_URL = "http://api.themoviedb.org/3/"
+    API_KEY = settings.TMDP_API_KEY
+    POSTFIX = "?api_key=" + API_KEY
+    GENRE_LIST = "genre/tv/list"
+    JOB_LIST = "job/list"
 
-    api_key = settings.TMDP_API_KEY
+    HEADERS = {
+        'Accept': 'application/json'
+    }
 
-    def function():
+    def sendRequest(target):
+        pass
+
+    def getGenres():
         pass
