@@ -9,6 +9,7 @@ from django.conf import settings
 
 
 class TvTMDB(object):
+
     """
     Class to get TV-Data from the TheMovieDataBase.
     The JSON responses are converted to Objects.
@@ -87,12 +88,28 @@ class TvTMDB(object):
             dict: A dictionary of all Jobs
             bool: False if an error occurred
         """
+        page = 1
         params = self.PARAMS
         params['query'] = query  # Append the Query to the default params
-        response = self.make_request(target=self.SEARCH_SERIES, params=params)
-        if not response:
+        params['page'] = page
+        response = {}
+        response[1] = self.make_request(
+            target=self.SEARCH_SERIES, params=params)
+        if not response[1]:
             return False
-        if response['total_results'] is 0:
+
+        if response[1]['total_pages'] > 1:
+            num_pages = response[1]['total_pages']
+            if num_pages > 10:  # Protection against too many requests
+                num_pages = 10
+            # Add the number of the pages to the response for later use
+            response['num_pages'] = num_pages
+            for page in xrange(2, num_pages):  # Get all (max. 10) next pages
+                params['page'] = page
+                response[page] = self.make_request(
+                    self.SEARCH_SERIES, params=params)
+
+        if response[1]['total_results'] is 0:
             return False
         else:
             return response
