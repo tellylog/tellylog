@@ -78,7 +78,7 @@ class TvTMDB(object):
         return response
 
     def search_for_series(self, query):
-        """Summary
+        """Tries to find the series on the basis of the query parameter.
 
         Args:
             query (str): The search string
@@ -88,6 +88,11 @@ class TvTMDB(object):
             bool: False if an error occurred
         """
         params = self.PARAMS
-        params['query'] = query
+        params['query'] = query  # Append the Query to the default params
         response = self.make_request(target=self.SEARCH_SERIES, params=params)
-        return response
+        if not response:
+            return False
+        if response['total_results'] is 0:
+            return False
+        else:
+            return response
