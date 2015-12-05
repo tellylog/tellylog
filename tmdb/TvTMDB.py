@@ -104,7 +104,7 @@ class TvTMDB(object):
                 num_pages = 10
             # Add the number of the pages to the response for later use
             response['num_pages'] = num_pages
-            for page in xrange(2, num_pages):  # Get all (max. 10) next pages
+            for page in range(2, num_pages):  # Get all (max. 10) next pages
                 params['page'] = page
                 response[page] = self.make_request(
                     self.SEARCH_SERIES, params=params)
