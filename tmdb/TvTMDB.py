@@ -78,7 +78,7 @@ class TvTMDB(object):
         response = self.make_request(target=self.JOB_LIST)
         return response
 
-    def search_for_series(self, query):
+    def search_for_series(self, query, page=None):
         """Tries to find the series on the basis of the query parameter.
 
         Args:
@@ -88,28 +88,15 @@ class TvTMDB(object):
             dict: A dictionary of all Jobs
             bool: False if an error occurred
         """
-        page = 1
+        if page is None:
+            page = 1
         params = self.PARAMS
         params['query'] = query  # Append the Query to the default params
         params['page'] = page
-        response = {}
-        response[1] = self.make_request(
-            target=self.SEARCH_SERIES, params=params)
-        if not response[1]:
+        response = self.make_request(target=self.SEARCH_SERIES, params=params)
+        if not response:
             return False
-
-        if response[1]['total_pages'] > 1:
-            num_pages = response[1]['total_pages']
-            if num_pages > 10:  # Protection against too many requests
-                num_pages = 10
-            # Add the number of the pages to the response for later use
-            response['num_pages'] = num_pages
-            for page in range(2, num_pages):  # Get all (max. 10) next pages
-                params['page'] = page
-                response[page] = self.make_request(
-                    self.SEARCH_SERIES, params=params)
-
-        if response[1]['total_results'] is 0:
+        if response['total_results'] is 0:
             return False
         else:
             return response
