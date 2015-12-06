@@ -5,3 +5,4 @@ tellylog/local_settings.py
 db.sqlite3
 *.log
 *.sqlite
+.env
