@@ -3,9 +3,13 @@ This file holds the TvTMDB class which is used to get
 TV-Data from the TheMovieDataBase API.
 """
 import requests
-import json
+import requests_cache
 
 from django.conf import settings
+
+# The cache of requests is set to a sqlite Database named test_cache.
+# The cache is deleted after one hour (3600 Seconds).
+requests_cache.install_cache('test_cache', backend='sqlite', expire_after=3600)
 
 
 class TvTMDB(object):
@@ -33,6 +37,8 @@ class TvTMDB(object):
     GENRE_LIST = BASE_URL + "genre/tv/list"
     JOB_LIST = BASE_URL + "job/list"
     SEARCH_SERIES = BASE_URL + "search/tv"  # needs a second get parameter
+    TV_URL = BASE_URL + "tv/"
+    SEASON_URL = "/season/"
 
     def make_request(self, target, headers=0, params=0):
         """Make a request to the given target.
@@ -83,9 +89,10 @@ class TvTMDB(object):
 
         Args:
             query (str): The search string
+            page (int, optional): The page that should be loaded
 
         Returns:
-            dict: A dictionary of all Jobs
+            dict: A dictionary of the series search results
             bool: False if an error occurred
         """
         if page is None:
@@ -100,3 +107,38 @@ class TvTMDB(object):
             return False
         else:
             return response
+
+    def get_series_info_by_id(self, id):
+        """Get detailed Information of a Series by the tmdb ID
+
+        Args:
+            id (int): TheMovieDataBase Series ID
+
+        Returns:
+            bool: False on error
+            dict: A dictionary with the series data
+        """
+        target = self.TV_URL + str(id)
+        response = self.make_request(target=target)
+        if not response:
+            return False
+        return response
+
+    def get_season_info_by_number(self, series_id, season_number):
+        """Get information of a Season by the tmdb ID.
+        Result includes episodes
+
+        Args:
+            series_id (int): TheMovieDataBase Series ID
+            season_number (int): Description
+
+        Returns:
+            bool: False on error
+            dict: A dictionary with the season data
+        """
+        target = self.TV_URL + str(series_id) + self.SEASON_URL
+        + str(season_number)
+        response = self.make_request(target=target)
+        if not response:
+            return False
+        return response

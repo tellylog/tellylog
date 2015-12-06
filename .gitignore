@@ -4,3 +4,4 @@ node_modules/
 tellylog/local_settings.py
 db.sqlite3
 *.log
+*.sqlite
