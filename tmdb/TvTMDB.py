@@ -136,8 +136,8 @@ class TvTMDB(object):
             bool: False on error
             dict: A dictionary with the season data
         """
-        target = self.TV_URL + str(series_id) + self.SEASON_URL
-        + str(season_number)
+        target = self.TV_URL + str(series_id)
+        target = target + self.SEASON_URL + str(season_number)
         response = self.make_request(target=target)
         if not response:
             return False
