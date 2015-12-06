@@ -1,6 +1,8 @@
 """
 This module gets data from TheMovieDataBase
 """
+import os
+
 from getenv import env
 
 from .tv import TV
@@ -8,6 +10,7 @@ from .genre import Genre
 from .job import Job
 
 try:
-    API_KEY = env('TMDB_API_KEY')
+    if os.environ['CI'] is not None:
+        API_KEY = os.environ['TMDB_API_KEY']
 except:
-    raise
+    API_KEY = env('TMDB_API_KEY')
