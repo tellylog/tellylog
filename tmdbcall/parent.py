@@ -38,6 +38,10 @@ class Parent(object):
             requests.exceptions.RequestException, ValueError,
                 requests.exceptions.HTTPError,
                 requests.exceptions.Timeout) as e:
-            raise
             # TODO Logging of Exceptions
             return False
+
+    def convert_dict(self, response={}):
+        if isinstance(response, dict):
+            for key in response.keys():
+                setattr(self, key, response[key])
