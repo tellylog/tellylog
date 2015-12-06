@@ -38,7 +38,8 @@ class TvTMDB(object):
     JOB_LIST = BASE_URL + "job/list"
     SEARCH_SERIES = BASE_URL + "search/tv"  # needs a second get parameter
     TV_URL = BASE_URL + "tv/"
-    SEASON_URL = "/season/"
+    SERIES_URL = TV_URL + "{id}"  # id is replaced by series_id
+    SEASON_URL = TV_URL + "{id}/season/{number}"
 
     def make_request(self, target, headers=0, params=0):
         """Make a request to the given target.
@@ -108,7 +109,7 @@ class TvTMDB(object):
         else:
             return response
 
-    def get_series_info_by_id(self, id):
+    def get_series_info_by_id(self, series_id):
         """Get detailed Information of a Series by the tmdb ID
 
         Args:
@@ -118,7 +119,7 @@ class TvTMDB(object):
             bool: False on error
             dict: A dictionary with the series data
         """
-        target = self.TV_URL + str(id)
+        target = self.SERIES_URL.format(id=series_id)
         response = self.make_request(target=target)
         if not response:
             return False
@@ -136,8 +137,7 @@ class TvTMDB(object):
             bool: False on error
             dict: A dictionary with the season data
         """
-        target = self.TV_URL + str(series_id)
-        target = target + self.SEASON_URL + str(season_number)
+        target = self.SEASON_URL.format(id=series_id, number=season_number)
         response = self.make_request(target=target)
         if not response:
             return False
