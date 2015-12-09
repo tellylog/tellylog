@@ -52,7 +52,7 @@ class TV(Parent):
         """Get detailed Information of a Series by the tmdb ID
 
         Args:
-            series_id (TYPE): Description
+            series_id (int): Description
 
         Returns:
             bool: False on error
