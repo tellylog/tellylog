@@ -9,8 +9,6 @@ class TV(Parent):
 
     """
     Class to get TV-Data from the TheMovieDataBase.
-    The JSON responses are converted to Objects.
-    If an Error occurs the class raises an exception.
 
     Attributes:
         URLS (dict): Holds all relevant URLS
