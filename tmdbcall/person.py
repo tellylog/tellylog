@@ -1,8 +1,11 @@
 """This file holds the Person class"""
+from datetime import datetime, timedelta
+
 from .parent import Parent
 
 
 class Person(Parent):
+
     """
     Class to get data of actors, directors, producers,...
 
@@ -12,6 +15,7 @@ class Person(Parent):
 
     URLS = {
         'person_url': 'person/{id}',
+        'person_changes': 'person/{id}/changes',
     }
 
     def get_person(self, person_id):
@@ -28,5 +32,44 @@ class Person(Parent):
         target = self.base_uri + self.URLS['person_url'].format(id=person_id)
         response = self.make_request(target=target)
         if not response:
+            return False
+        return response
+
+    def get_changes(self, person_id, start_date=None):
+        """
+        Get all the Changes from a start date until now.
+        The start_date needs to be in the Format YYYY-MM-DD.
+        The maximum start_date is two weeks before now.
+
+        Args:
+            person_id (int): ID of the person
+            start_date (str): String in the Format YYYY-MM-DD
+
+        Returns:
+            bool: False on failure
+            dict: Dict with changes (can be empty)
+        """
+        two_weeks_ago = datetime.today() - \
+            timedelta(weeks=2)  # Date two weeks ago
+        try:  # Try to get a valid date from start_date string.
+            start_date = datetime.strptime(start_date, '%Y-%m-%d')
+            # Check if start_date is in the last two weeks
+            if start_date < two_weeks_ago:
+                start_date = two_weeks_ago
+            elif start_date > datetime.today():
+                start_date = two_weeks_ago
+        # Triggerd when no valid date can be extracted from start_date
+        except ValueError:
+            start_date = two_weeks_ago
+        # Convert dates back to strings
+        start_date = start_date.strftime('%Y-%m-%d')
+        end_date = datetime.now().strftime('%Y-%m-%d')
+        target = (self.base_uri +
+                  self.URLS['person_changes'].format(id=person_id))
+        params = self.params
+        params['start_date'] = start_date
+        params['end_date'] = end_date
+        response = self.make_request(target=target, params=params)
+        if not response['changes']:
             return False
         return response
