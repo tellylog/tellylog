@@ -1,15 +1,26 @@
 import requests
 import requests_cache
+import logging
 
 # The cache of requests is set to a sqlite Database named test_cache.
 # The cache is deleted after one hour (3600 Seconds).
 requests_cache.install_cache('test_cache', backend='sqlite', expire_after=3600)
 
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
+
+handler = logging.FileHandler('tmdbcall.log')
+handler.setLevel(logging.DEBUG)
+
+formatter = logging.Formatter('%(asctime)s - %(name)s'
+                              '- %(levelname)s - %(message)s')
+handler.setFormatter(formatter)
+logger.addHandler(handler)
 
 class Parent(object):
     """docstring for Parent"""
     def __init__(self):
-        from . import API_KEY
+        from .key import API_KEY
         self.base_uri = 'https://api.themoviedb.org/3/'
         self.params = {'api_key': API_KEY}
         self.headers = {'Accept': 'application/json'}
@@ -38,7 +49,7 @@ class Parent(object):
             requests.exceptions.RequestException, ValueError,
                 requests.exceptions.HTTPError,
                 requests.exceptions.Timeout) as e:
-            # TODO Logging of Exceptions
+            logger.warning(e)
             return False
 
     def convert_dict(self, response={}):
