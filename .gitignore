@@ -4,3 +4,5 @@ frontdev/build
 tellylog/local_settings.py
 db.sqlite3
 *.log
+test_cache.sqlite
+.env
