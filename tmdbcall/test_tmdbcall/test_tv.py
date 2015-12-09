@@ -1,6 +1,8 @@
 """
 This module holds all tests for the TvTMDB class
 """
+from unittest.mock import patch
+
 from django.test import TestCase
 
 from tmdbcall.tv import TV
@@ -42,12 +44,15 @@ class TestTV(TestCase):
         result = self.test.get_series_info_by_id(series_id=VALID_SERIES_ID)
         self.assertEqual(result['id'], VALID_SERIES_ID)
 
-    def test_get_series_info_by_id_with_invalid_id(self):
+    @patch('tmdbcall.parent.logger')  # Mocks the logger
+    def test_get_series_info_by_id_with_invalid_id(self, mock_logging):
         """
         The function should return False on fail.
+        And log the error to tmdbcall.log
         """
         result = self.test.get_series_info_by_id(series_id=INVALID_SERIES_ID)
         self.assertFalse(result)
+        self.assertTrue(mock_logging.warning.called)  # Check if warning logged
 
     def test_get_season_info_by_number_with_valid_number(self):
         """
@@ -57,10 +62,13 @@ class TestTV(TestCase):
             series_id=VALID_SERIES_ID, season_number=VALID_SEASON_NUMBER)
         self.assertEqual(result['season_number'], VALID_SEASON_NUMBER)
 
-    def test_get_season_info_by_number_with_invalid_number(self):
+    @patch('tmdbcall.parent.logger')  # Mocks the logger
+    def test_get_season_info_by_number_with_invalid_number(self, mock_logging):
         """
         The function should return false on fail.
+        And log the error to tmdbcall.log
         """
         result = self.test.get_season_info_by_number(
             series_id=VALID_SERIES_ID, season_number=INVALID_SEASON_NUMBER)
         self.assertFalse(result)
+        self.assertTrue(mock_logging.warning.called)  # Check if warning logged

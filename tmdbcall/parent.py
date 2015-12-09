@@ -17,6 +17,7 @@ formatter = logging.Formatter('%(asctime)s - %(name)s'
 handler.setFormatter(formatter)
 logger.addHandler(handler)
 
+
 class Parent(object):
     """docstring for Parent"""
     def __init__(self):
@@ -33,7 +34,7 @@ class Parent(object):
             target (str): Target URL for the request
             headers (dict, optional): Headers for request.
                 If none is given the default is used
-            params (TYPE, optional): Parametes for request.
+            params (dict, optional): Parametes for request.
                 If none is given the default is used
         """
         if params is 0:
