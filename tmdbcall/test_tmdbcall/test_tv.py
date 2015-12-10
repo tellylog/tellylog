@@ -1,6 +1,7 @@
 """
 This module holds all tests for the TvTMDB class
 """
+from datetime import datetime, timedelta
 from unittest.mock import patch
 
 from django.test import TestCase
@@ -72,3 +73,64 @@ class TestTV(TestCase):
             series_id=VALID_SERIES_ID, season_number=INVALID_SEASON_NUMBER)
         self.assertFalse(result)
         self.assertTrue(mock_logging.warning.called)  # Check if warning logged
+
+    def test_get_changes_with_valid_id_and_date(self):
+        """
+        Should return a dict or False.
+        """
+        start_date = datetime.today() - timedelta(days=3)
+        start_date = start_date.strftime('%Y-%m-%d')
+        result = self.test.get_changes(VALID_SERIES_ID, start_date=start_date)
+        try:
+            self.assertIsInstance(result, dict)
+        except self.failureException:
+            self.assertFalse(result)
+
+    def test_get_changes_with_invalid_id_and_valid_date(self):
+        """
+        Should return a dict or False.
+        """
+        start_date = datetime.today() - timedelta(days=3)
+        start_date = start_date.strftime('%Y-%m-%d')
+        result = self.test.get_changes(INVALID_SERIES_ID,
+                                       start_date=start_date)
+        try:
+            self.assertIsInstance(result, dict)
+        except self.failureException:
+            self.assertFalse(result)
+
+    def test_get_changes_with_invalid_id_and_invalid_date(self):
+        """
+        Should return False.
+        """
+        start_date = datetime.today() - timedelta(weeks=20)
+        start_date = start_date.strftime('%Y-%m-%d')
+        result = self.test.get_changes(INVALID_SERIES_ID,
+                                       start_date=start_date)
+        self.assertFalse(result)
+
+    def test_get_changes_with_valid_id_and_invalid_date_in_past(self):
+        """
+        Should return a dict or False.
+        """
+        start_date = datetime.today() - timedelta(weeks=20)
+        start_date = start_date.strftime('%Y-%m-%d')
+        result = self.test.get_changes(VALID_SERIES_ID,
+                                       start_date=start_date)
+        try:
+            self.assertIsInstance(result, dict)
+        except self.failureException:
+            self.assertFalse(result)
+
+    def test_get_changes_with_valid_id_and_invalid_date_in_future(self):
+        """
+        Should return a dict or False.
+        """
+        start_date = datetime.today() + timedelta(weeks=3)
+        start_date = start_date.strftime('%Y-%m-%d')
+        result = self.test.get_changes(VALID_SERIES_ID,
+                                       start_date=start_date)
+        try:
+            self.assertIsInstance(result, dict)
+        except self.failureException:
+            self.assertFalse(result)

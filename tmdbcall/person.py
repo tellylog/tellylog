@@ -15,7 +15,7 @@ class Person(Parent):
 
     URLS = {
         'person_url': 'person/{id}',
-        'person_changes': 'person/{id}/changes',
+        'changes': 'person/{id}/changes',
     }
 
     def get_person(self, person_id):
@@ -46,8 +46,8 @@ class Person(Parent):
             start_date (str): String in the Format YYYY-MM-DD
 
         Returns:
-            bool: False on failure
-            dict: Dict with changes (can be empty)
+            bool: False on failure or dict is empty
+            dict: Dict with changes
         """
         two_weeks_ago = datetime.today() - \
             timedelta(weeks=2)  # Date two weeks ago
@@ -59,13 +59,13 @@ class Person(Parent):
             elif start_date > datetime.today():
                 start_date = two_weeks_ago
         # Triggerd when no valid date can be extracted from start_date
-        except ValueError:
+        except (ValueError, TypeError):
             start_date = two_weeks_ago
         # Convert dates back to strings
         start_date = start_date.strftime('%Y-%m-%d')
         end_date = datetime.now().strftime('%Y-%m-%d')
         target = (self.base_uri +
-                  self.URLS['person_changes'].format(id=person_id))
+                  self.URLS['changes'].format(id=person_id))
         params = self.params
         params['start_date'] = start_date
         params['end_date'] = end_date

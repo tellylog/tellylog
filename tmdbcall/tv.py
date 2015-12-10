@@ -2,6 +2,8 @@
 This file holds the TV class which is used to get
 TV-Data from the TheMovieDataBase API.
 """
+from datetime import datetime, timedelta
+
 from .parent import Parent
 
 
@@ -18,7 +20,8 @@ class TV(Parent):
         'search_series': 'search/tv',
         'tv_url': 'tv/',
         'series': '{id}',
-        'season': '{id}/season/{number}'
+        'season': '{id}/season/{number}',
+        'changes': '{id}/changes',
     }
 
     def search_for_series(self, query, page=None):
@@ -82,5 +85,44 @@ class TV(Parent):
             self.URLS['season'].format(id=series_id, number=season_number)
         response = self.make_request(target=target)
         if not response:
+            return False
+        return response
+
+    def get_changes(self, series_id, start_date=None):
+        """
+        Get all the Changes from a start date until now.
+        The start_date needs to be in the Format YYYY-MM-DD.
+        The maximum start_date is two weeks before now.
+
+        Args:
+            series_id (int): Id of the series
+            start_date (str, optional): Date in Format YYYY-MM-DD
+
+        Returns:
+            bool: False on failure or when dict is empty
+            dict: Dict with changes
+        """
+        two_weeks_ago = (datetime.today() -
+                         timedelta(weeks=2))  # Date two weeks ago
+        try:  # Try to get a valid date from start_date string.
+            start_date = datetime.strptime(start_date, '%Y-%m-%d')
+            # Check if start_date is in the last two weeks
+            if start_date < two_weeks_ago:
+                start_date = two_weeks_ago
+            elif start_date > datetime.today():
+                start_date = two_weeks_ago
+        # Triggerd when no valid date can be extracted from start_date
+        except (ValueError, TypeError):
+            start_date = two_weeks_ago
+        # Convert dates back to strings
+        start_date = start_date.strftime('%Y-%m-%d')
+        end_date = datetime.now().strftime('%Y-%m-%d')
+        target = (self.base_uri + self.URLS['tv_url'] +
+                  self.URLS['changes'].format(id=series_id))
+        params = self.params
+        params['start_date'] = start_date
+        params['end_date'] = end_date
+        response = self.make_request(target=target, params=params)
+        if not response['changes']:
             return False
         return response
