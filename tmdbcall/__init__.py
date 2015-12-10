@@ -1,4 +1,4 @@
 """
 This module gets data from TheMovieDataBase
 """
-from . import tv, job, genre
+from . import tv, job, genre, person, image

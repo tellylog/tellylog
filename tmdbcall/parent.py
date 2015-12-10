@@ -26,7 +26,7 @@ class Parent(object):
         self.params = {'api_key': API_KEY}
         self.headers = {'Accept': 'application/json'}
 
-    def make_request(self, target, headers=0, params=0):
+    def make_request(self, target, json=True, headers=0, params=0):
         """Make a request to the given target.
         Either uses the given headers and params or the default ones.
 
@@ -45,7 +45,10 @@ class Parent(object):
             request = requests.get(
                 target, headers=headers, params=params)
             request.raise_for_status()
-            return request.json()
+            if json:
+                return request.json()
+            else:
+                return request
         except (
             requests.exceptions.RequestException, ValueError,
                 requests.exceptions.HTTPError,
