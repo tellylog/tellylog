@@ -1,8 +1,8 @@
 __pycache__/
 frontdev/build
-/node_modules
+node_modules/
 tellylog/local_settings.py
-db.sqlite3
 *.log
-test_cache.sqlite
+*.sqlite
+*.sqlite3
 .env
