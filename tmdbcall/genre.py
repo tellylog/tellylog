@@ -1,8 +1,8 @@
 """This module holds the Genre class"""
-from .parent import Parent
+from .parent import _Parent
 
 
-class Genre(Parent):
+class Genre(_Parent):
     """
     Class to get Genre Data.
 

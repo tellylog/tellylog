@@ -1,7 +1,7 @@
 """This file holds the tests for the Genre class."""
 from django.test import TestCase
 
-from tmdbcall.genre import Genre
+from tmdbcall import Genre
 
 
 class TestGenre(TestCase):

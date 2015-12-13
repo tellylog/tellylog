@@ -4,10 +4,10 @@ TV-Data from the TheMovieDataBase API.
 """
 from datetime import datetime, timedelta
 
-from .parent import Parent
+from .parent import _Parent
 
 
-class TV(Parent):
+class TV(_Parent):
 
     """
     Class to get TV-Data from the TheMovieDataBase.

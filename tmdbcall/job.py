@@ -1,8 +1,8 @@
 """This module holds the Job class"""
-from .parent import Parent
+from .parent import _Parent
 
 
-class Job(Parent):
+class Job(_Parent):
     """
     Class to get Job Data.
 

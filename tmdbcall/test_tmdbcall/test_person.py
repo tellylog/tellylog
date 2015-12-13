@@ -10,7 +10,7 @@ from unittest.mock import patch
 
 from django.test import TestCase
 
-from tmdbcall.person import Person
+from tmdbcall import Person
 
 VALID_PERSON_ID = 71580  # Benedict Cumberbatch
 INVALID_PERSON_ID = 0
@@ -32,7 +32,7 @@ class TestPerson(TestCase):
         result = self.test.get_person(VALID_PERSON_ID)
         self.assertEqual(result['id'], VALID_PERSON_ID)
 
-    @patch('tmdbcall.parent.logger')  # Mocks the logger
+    @patch('tmdbcall.parent._logger')  # Mocks the logger
     def test_get_person_with_invalid_id(self, mock_logging):
         """
         The function should return false on fail

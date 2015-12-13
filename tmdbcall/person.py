@@ -1,10 +1,10 @@
 """This file holds the Person class"""
 from datetime import datetime, timedelta
 
-from .parent import Parent
+from .parent import _Parent
 
 
-class Person(Parent):
+class Person(_Parent):
 
     """
     Class to get data of actors, directors, producers,...

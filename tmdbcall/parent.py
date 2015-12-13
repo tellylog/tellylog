@@ -1,3 +1,4 @@
+"""This file holds the Parent class which is used by the tmdbcall modules"""
 import requests
 import requests_cache
 import logging
@@ -6,24 +7,33 @@ import logging
 # The cache is deleted after one hour (3600 Seconds).
 requests_cache.install_cache('test_cache', backend='sqlite', expire_after=3600)
 
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
+_logger = logging.getLogger(__name__)
+_logger.setLevel(logging.DEBUG)
 
-handler = logging.FileHandler('tmdbcall.log')
-handler.setLevel(logging.DEBUG)
+_handler = logging.FileHandler('tmdbcall.log')
+_handler.setLevel(logging.DEBUG)
 
-formatter = logging.Formatter('%(asctime)s - %(name)s'
-                              '- %(levelname)s - %(message)s')
-handler.setFormatter(formatter)
-logger.addHandler(handler)
+_formatter = logging.Formatter('%(asctime)s - %(name)s -'
+                               '%(levelname)s - %(message)s')
+_handler.setFormatter(_formatter)
+_logger.addHandler(_handler)
 
 
-class Parent(object):
-    """docstring for Parent"""
+class _Parent(object):
+    """
+    The Parent class is a master class for all tmdbcall classes.
+    It defines the base_uri, headers and params and base functions.
+
+    Attributes:
+        base_uri (str): Base URI to the TMDB API
+        headers (dict): Base Headers, accept only json
+        params (dict): Base params, the API_KEY
+    """
     def __init__(self):
-        from .key import API_KEY
+        """Import the API_KEY. Set the base_uri, headers and params"""
+        from .key import _API_KEY
         self.base_uri = 'https://api.themoviedb.org/3/'
-        self.params = {'api_key': API_KEY}
+        self.params = {'api_key': _API_KEY}
         self.headers = {'Accept': 'application/json'}
 
     def make_request(self, target, json=True, headers=0, params=0):
@@ -32,6 +42,8 @@ class Parent(object):
 
         Args:
             target (str): Target URL for the request
+            json (bool, optional): If set to false, the request is returned and
+                not the parsed json.
             headers (dict, optional): Headers for request.
                 If none is given the default is used
             params (dict, optional): Parametes for request.
@@ -53,10 +65,5 @@ class Parent(object):
             requests.exceptions.RequestException, ValueError,
                 requests.exceptions.HTTPError,
                 requests.exceptions.Timeout) as e:
-            logger.warning(e)
+            _logger.warning(e)
             return False
-
-    def convert_dict(self, response={}):
-        if isinstance(response, dict):
-            for key in response.keys():
-                setattr(self, key, response[key])
