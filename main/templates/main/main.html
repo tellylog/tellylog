@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+
+
+	<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+        <link rel="stylesheet" type="text/css"/>
+        <title>index</title>
+
+	</head>
+
+	<body id="indexbody">
+        <div id="wrapper">
+            <div id="header">
+                <h1>ePortfolio</h1>
+                <h2>Thomas Rauhofer</h2>
+            </div>
+
+            <div id="navigation">
+                <ul>
+                    <li><a href="start.html" target="if">Start</a></li>
+                    <li><a href="lebenslauf.html" target="if">Lebenslauf</a></li>
+                    <li><a href="ubermich.html" target="if">&Uuml;ber-mich</a></li>
+                    <li><a href="kontakt.html" target="if">Kontakt</a></li>
+                    <li><a href="impressum.html" target="if">Impressum</a></li>
+                </ul>
+            </div>
+
+            <div id="content">
+                <iframe src="start.html" name="if"></iframe>
+            </div>
+        </div>
+	</body>
+
+
+</html>
+{% load staticfiles %}
+<link rel="stylesheet" type="text/css" href="{% static 'main/css.css' %}" />
