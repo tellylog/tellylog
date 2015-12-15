@@ -34,18 +34,9 @@ class Country(models.Model):
 class Series(models.Model):
     name = models.CharField(max_length=254)
     tmdb_id = models.IntegerField(unique=True)
-    poster_small = models.ImageField(path=os.path.join(settings.BASE_DIR,
-                                                       'media/tv/poster_s',
-                                                       match='.*_s.jpg$',
-                                                       max_length=254))
-    poster_medium = models.ImageField(os.path.join(settings.BASE_DIR,
-                                                   'media/tv/poster_m',
-                                                   match='.*_m.jpg$',
-                                                   max_length=254))
-    poster_large = models.ImageField(os.path.join(settings.BASE_DIR,
-                                                  'media/tv/poster_l',
-                                                  match='.*_l.jpg$',
-                                                  max_length=254))
+    poster_small = models.ImageField()  # TODO Set MEDIA PATH
+    poster_medium = models.ImageField()
+    poster_large = models.ImageField()
     in_production = models.BooleanField()
     first_air_date = models.DateField()
     episode_run_time = models.DurationField()
@@ -73,18 +64,9 @@ class Season(models.Model):
     number = models.IntegerField()
     air_date = models.DateField()
     tmdb_id = models.IntegerField()
-    poster_small = models.ImageField(path=os.path.join(settings.BASE_DIR,
-                                                       'media/tv/poster_s',
-                                                       match='.*_s.jpg$',
-                                                       max_length=254))
-    poster_medium = models.ImageField(os.path.join(settings.BASE_DIR,
-                                                   'media/tv/poster_m',
-                                                   match='.*_m.jpg$',
-                                                   max_length=254))
-    poster_large = models.ImageField(os.path.join(settings.BASE_DIR,
-                                                  'media/tv/poster_l',
-                                                  match='.*_l.jpg$',
-                                                  max_length=254))
+    poster_small = models.ImageField()
+    poster_medium = models.ImageField()
+    poster_large = models.ImageField()
     added = models.DateTimeField(auto_now_add=True)
     last_update = models.DateTimeField(auto_now=True)
 
@@ -115,4 +97,3 @@ class Episode(models.Model):
 
     def __str__(self):
         pass
-
