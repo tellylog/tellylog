@@ -1,3 +1,6 @@
+{% load staticfiles %}
+<link rel="stylesheet" type="text/css" href="{% static 'css.css' %}" />
+
 <!DOCTYPE html>
 <html>
 
@@ -10,27 +13,26 @@
 
 	</head>
 
-	<body id="indexbody">
-        <div id="wrapper">
+	<body>
+
             <div id="header">
-                <h1>ePortfolio</h1>
-                <h2>Thomas Rauhofer</h2>
+                <h1>tellylog</h1>
+                <h2>Index page</h2>
             </div>
 
             <div id="navigation">
                 <ul>
-                    <li>Start</li>
+
+                    <li><a href="{% url 'main:about' %}">about</a></li>
+					<li>Start</li>
                     <li>Lebenslauf</li>
                     <li>&Uuml;ber-mich</li>
                     <li>Kontakt</li>
-                    <li><a href="{% url 'main:about' %}">about</a></li>
                 </ul>
             </div>
 
-            <div id="content">
 
-            </div>
-        </div>
+
 	</body>
 
 
