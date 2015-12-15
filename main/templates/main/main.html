@@ -5,7 +5,7 @@
 	<head>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8">
 
-        <link rel="stylesheet" type="text/css"/>
+
         <title>index</title>
 
 	</head>
@@ -19,16 +19,16 @@
 
             <div id="navigation">
                 <ul>
-                    <li><a href="start.html" target="if">Start</a></li>
-                    <li><a href="lebenslauf.html" target="if">Lebenslauf</a></li>
-                    <li><a href="ubermich.html" target="if">&Uuml;ber-mich</a></li>
-                    <li><a href="kontakt.html" target="if">Kontakt</a></li>
-                    <li><a href="impressum.html" target="if">Impressum</a></li>
+                    <li>Start</li>
+                    <li>Lebenslauf</li>
+                    <li>&Uuml;ber-mich</li>
+                    <li>Kontakt</li>
+                    <li><a href="{% url 'main:about' %}">about</a></li>
                 </ul>
             </div>
 
             <div id="content">
-                <iframe src="start.html" name="if"></iframe>
+
             </div>
         </div>
 	</body>
