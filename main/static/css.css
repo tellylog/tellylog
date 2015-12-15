@@ -1,0 +1,8 @@
+html{
+}
+body{
+    background-image: url(django.jpg);
+    background-position: center center;
+    background-size: 300px;
+    background-repeat: no-repeat;
+}
