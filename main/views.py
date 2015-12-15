@@ -14,9 +14,9 @@ class Overview(TemplateView):
         template_name = "main/overview.html"
 
 
-class SingnIn(TemplateView):
+class SignIn(TemplateView):
         template_name = "main/sign_in.html"
 
 
-class SingnUp(TemplateView):
+class SignUp(TemplateView):
         template_name = "main/sign_up.html"
