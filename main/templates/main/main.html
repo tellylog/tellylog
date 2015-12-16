@@ -14,23 +14,18 @@
             </div>
             <div id="navigation">
                 <ul>
-                    <li><a href="{% url 'main:about' %}">about</a></li>
-					<li><a href="{% url 'main:overview' %}">overview</a></li>
+                    <li><a href="{% url 'main:about' %}">About</a></li>
+					<li><a href="{% url 'main:overview' %}">Overview</a></li>
                     <li><a href="{% url 'main:sign_in' %}">Sign in</a></li>
                     <li><a href="{% url 'main:sign_up' %}">Sign up</a></li>
                 </ul>
             </div>
-			<table>
-				<tr>
-					<td><label for="username">username:</label></td>
-					<td><input type="text" name="username"></td>
-				</tr>
-				<tr>
-					<td><label for="password">password:</label></td>
-					<td><input type="text" name="password"><br></td>
-				</tr>
-			</table>
-
+			<div id="login">
+				<input type="text" name="username" id="username" placeholder="Username"><br>
+				<input type="text" name="password" id="password" placeholder="Password"><br>
+				<input type="submit" name="submit" value="Sign In" id="SignIn">
+				<input type="button" name="register" value="Sign Up" id="SignUp">
+			</div>
 	</body>
 </html>
 {% load staticfiles %}

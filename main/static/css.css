@@ -1,8 +1,43 @@
+*{
+    margin: 0px;
+}
 html{
+    background-color: #031634;
 }
 body{
     background-image: url(django.jpg);
     background-position: center center;
     background-size: 300px;
     background-repeat: no-repeat;
+    color: #CDB380;
+}
+h1{
+    font-size: 50px;
+    color: #033649;
+}
+#login{
+    align-self: center;
+}
+#username, #password{
+    width: 300px;
+    height: 30px;
+    margin: 1px;
+    margin-left: 10px;
+}
+#SignIn {
+    width: 145px;
+    margin-top: 2px;
+    margin-left: 12px;
+    margin-right: 0.5px;
+}
+#SignUp {
+    width: 145px;
+}
+a{
+    color: #CDB380;
+    text-decoration: none;
+    list-style-type: none;
+}
+a:hover{
+    color: #E8DDCB;
 }
