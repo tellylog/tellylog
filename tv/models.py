@@ -47,7 +47,7 @@ class Genre(models.Model):
         verbose_name_plural = "Genres"
 
     def __str__(self):
-        pass
+        return self.name
 
 
 class Country(models.Model):
@@ -60,7 +60,7 @@ class Country(models.Model):
         verbose_name_plural = "Countrys"
 
     def __str__(self):
-        pass
+        return self.name
 
 
 class Series(models.Model):
@@ -98,7 +98,7 @@ class Series(models.Model):
         verbose_name_plural = "Series"
 
     def __str__(self):
-        pass
+        return self.name
 
 
 class Season(models.Model):
@@ -127,7 +127,7 @@ class Season(models.Model):
         verbose_name_plural = "Seasons"
 
     def __str__(self):
-        pass
+        return '%s %d' % (self.series_id.name, self.number)
 
 
 class Episode(models.Model):
@@ -137,6 +137,7 @@ class Episode(models.Model):
     tmdb_id = models.IntegerField()
     overview = models.TextField(blank=True)
     season_id = models.ForeignKey(Season, on_delete=models.CASCADE)
+    series_id = models.ForeignKey(Series, on_delete=models.CASCADE)
     # TODO guest_stars
     # TODO crew - not shure which Field
 
@@ -148,4 +149,6 @@ class Episode(models.Model):
         verbose_name_plural = "Episodes"
 
     def __str__(self):
-        pass
+        return '%s Season %d Ep %d' % (self.series_id.name,
+                                       self.season_id.number,
+                                       self.number)
