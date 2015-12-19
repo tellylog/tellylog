@@ -11,12 +11,12 @@ class About(TemplateView):
 
 
 class Overview(TemplateView):
-        template_name = "main/overview.html"
+    template_name = "main/overview.html"
 
 
 class SignIn(TemplateView):
-        template_name = "main/sign_in.html"
+    template_name = "main/sign_in.html"
 
 
 class SignUp(TemplateView):
-        template_name = "main/sign_up.html"
+    template_name = "main/sign_up.html"
