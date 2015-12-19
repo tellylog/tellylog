@@ -1,2 +1,9 @@
+languages:
+    Ruby: false
+    JavaScript: true
+    PHP: false
+    Python: false
+    CSS: true
+    Coffeescript: false
 exclude_paths:
-    -frontdev/src/bower/
+- frontdev/src/bower/*
