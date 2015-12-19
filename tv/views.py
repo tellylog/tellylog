@@ -1,4 +1,4 @@
-# from django.shortcuts import render, get_object_or_404
+from django.shortcuts import get_object_or_404, get_list_or_404
 from django.http import HttpResponse  # HttpResponseRedirect
 # from django.core.urlresolvers import reverse
 from django.views.generic import TemplateView
@@ -15,7 +15,8 @@ class SeriesView(TemplateView):
     template_name = "tv/series.html"
 
     def get_context_data(self, **kwargs):
-        # series = Series.
         context = super(SeriesView, self).get_context_data(**kwargs)
-        context['fucker'] = int(context['series_id']) * 10
+        context['series'] = get_object_or_404(Series, pk=context['series_id'])
+        context['seasons'] = get_list_or_404(Season,
+                                             series_id=context['series_id'])
         return context

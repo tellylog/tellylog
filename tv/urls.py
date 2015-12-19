@@ -21,8 +21,9 @@ from tv import views
 urlpatterns = [
     url(r'^$', views.index),
     # e.g. series/12
-    url(r'^series/(?P<series_id>[0-9]+)/$', views.SeriesView.as_view()),
+    url(r'^series/(?P<series_id>[0-9]+)/$', views.SeriesView.as_view(),
+        name='series'),
     # e.g. series/12/season/1
     url(r'^series/(?P<series_id>[0-9]+)/season/(?P<season_number>[0-9]+)/$',
-        views.index),
+        views.index, name='season'),
 ]

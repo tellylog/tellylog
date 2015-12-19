@@ -19,5 +19,5 @@ from django.contrib import admin
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^tv/', include('tv.urls')),
+    url(r'^tv/', include('tv.urls', namespace='tv')),
 ]
