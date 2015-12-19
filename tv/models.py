@@ -105,6 +105,7 @@ class Season(models.Model):
     number = models.IntegerField()
     air_date = models.DateField()
     tmdb_id = models.IntegerField()
+    episode_count = models.IntegerField()
     poster_small = models.ImageField(
         upload_to=TV_IMAGE_PATH.format(type='poster',
                                        category='season', size='small'),
@@ -119,6 +120,7 @@ class Season(models.Model):
         max_length=254, blank=True, null=True)
     added = models.DateTimeField(auto_now_add=True)
     last_update = models.DateTimeField(auto_now=True)
+    series_id = models.ForeignKey(Series, on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = "Season"

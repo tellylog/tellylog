@@ -15,6 +15,7 @@ class SeriesView(TemplateView):
     template_name = "tv/series.html"
 
     def get_context_data(self, **kwargs):
+        # series = Series.
         context = super(SeriesView, self).get_context_data(**kwargs)
         context['fucker'] = int(context['series_id']) * 10
         return context

@@ -1,0 +1,24 @@
+[
+{
+    "model": "tv.series",
+    "pk": 1,
+    "fields": {
+        "name": "Elementary",
+        "tmdb_id": 1415,
+        "in_production": true,
+        "first_air_date": "2012-09-27",
+        "episode_run_time": "00 1:00:00",
+        "last_air_date": "2016-01-07",
+        "number_of_episodes": 79,
+        "number_of_seasons": 4,
+        "original_language": "en",
+        "overview": "A modern-day drama about a crime-solving duo that cracks the NYPD's most impossible cases. Following his fall from grace in London and a stint in rehab, eccentric Sherlock escapes to Manhattan where his wealthy father forces him to live with his worst nightmare - a sober companion, Dr. Watson.",
+        "status": "Returning Series",
+        "type": "Scripted",
+        "genres": [13,5,8],
+        "origin_country": [1],
+       "added": "2013-03-16T17:41:28+00:00",
+       "last_update": "2013-03-16T17:41:28+00:00"
+    }
+}
+]

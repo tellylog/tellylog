@@ -1,0 +1,165 @@
+[
+{
+    "model": "tv.genre",
+    "pk": 1,
+    "fields": {
+       "name": "Action & Adventure",
+       "tmdb_id": 10759,
+       "added": "2013-03-16T17:41:28+00:00",
+       "last_update": "2013-03-16T17:41:28+00:00"
+   }
+},
+{
+    "model": "tv.genre",
+    "pk": 2,
+    "fields": {
+       "name": "Animation",
+       "tmdb_id": 16,
+       "added": "2013-03-16T17:41:28+00:00",
+       "last_update": "2013-03-16T17:41:28+00:00"
+   }
+},
+{
+    "model": "tv.genre",
+    "pk": 3,
+    "fields": {
+       "name": "Comedy",
+       "tmdb_id": 35,
+       "added": "2013-03-16T17:41:28+00:00",
+       "last_update": "2013-03-16T17:41:28+00:00"
+   }
+},
+{
+    "model": "tv.genre",
+    "pk": 4,
+    "fields": {
+       "name": "Documentary",
+       "tmdb_id": 99,
+       "added": "2013-03-16T17:41:28+00:00",
+       "last_update": "2013-03-16T17:41:28+00:00"
+   }
+},
+{
+    "model": "tv.genre",
+    "pk": 5,
+    "fields": {
+       "name": "Drama",
+       "tmdb_id": 18,
+       "added": "2013-03-16T17:41:28+00:00",
+       "last_update": "2013-03-16T17:41:28+00:00"
+   }
+},
+{
+    "model": "tv.genre",
+    "pk": 6,
+    "fields": {
+       "name": "Family",
+       "tmdb_id": 10751,
+       "added": "2013-03-16T17:41:28+00:00",
+       "last_update": "2013-03-16T17:41:28+00:00"
+   }
+},
+{
+    "model": "tv.genre",
+    "pk": 7,
+    "fields": {
+       "name": "Kids",
+       "tmdb_id": 10762,
+       "added": "2013-03-16T17:41:28+00:00",
+       "last_update": "2013-03-16T17:41:28+00:00"
+   }
+},
+{
+    "model": "tv.genre",
+    "pk": 8,
+    "fields": {
+       "name": "Mystery",
+       "tmdb_id": 9648,
+       "added": "2013-03-16T17:41:28+00:00",
+       "last_update": "2013-03-16T17:41:28+00:00"
+   }
+},
+{
+    "model": "tv.genre",
+    "pk": 9,
+    "fields": {
+       "name": "News",
+       "tmdb_id": 10763,
+       "added": "2013-03-16T17:41:28+00:00",
+       "last_update": "2013-03-16T17:41:28+00:00"
+   }
+},
+{
+    "model": "tv.genre",
+    "pk": 8,
+    "fields": {
+       "name": "Reality",
+       "tmdb_id": 10764,
+       "added": "2013-03-16T17:41:28+00:00",
+       "last_update": "2013-03-16T17:41:28+00:00"
+   }
+},
+{
+    "model": "tv.genre",
+    "pk": 9,
+    "fields": {
+       "name": "Sci-Fi & Fantasy",
+       "tmdb_id": 10765,
+       "added": "2013-03-16T17:41:28+00:00",
+       "last_update": "2013-03-16T17:41:28+00:00"
+   }
+},
+{
+    "model": "tv.genre",
+    "pk": 10,
+    "fields": {
+       "name": "Soap",
+       "tmdb_id": 10766,
+       "added": "2013-03-16T17:41:28+00:00",
+       "last_update": "2013-03-16T17:41:28+00:00"
+   }
+},
+{
+    "model": "tv.genre",
+    "pk": 10,
+    "fields": {
+       "name": "Talk",
+       "tmdb_id": 10767,
+       "added": "2013-03-16T17:41:28+00:00",
+       "last_update": "2013-03-16T17:41:28+00:00"
+   }
+},
+{
+    "model": "tv.genre",
+    "pk": 11,
+    "fields": {
+       "name": "War & Politics",
+       "tmdb_id": 10768,
+       "added": "2013-03-16T17:41:28+00:00",
+       "last_update": "2013-03-16T17:41:28+00:00",
+       "added": "2013-03-16T17:41:28+00:00",
+       "last_update": "2013-03-16T17:41:28+00:00"
+   }
+},
+{
+    "model": "tv.genre",
+    "pk": 12,
+    "fields": {
+       "name": "Western",
+       "tmdb_id": 37,
+       "added": "2013-03-16T17:41:28+00:00",
+       "last_update": "2013-03-16T17:41:28+00:00"
+   }
+},
+{
+    "model": "tv.genre",
+    "pk": 13,
+    "fields": {
+       "name": "Crime",
+       "tmdb_id": 80,
+       "added": "2013-03-16T17:41:28+00:00",
+       "last_update": "2013-03-16T17:41:28+00:00"
+   }
+}
+
+]

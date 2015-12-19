@@ -1,0 +1,54 @@
+[
+{
+    "model": "tv.season",
+    "pk": 1,
+    "fields": {
+       "air_date": "2012-09-27",
+       "episode_count": 24,
+       "tmdb_id": 3712,
+       "number": 1,
+       "series_id": 1,
+       "added": "2013-03-16T17:41:28+00:00",
+       "last_update": "2013-03-16T17:41:28+00:00"
+   }
+},
+{
+    "model": "tv.season",
+    "pk": 2,
+    "fields": {
+       "air_date": "2013-09-26",
+       "episode_count": 24,
+       "tmdb_id": 3714,
+       "number": 2,
+       "series_id": 1,
+       "added": "2013-03-16T17:41:28+00:00",
+       "last_update": "2013-03-16T17:41:28+00:00"
+   }
+},
+{
+    "model": "tv.season",
+    "pk": 3,
+    "fields": {
+       "air_date": "2014-10-30",
+       "episode_count": 24,
+       "tmdb_id": 62102,
+       "number": 3,
+       "series_id": 1,
+       "added": "2013-03-16T17:41:28+00:00",
+       "last_update": "2013-03-16T17:41:28+00:00"
+   }
+},
+{
+    "model": "tv.season",
+    "pk": 4,
+    "fields": {
+       "air_date": "2015-11-05",
+       "episode_count": 7,
+       "tmdb_id": 68504,
+       "number": 4,
+       "series_id": 1,
+       "added": "2013-03-16T17:41:28+00:00",
+       "last_update": "2013-03-16T17:41:28+00:00"
+   }
+}
+]
