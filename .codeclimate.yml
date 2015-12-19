@@ -1,0 +1,2 @@
+exclude_paths:
+    -frontdev/src/bower/
