@@ -16,12 +16,12 @@ Including another URLconf
 """
 from django.conf.urls import url
 
-from . import views
+from tv import views
 
 urlpatterns = [
     url(r'^$', views.index),
     # e.g. series/12
-    url(r'^series/(?P<series_id>[0-9]+)/$', views.index),
+    url(r'^series/(?P<series_id>[0-9]+)/$', views.SeriesView.as_view()),
     # e.g. series/12/season/1
     url(r'^series/(?P<series_id>[0-9]+)/season/(?P<season_number>[0-9]+)/$',
         views.index),
