@@ -48,11 +48,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'debug_toolbar',
-<<<<<<< HEAD
     'User',
-=======
-    'main'
->>>>>>> refs/remotes/origin/MainPage
+    'main',
 ]
 
 MIDDLEWARE_CLASSES = [
