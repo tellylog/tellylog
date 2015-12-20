@@ -1,14 +1,13 @@
-from django.shortcuts import render
-
+from django.shortcuts import render, render_to_response
 from rango.forms import UserForm, UserProfileForm
+from django.template import RequestContext
+
 
 def register(request):
-    # Like before, get the request's context.
     context = RequestContext(request)
 
     registered = False
 
-    # If it's a HTTP POST, we're interested in processing form data.
     if request.method == 'POST':
         user_form = UserForm(data=request.POST)
         profile_form = UserProfileForm(data=request.POST)
@@ -24,12 +23,12 @@ def register(request):
             profile.save()
             registered = True
         else:
-            print user_form.errors, profile_form.errors
+            print(user_form.errors, profile_form.errors)
     else:
         user_form = UserForm()
         profile_form = UserProfileForm()
 
     return render_to_response(
-        'rango/register.html',
-        {'user_form': user_form, 'profile_form': profile_form, 'registered': registered},
-            context)
+        'user/register.html',
+        {'user_form': user_form,
+            'profile_form': profile_form, 'registered': registered}, context)
