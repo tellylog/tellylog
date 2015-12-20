@@ -1,10 +1,9 @@
 from django.shortcuts import render_to_response
 from User.forms import UserForm, UserProfileForm
 from django.template import RequestContext
-from .models import UserProfile
 
 
-def register(request):
+def SignUp(request):
     context = RequestContext(request)
 
     registered = False
@@ -30,6 +29,6 @@ def register(request):
         profile_form = UserProfileForm()
 
     return render_to_response(
-        'user/register.html',
+        'user/signUp.html',
         {'user_form': user_form,
             'profile_form': profile_form, 'registered': registered}, context)

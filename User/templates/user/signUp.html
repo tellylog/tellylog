@@ -8,9 +8,9 @@
         <h1>Register with tellylog</h1>
 
         {% if registered %}
-        tellylog says: <strong>thank you for registering!</strong>
+        tellylog says: <strong>thank you for signing up!</strong>
         {% else %}
-        tellylog says: <strong>register here!</strong><br />
+        tellylog says: <strong>sign up here!</strong><br />
 
         <form id="user_form" method="post" action="/user/register/"
                 enctype="multipart/form-data">
@@ -24,7 +24,7 @@
             {{ profile_form.as_p }}
 
             <!-- Provide a button to click to submit the form. -->
-            <input type="submit" name="submit" value="Register" />
+            <input type="submit" name="submit" value="Sign Up" />
         </form>
         {% endif %}
     </body>
