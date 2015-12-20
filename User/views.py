@@ -1,6 +1,7 @@
-from django.shortcuts import render, render_to_response
-from rango.forms import UserForm, UserProfileForm
+from django.shortcuts import render_to_response
+from User.forms import UserForm, UserProfileForm
 from django.template import RequestContext
+from .models import UserProfile
 
 
 def register(request):
