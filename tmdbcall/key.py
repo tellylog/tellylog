@@ -1,3 +1,4 @@
+"""This file is used to get the API_KEY."""
 import os
 from getenv import env
 

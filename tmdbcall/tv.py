@@ -1,14 +1,10 @@
-"""
-This file holds the TV class which is used to get
-TV-Data from the TheMovieDataBase API.
-"""
+"""This file holds the TV class which is used to get TV-Data."""
 from datetime import datetime, timedelta
 
 from .parent import _Parent
 
 
 class TV(_Parent):
-
     """
     Class to get TV-Data from the TheMovieDataBase.
 
@@ -25,7 +21,7 @@ class TV(_Parent):
     }
 
     def search_for_series(self, query, page=None):
-        """Tries to find the series on the basis of the query parameter.
+        """Try to find the series on the basis of the query parameter.
 
         Args:
             query (str): The search string
@@ -50,7 +46,7 @@ class TV(_Parent):
             return response
 
     def get_series_info_by_id(self, series_id):
-        """Get detailed Information of a Series by the tmdb ID
+        """Get detailed Information of a Series by the tmdb ID.
 
         Args:
             series_id (int): Description
@@ -71,6 +67,7 @@ class TV(_Parent):
 
     def get_season_info_by_number(self, series_id, season_number):
         """Get information of a Season by the tmdb ID.
+
         Result includes episodes
 
         Args:
@@ -91,6 +88,7 @@ class TV(_Parent):
     def get_changes(self, series_id, start_date=None):
         """
         Get all the Changes from a start date until now.
+
         The start_date needs to be in the Format YYYY-MM-DD.
         The maximum start_date is two weeks before now.
 

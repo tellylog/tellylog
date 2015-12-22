@@ -1,11 +1,10 @@
-"""This file holds the Person class"""
+"""This file holds the Person class."""
 from datetime import datetime, timedelta
 
 from .parent import _Parent
 
 
 class Person(_Parent):
-
     """
     Class to get data of actors, directors, producers,...
 
@@ -38,6 +37,7 @@ class Person(_Parent):
     def get_changes(self, person_id, start_date=None):
         """
         Get all the Changes from a start date until now.
+
         The start_date needs to be in the Format YYYY-MM-DD.
         The maximum start_date is two weeks before now.
 
