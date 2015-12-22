@@ -18,21 +18,21 @@ from getenv import env
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: keep the secret key used in production secret!
-try:
-    if os.environ['CI'] is not None:
-        SECRET_KEY = os.environ['SECRET_KEY']
-except:
-    SECRET_KEY = env('SECRET_KEY')
+
+if 'CI' in os.environ:
+    _API_KEY = os.environ['SECRET_KEY']
+else:
+    _API_KEY = env('SECRET_KEY')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
 
 # SECURITY WARNING: don't run with debug turned on in production!
-try:
-    if os.environ['CI'] is not None:
-        DEBUG = False
-except:
-    DEBUG = env("DEBUG")
+
+if 'CI' in os.environ:
+    DEBUG = False
+else:
+    _API_KEY = env('DEBUG')
 
 
 ALLOWED_HOSTS = ['*', ]
