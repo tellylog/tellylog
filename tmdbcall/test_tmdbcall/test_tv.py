@@ -6,7 +6,7 @@ from unittest.mock import patch
 
 from django.test import TestCase
 
-from tmdbcall import TV
+from tmdbcall.tv import TV
 
 VALID_SERIES_NAME = "Malcolm in the Middle"
 VALID_SERIES_ID = 2004
