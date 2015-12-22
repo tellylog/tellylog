@@ -10,7 +10,7 @@ from unittest.mock import patch
 
 from django.test import TestCase
 
-from tmdbcall import Person
+from tmdbcall.person import Person
 
 VALID_PERSON_ID = 71580  # Benedict Cumberbatch
 INVALID_PERSON_ID = 0

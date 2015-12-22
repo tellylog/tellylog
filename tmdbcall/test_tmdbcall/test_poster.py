@@ -7,7 +7,7 @@ Attributes:
 """
 from unittest.mock import patch
 from django.test import TestCase
-from tmdbcall import Poster
+from tmdbcall.poster import Poster
 
 
 VALID_IMAGE_NAME = '44FcYhsLNjJA6d2ce5rYfaIVAJU.jpg'

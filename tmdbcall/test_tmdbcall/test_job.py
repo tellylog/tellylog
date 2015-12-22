@@ -1,7 +1,7 @@
 """This file holds the tests for the Job class."""
 from django.test import TestCase
 
-from tmdbcall import Job
+from tmdbcall.job import Job
 
 
 class TestJob(TestCase):
