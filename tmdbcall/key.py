@@ -2,7 +2,7 @@
 import os
 from getenv import env
 
-if 'CI' in os.environ:
+if os.getenv('CI') is not None:
     _API_KEY = os.environ['TMDB_API_KEY']
 else:
     _API_KEY = env('TMDB_API_KEY')
