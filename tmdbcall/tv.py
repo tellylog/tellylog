@@ -18,6 +18,7 @@ class TV(_Parent):
         'series': '{id}',
         'season': '{id}/season/{number}',
         'changes': '{id}/changes',
+        'credits': '{id}/credits',
     }
 
     def search_for_series(self, query, page=None):
@@ -40,7 +41,7 @@ class TV(_Parent):
         response = self.make_request(target=target, params=params)
         if not response:
             return False
-        if response['total_results'] is 0:
+        elif response['total_results'] is 0:
             return False
         else:
             return response
@@ -121,6 +122,29 @@ class TV(_Parent):
         params['start_date'] = start_date
         params['end_date'] = end_date
         response = self.make_request(target=target, params=params)
-        if not response['changes']:
+        if not response:
+            return False
+        elif not response['changes']:
+            return False
+        return response
+
+    def get_credits(self, series_id):
+        """
+        Get the credits of a series.
+
+        Args:
+            series_id (int): Id of the series
+
+        Returns:
+            bool: False on failure
+            dict: Dict with credits
+        """
+        target = (self.base_uri +
+                  self.URLS['tv_url'] +
+                  self.URLS['credits'].format(id=series_id))
+        response = self.make_request(target=target)
+        if not response:
+            return False
+        elif not response['cast']:
             return False
         return response
