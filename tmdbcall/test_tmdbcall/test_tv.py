@@ -134,3 +134,18 @@ class TestTV(TestCase):
             self.assertIsInstance(result, dict)
         except self.failureException:
             self.assertFalse(result)
+
+    def test_get_credits_with_valid_series_id(self):
+        """Should return a dict."""
+        result = self.test.get_credits(VALID_SERIES_ID)
+        self.assertIsInstance(result, dict)
+
+    @patch('tmdbcall.parent._logger')  # Mocks the logger
+    def test_get_credits_with_invalid_series_id(self, mock_logging):
+        """
+        The function should return false on fail.
+        And log the error to tmdbcall.log
+        """
+        result = self.test.get_credits(INVALID_SERIES_ID)
+        self.assertFalse(result)
+        self.assertTrue(mock_logging.warning.called)  # Check if warning logged
