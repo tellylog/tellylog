@@ -21,7 +21,6 @@ def index(request):
 
 
 class SeriesView(TemplateView):
-
     """
     Series view. Gets a Series and a list of its Seasons.
 
@@ -49,7 +48,6 @@ class SeriesView(TemplateView):
 
 
 class SeasonView(TemplateView):
-
     """
     Season view. Gets a Season and a list of its Episodes.
 

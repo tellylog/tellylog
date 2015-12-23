@@ -15,12 +15,8 @@ class Person(models.Model):
 
     Attributes:
         added (models.DateTimeField): When was the Person added
-        biography (models.TextField): Biography of the Person, can be blank
-        birthday (models.DateField): Birthday, can be blank or null
-        deathday (models.DateField): Deathday, can be blank or null
         last_update (models.DateTimeField): When was the last Update
         name (models.CharField): Name of the Person, max 254
-        place_of_birth (models.CharField): Birthplace, can be blank, max 254
         profile_large (models.ImageField): Large image of Person,
                                            can be blank or null
         profile_medium (models.ImageField): Medium image of Person,
@@ -31,11 +27,7 @@ class Person(models.Model):
     """
 
     name = models.CharField(max_length=254)
-    biography = models.TextField(blank=True)
-    birthday = models.DateField(blank=True, null=True)
-    deathday = models.DateField(blank=True, null=True)
     tmdb_id = models.IntegerField()
-    place_of_birth = models.CharField(max_length=254, blank=True)
     profile_small = models.ImageField(
         upload_to=TV_IMAGE_PATH.format(type='profile',
                                        category='person', size='small'),
@@ -71,6 +63,80 @@ class Person(models.Model):
             str: Name of the Person
         """
         return self.name
+
+
+class Department(models.Model):
+    """
+    Department model. Holds the name of a department.
+
+    Attributes:
+        added (models.DateTimeField): When was the Department added
+        last_update (models.DateTimeField): When was the Department updated
+        name (models.CharField): Name of the Department, max 254
+    """
+
+    name = models.CharField(max_length=254)
+    added = models.DateTimeField(auto_now_add=True)
+    last_update = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        """
+        Meta information of the Department.
+
+        Attributes:
+            verbose_name (str): Human readable Name
+            verbose_name_plural (str): Human readable Name plural
+        """
+
+        verbose_name = "Department"
+        verbose_name_plural = "Departments"
+
+    def __str__(self):
+        """
+        Return a string representation of the Department.
+
+        Returns:
+            str: Name of the Department
+        """
+        return self.name
+
+
+class Job(models.Model):
+    """
+    Job model. Holds the name of a job and the link to a department.
+
+    Attributes:
+        added (models.DateTimeField): When was the Job added
+        department_id (models.ForeignKey): Department of the Job
+        last_update (models.DateTimeField): When was the Job updated
+        name (models.CharField): Name of the Job
+    """
+
+    name = models.CharField(max_length=254)
+    department_id = models.ForeignKey(Department, on_delete=models.CASCADE)
+    added = models.DateTimeField(auto_now_add=True)
+    last_update = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        """
+        Meta information of the Job.
+
+        Attributes:
+            verbose_name (str): Human readable Name
+            verbose_name_plural (str): Human readable Name plural
+        """
+
+        verbose_name = "Job"
+        verbose_name_plural = "Jobs"
+
+    def __str__(self):
+        """
+        Return a string representation of the Department.
+
+        Returns:
+            str: Name of the Department and Job name
+        """
+        return '%s: %s' % (self.department_id.name, self.name)
 
 
 class Genre(models.Model):
@@ -342,3 +408,51 @@ class Episode(models.Model):
         return '%s Season %d Ep %d' % (self.series_id.name,
                                        self.season_id.number,
                                        self.number)
+
+
+class Credit(models.Model):
+    """
+    Credit model. Links a Person with a Department, Job and Series.
+
+    Attributes:
+        added (models.DateTimeField): When was the Credit added
+        character (models.CharField): Optional Character Name. max 254
+        department_id (models.ForeignKey): Department key
+        job_id (models.ForeignKey): Job key
+        last_update (models.DateTimeField): When was the Credit updated
+        order (models.IntegerField): Optional order of cast importance
+        person_id (models.ForeignKey): Person key
+        series_id (models.ForeignKey): Series key
+    """
+
+    department_id = models.ForeignKey(Department, on_delete=models.CASCADE)
+    job_id = models.ForeignKey(Job, on_delete=models.CASCADE)
+    person_id = models.ForeignKey(Person, on_delete=models.CASCADE)
+    series_id = models.ForeignKey(Series, on_delete=models.CASCADE)
+    character = models.CharField(max_length=254, blank=True)
+    order = models.IntegerField(null=True, blank=True)
+    added = models.DateTimeField(auto_now_add=True)
+    last_update = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        """
+        Meta information of the Credit.
+
+        Attributes:
+            verbose_name (str): Human readable name
+            verbose_name_plural (str): Human readable name plural
+        """
+
+        verbose_name = "Credit"
+        verbose_name_plural = "Credits"
+
+    def __str__(self):
+        """
+        Return a string representation of the Credit.
+
+        Returns:
+            str: PersonName: Job (Character)
+        """
+        return '%s: %s (%s)' % (self.person_id.name,
+                                self.job_id.name,
+                                self.character)
