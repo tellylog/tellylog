@@ -24,5 +24,5 @@ urlpatterns = [
         name='series'),
     # e.g. series/12/season/1
     url(r'^series/(?P<series_id>[0-9]+)/season/(?P<season_number>[0-9]+)/$',
-        views.index, name='season'),
+        views.SeasonView.as_view(), name='season'),
 ]

@@ -316,8 +316,6 @@ class Episode(models.Model):
     overview = models.TextField(blank=True)
     season_id = models.ForeignKey(Season, on_delete=models.CASCADE)
     series_id = models.ForeignKey(Series, on_delete=models.CASCADE)
-    # TODO guest_stars
-    # TODO crew - not shure which Field
 
     added = models.DateTimeField(auto_now_add=True)
     last_update = models.DateTimeField(auto_now=True)
