@@ -10,3 +10,8 @@ class TvConfig(AppConfig):
     """
 
     name = 'tv'
+
+    def ready(self):
+        from watson import search as watson
+        Series = self.get_model('Series')
+        watson.register(Series)

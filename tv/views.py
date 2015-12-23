@@ -76,3 +76,7 @@ class SeasonView(TemplateView):
                                               series_id=context['series_id'],
                                               season_id=context['season'].id)
         return context
+
+
+class SearchView(TemplateView):
+    template_name = "tv/search.html"

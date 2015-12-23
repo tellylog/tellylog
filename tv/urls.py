@@ -25,4 +25,7 @@ urlpatterns = [
     # e.g. series/12/season/1
     url(r'^series/(?P<series_id>[0-9]+)/season/(?P<season_number>[0-9]+)/$',
         views.SeasonView.as_view(), name='season'),
+    url(r'^search/(?P<search_query>[\w|\W]+)/$',
+        views.SearchView.as_view(),
+        name='search'),
 ]
