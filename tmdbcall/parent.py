@@ -1,4 +1,4 @@
-"""This file holds the Parent class which is used by the tmdbcall modules"""
+"""This file holds the Parent class which is used by the tmdbcall modules."""
 import requests
 import requests_cache
 import logging
@@ -22,6 +22,7 @@ _logger.addHandler(_handler)
 class _Parent(object):
     """
     The Parent class is a master class for all tmdbcall classes.
+
     It defines the base_uri, headers and params and base functions.
 
     Attributes:
@@ -29,8 +30,9 @@ class _Parent(object):
         headers (dict): Base Headers, accept only json
         params (dict): Base params, the API_KEY
     """
+
     def __init__(self):
-        """Import the API_KEY. Set the base_uri, headers and params"""
+        """Import the API_KEY. Set the base_uri, headers and params."""
         from .key import _API_KEY
         self.base_uri = 'https://api.themoviedb.org/3/'
         self.params = {'api_key': _API_KEY}
@@ -38,6 +40,7 @@ class _Parent(object):
 
     def make_request(self, target, json=True, headers=0, params=0):
         """Make a request to the given target.
+
         Either uses the given headers and params or the default ones.
 
         Args:

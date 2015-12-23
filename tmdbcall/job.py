@@ -1,4 +1,4 @@
-"""This module holds the Job class"""
+"""This module holds the Job class."""
 from .parent import _Parent
 
 
@@ -9,12 +9,13 @@ class Job(_Parent):
     Attributes:
         URLS (dict): Holds all relevant URLS
     """
+
     URLS = {
         'job_list': 'job/list',
     }
 
     def get_jobs(self):
-        """Get a list of all valid Jobs
+        """Get a list of all valid Jobs.
 
         Returns:
             dict: A dictionary of all Jobs
