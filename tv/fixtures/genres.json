@@ -160,6 +160,36 @@
        "added": "2013-03-16T17:41:28+00:00",
        "last_update": "2013-03-16T17:41:28+00:00"
    }
+},
+{
+    "model": "tv.genre",
+    "pk": 14,
+    "fields": {
+       "name": "Action",
+       "tmdb_id": 28,
+       "added": "2013-03-16T17:41:28+00:00",
+       "last_update": "2013-03-16T17:41:28+00:00"
+   }
+},
+{
+    "model": "tv.genre",
+    "pk": 15,
+    "fields": {
+       "name": "Adventure",
+       "tmdb_id": 12,
+       "added": "2013-03-16T17:41:28+00:00",
+       "last_update": "2013-03-16T17:41:28+00:00"
+   }
+},
+{
+    "model": "tv.genre",
+    "pk": 16,
+    "fields": {
+       "name": "Science Fiction",
+       "tmdb_id": 878,
+       "added": "2013-03-16T17:41:28+00:00",
+       "last_update": "2013-03-16T17:41:28+00:00"
+   }
 }
 
 ]

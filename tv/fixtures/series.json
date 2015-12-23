@@ -7,7 +7,7 @@
         "tmdb_id": 1415,
         "in_production": true,
         "first_air_date": "2012-09-27",
-        "episode_run_time": "00 1:00:00",
+        "episode_run_time": 60,
         "last_air_date": "2016-01-07",
         "number_of_episodes": 79,
         "number_of_seasons": 4,
@@ -19,6 +19,28 @@
         "origin_country": [1],
        "added": "2013-03-16T17:41:28+00:00",
        "last_update": "2013-03-16T17:41:28+00:00"
+    }
+},
+{
+    "model": "tv.series",
+    "pk": 2,
+    "fields": {
+        "name": "Doctor Who",
+        "tmdb_id": 57243,
+        "in_production": true,
+        "first_air_date": "2005-03-26",
+        "episode_run_time": 101,
+        "last_air_date": "2015-12-25",
+        "number_of_episodes": 117,
+        "number_of_seasons": 9,
+        "original_language": "en",
+        "overview": "The Doctor looks and seems human. He's handsome, witty, and could be mistaken for just another man in the street. But he is a Time Lord: a 900 year old alien with 2 hearts, part of a gifted civilization who mastered time travel. The Doctor saves planets for a living \u2013 more of a hobby actually, and he's very, very good at it. He's saved us from alien menaces and evil from before time began \u2013 but just who is he?",
+        "status": "Returning Series",
+        "type": "Scripted",
+        "genres": [15,5,16,14],
+        "origin_country": [2],
+        "added": "2013-03-16T17:41:28+00:00",
+        "last_update": "2013-03-16T17:41:28+00:00"
     }
 }
 ]

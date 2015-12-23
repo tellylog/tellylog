@@ -14,4 +14,6 @@ class TvConfig(AppConfig):
     def ready(self):
         from watson import search as watson
         Series = self.get_model('Series')
-        watson.register(Series)
+        watson.register(Series,
+                        fields=('name',),
+                        store=('overview',))

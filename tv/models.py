@@ -5,7 +5,7 @@ Attributes:
 """
 
 from django.db import models
-
+from django.core.urlresolvers import reverse
 TV_IMAGE_PATH = 'tv/{type}/{category}/{size}'
 
 
@@ -263,7 +263,7 @@ class Series(models.Model):
         max_length=254, blank=True, null=True)
     in_production = models.BooleanField()
     first_air_date = models.DateField(blank=True, null=True)
-    episode_run_time = models.DurationField(blank=True, null=True)
+    episode_run_time = models.IntegerField(blank=True, null=True)
     last_air_date = models.DateField(blank=True, null=True)
     number_of_episodes = models.IntegerField()
     number_of_seasons = models.IntegerField()
@@ -295,6 +295,9 @@ class Series(models.Model):
             str: Name of the Series
         """
         return self.name
+
+    def get_absolute_url(self):
+        return reverse('tv.SeriesView', kwargs={'series_id': str(self.id)})
 
 
 class Season(models.Model):

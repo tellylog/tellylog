@@ -1,2 +1,4 @@
-<h1> Search </h1>
-{{ search_query }}
+<form action="{% url 'watson:search' %}">
+    <input name="q" value="{{request.GET.q}}">
+    <input type="submit" value="Go">
+</form>
