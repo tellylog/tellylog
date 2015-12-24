@@ -10,6 +10,7 @@ TV_IMAGE_PATH = 'tv/{type}/{category}/{size}'
 
 
 class Person(models.Model):
+
     """
     Person model. Holds all information from actors, directors,...
 
@@ -44,6 +45,7 @@ class Person(models.Model):
     last_update = models.DateTimeField(auto_now=True)
 
     class Meta:
+
         """
         Meta information of the Person.
 
@@ -66,6 +68,7 @@ class Person(models.Model):
 
 
 class Department(models.Model):
+
     """
     Department model. Holds the name of a department.
 
@@ -80,6 +83,7 @@ class Department(models.Model):
     last_update = models.DateTimeField(auto_now=True)
 
     class Meta:
+
         """
         Meta information of the Department.
 
@@ -102,22 +106,26 @@ class Department(models.Model):
 
 
 class Job(models.Model):
+
     """
     Job model. Holds the name of a job and the link to a department.
 
     Attributes:
         added (models.DateTimeField): When was the Job added
-        department_id (models.ForeignKey): Department of the Job
+        department (models.ForeignKey): Department of the Job
         last_update (models.DateTimeField): When was the Job updated
         name (models.CharField): Name of the Job
     """
 
     name = models.CharField(max_length=254)
-    department_id = models.ForeignKey(Department, on_delete=models.CASCADE)
+    department = models.ForeignKey(Department, on_delete=models.CASCADE,
+                                   related_name='jobs',
+                                   related_query_name='job')
     added = models.DateTimeField(auto_now_add=True)
     last_update = models.DateTimeField(auto_now=True)
 
     class Meta:
+
         """
         Meta information of the Job.
 
@@ -140,6 +148,7 @@ class Job(models.Model):
 
 
 class Genre(models.Model):
+
     """
     Genre model. Holds information to a Genre.
 
@@ -156,6 +165,7 @@ class Genre(models.Model):
     last_update = models.DateTimeField(auto_now=True)
 
     class Meta:
+
         """
         Meta information of the Genre.
 
@@ -178,6 +188,7 @@ class Genre(models.Model):
 
 
 class Country(models.Model):
+
     """
     Country model. Holds information to a Country.
 
@@ -192,6 +203,7 @@ class Country(models.Model):
     last_update = models.DateTimeField(auto_now=True)
 
     class Meta:
+
         """
         Meta information of the Country.
 
@@ -214,6 +226,7 @@ class Country(models.Model):
 
 
 class Series(models.Model):
+
     """
     Series model. Holds all the data belonging to a Series.
 
@@ -277,6 +290,7 @@ class Series(models.Model):
     last_update = models.DateTimeField(auto_now=True)
 
     class Meta:
+
         """
         Meta information of the Series.
 
@@ -297,10 +311,11 @@ class Series(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse('tv.SeriesView', kwargs={'series_id': str(self.id)})
+        return reverse('tv:series', kwargs={'series_id': str(self.id)})
 
 
 class Season(models.Model):
+
     """
     Season model. Holds all the data belonging to a Season of a Series.
 
@@ -316,7 +331,7 @@ class Season(models.Model):
                                            can be blank or null
         poster_small (models.ImageField): Small poster image of Season,
                                            can be blank or null
-        series_id (models.ForeignKey): Series the Season belongs to
+        series (models.ForeignKey): Series the Season belongs to
         tmdb_id (models.IntegerField): ID of the TMDB entry
     """
 
@@ -338,9 +353,12 @@ class Season(models.Model):
         max_length=254, blank=True, null=True)
     added = models.DateTimeField(auto_now_add=True)
     last_update = models.DateTimeField(auto_now=True)
-    series_id = models.ForeignKey(Series, on_delete=models.CASCADE)
+    series = models.ForeignKey(Series, on_delete=models.CASCADE,
+                               related_name='seasons',
+                               related_query_name='season')
 
     class Meta:
+
         """
         Meta information of the Season.
 
@@ -359,10 +377,18 @@ class Season(models.Model):
         Returns:
             str: Name of the Series + Number of Season
         """
-        return '%s %d' % (self.series_id.name, self.number)
+        return '%s %d' % (self.series.name, self.number)
+
+    def get_absolute_url(self):
+        kwargs = {
+            'series_id': self.series.id,
+            'season_number': self.number
+            }
+        return reverse('tv:season', kwargs=kwargs)
 
 
 class Episode(models.Model):
+
     """
     Episode model. Holds all the data belonging to a Episode of a Season.
 
@@ -373,8 +399,8 @@ class Episode(models.Model):
         name (models.CharField): Name of the episode, max 254, can be blank
         number (models.IntegerField): Number of the episode
         overview (models.TextField): Description of the Episode
-        season_id (models.ForeignKey): Season the Episode belongs to
-        series_id (models.ForeignKey): Series the Episode belongs to
+        season (models.ForeignKey): Season the Episode belongs to
+        series (models.ForeignKey): Series the Episode belongs to
         tmdb_id (models.IntegerField): ID of the TMDB entry
     """
 
@@ -383,13 +409,18 @@ class Episode(models.Model):
     number = models.IntegerField()
     tmdb_id = models.IntegerField()
     overview = models.TextField(blank=True)
-    season_id = models.ForeignKey(Season, on_delete=models.CASCADE)
-    series_id = models.ForeignKey(Series, on_delete=models.CASCADE)
+    season = models.ForeignKey(Season, on_delete=models.CASCADE,
+                               related_name='episodes',
+                               related_query_name='episode')
+    series = models.ForeignKey(Series, on_delete=models.CASCADE,
+                               related_name='episodes',
+                               related_query_name='episode')
 
     added = models.DateTimeField(auto_now_add=True)
     last_update = models.DateTimeField(auto_now=True)
 
     class Meta:
+
         """
         Meta information of the Episode.
 
@@ -408,12 +439,13 @@ class Episode(models.Model):
         Returns:
             str: Name of the Series + Number of Season + Number of Episode
         """
-        return '%s Season %d Ep %d' % (self.series_id.name,
-                                       self.season_id.number,
+        return '%s Season %d Ep %d' % (self.series.name,
+                                       self.season.number,
                                        self.number)
 
 
 class Credit(models.Model):
+
     """
     Credit model. Links a Person with a Department, Job and Series.
 
@@ -421,23 +453,32 @@ class Credit(models.Model):
         added (models.DateTimeField): When was the Credit added
         character (models.CharField): Optional Character Name. max 254
         department_id (models.ForeignKey): Department key
-        job_id (models.ForeignKey): Job key
+        job (models.ForeignKey): Job key
         last_update (models.DateTimeField): When was the Credit updated
         order (models.IntegerField): Optional order of cast importance
-        person_id (models.ForeignKey): Person key
-        series_id (models.ForeignKey): Series key
+        person (models.ForeignKey): Person key
+        series (models.ForeignKey): Series key
     """
 
-    department_id = models.ForeignKey(Department, on_delete=models.CASCADE)
-    job_id = models.ForeignKey(Job, on_delete=models.CASCADE)
-    person_id = models.ForeignKey(Person, on_delete=models.CASCADE)
-    series_id = models.ForeignKey(Series, on_delete=models.CASCADE)
+    department = models.ForeignKey(Department, on_delete=models.CASCADE,
+                                   related_name='credits',
+                                   related_query_name='credit')
+    job = models.ForeignKey(Job, on_delete=models.CASCADE,
+                            related_name='credits',
+                            related_query_name='credit')
+    person = models.ForeignKey(Person, on_delete=models.CASCADE,
+                               related_name='credits',
+                               related_query_name='credit')
+    series = models.ForeignKey(Series, on_delete=models.CASCADE,
+                               related_name='credits',
+                               related_query_name='credit')
     character = models.CharField(max_length=254, blank=True)
     order = models.IntegerField(null=True, blank=True)
     added = models.DateTimeField(auto_now_add=True)
     last_update = models.DateTimeField(auto_now=True)
 
     class Meta:
+
         """
         Meta information of the Credit.
 
@@ -456,6 +497,6 @@ class Credit(models.Model):
         Returns:
             str: PersonName: Job (Character)
         """
-        return '%s: %s (%s)' % (self.person_id.name,
-                                self.job_id.name,
+        return '%s: %s (%s)' % (self.person.name,
+                                self.job.name,
                                 self.character)

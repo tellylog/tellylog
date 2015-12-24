@@ -41,7 +41,8 @@ class SeriesView(TemplateView):
             dict: Context dictionary with all values.
         """
         context = super(SeriesView, self).get_context_data(**kwargs)
-        context['series'] = get_object_or_404(Series, pk=context['series_id'])
+        context['series'] = \
+            get_object_or_404(Series, pk=context['series_id'])
         context['seasons'] = get_list_or_404(Season,
                                              series_id=context['series_id'])
         return context

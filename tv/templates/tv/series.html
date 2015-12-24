@@ -9,7 +9,7 @@
     {{ series.overview }} <br>
     <ul>
     {% for season in seasons %}
-        <li><a href="{% url 'tv:season' series.pk season.number  %}">Season: {{ season.number }}</a> <input type="checkbox"></li>
+        <li><a href="{{ season.get_absolute_url }}">Season: {{ season.number }}</a> <input type="checkbox"></li>
     {% endfor %}
     </ul>
 </body>
