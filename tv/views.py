@@ -79,5 +79,5 @@ class SeasonView(TemplateView):
         return context
 
 
-class SearchView(TemplateView):
-    template_name = "tv/search.html"
+class TestView(TemplateView):
+    template_name = "tv/test.html"

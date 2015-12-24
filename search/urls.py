@@ -1,4 +1,4 @@
-"""tv app URL Configuration.
+"""search app URL Configuration.
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/1.9/topics/http/urls/
@@ -15,15 +15,9 @@ Including another URLconf
     3. Add a URL to urlpatterns:  url(r'^blog/', include(blog_urls))
 """
 from django.conf.urls import url
-
-from tv import views
+from search import views
 
 urlpatterns = [
-    url(r'^$', views.TestView.as_view(), name='test'),
-    # e.g. series/12
-    url(r'^series/(?P<series_id>[0-9]+)/$', views.SeriesView.as_view(),
-        name='series'),
-    # e.g. series/12/season/1
-    url(r'^series/(?P<series_id>[0-9]+)/season/(?P<season_number>[0-9]+)/$',
-        views.SeasonView.as_view(), name='season'),
+    url(r'^test/$', views.TestView.as_view(), name='test'),
+    url(r'^$', views.SearchView.as_view(), name='search'),
 ]

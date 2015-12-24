@@ -198,7 +198,7 @@ class Country(models.Model):
         name (models.CharField): Name of the Country, max 254
     """
 
-    name = models.CharField(max_length=254)
+    name = models.CharField(max_length=254, unique=True)
     added = models.DateTimeField(auto_now_add=True)
     last_update = models.DateTimeField(auto_now=True)
 

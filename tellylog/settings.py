@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'debug_toolbar',
     'watson',
     'tv',
+    'search',
 ]
 
 MIDDLEWARE_CLASSES = [

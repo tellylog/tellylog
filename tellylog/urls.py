@@ -20,5 +20,5 @@ from django.contrib import admin
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^tv/', include('tv.urls', namespace='tv')),
-    url(r'^search/', include('watson.urls', namespace='watson')),
+    url(r'^search/', include('search.urls', namespace='search')),
 ]
