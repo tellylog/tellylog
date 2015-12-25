@@ -26,6 +26,5 @@ def convert_series_result(result):
     full_series = tmdb_tv.get_series_info_by_id(result['id'])
     genre_list = _check_genres(full_series['genres'])
     runtime = _calc_av_episode_runtime(full_series['episode_run_time'])
-    in_production = full_series['in_production']
-
+    # posters = _get_posters
 

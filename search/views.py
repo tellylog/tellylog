@@ -33,7 +33,8 @@ class SearchView(ListView):
             api_series = tmdb_tv.search_for_series(self.query)
             if api_series and api_series['results']:
                 for series in api_series['results']:
-
+                    # TODO convert function
+                    pass
         return search_res
 
     def get_context_data(self, **kwargs):
