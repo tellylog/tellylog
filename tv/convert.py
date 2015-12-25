@@ -17,9 +17,15 @@ def _check_genres(genres):
     return genre_list
 
 
+def _calc_av_episode_runtime(runtimes):
+    return sum(runtimes) // len(runtimes)
+
+
 def convert_series_result(result):
     tmdb_tv = tmdb.tv.TV()
     full_series = tmdb_tv.get_series_info_by_id(result['id'])
     genre_list = _check_genres(full_series['genres'])
+    runtime = _calc_av_episode_runtime(full_series['episode_run_time'])
+    in_production = full_series['in_production']
 
 
