@@ -20,10 +20,9 @@
                     <li><a href="{% url 'main:sign_up' %}">Sign up</a></li>
                 </ul>
             </div>
-			<form action="" method="post">{% csrf_token %}
+
     			{{ form.as_p }}
-    			<input type="submit" value="Send message" />
-			</form>
+
 			<!--
 			<div id="login">
 				<input type="text" name="username" id="username" placeholder="Username"><br>

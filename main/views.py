@@ -6,6 +6,7 @@ from .forms import SignInForm
 class Index(FormView):
     template_name = "main/main.html"
     form_class = SignInForm
+    success_url = '/about/'
 
 
 class About(TemplateView):
