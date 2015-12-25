@@ -1,8 +1,11 @@
 from django.views.generic import TemplateView
+from django.views.generic.edit import FormView
+from .forms import SignInForm
 
 
-class Index(TemplateView):
+class Index(FormView):
     template_name = "main/main.html"
+    form_class = SignInForm
 
 
 class About(TemplateView):

@@ -20,11 +20,10 @@
                     <li><a href="{% url 'main:sign_up' %}">Sign up</a></li>
                 </ul>
             </div>
-			<form action="/your-name/" method="post">
-    			<label for="your_name">Your name: </label>
-    			<input id="your_name" type="text" name="your_name" value="{{ current_name }}">
-    			<input type="submit" value="OK">
-</form>
+			<form action="" method="post">{% csrf_token %}
+    			{{ form.as_p }}
+    			<input type="submit" value="Send message" />
+			</form>
 			<!--
 			<div id="login">
 				<input type="text" name="username" id="username" placeholder="Username"><br>
