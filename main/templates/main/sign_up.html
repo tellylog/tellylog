@@ -10,7 +10,21 @@
 	</head>
 	<body>
 	<title>about</title>
-        Here we will create the sign up page<br>
+	{% if registered %}
+	tellylog says: <strong>thank you for signing up!</strong>
+	{% else %}
+	tellylog says: <strong>sign up here!</strong><br />
+
+	<form id="user_form" method="post" action="/signUp/"
+			enctype="multipart/form-data">
+
+		{% csrf_token %}
+
+		{{ user_form.as_p }}
+
+		<input type="submit" name="submit" value="Sign Up" />
+	</form>
+	{% endif %}
 		<a href="{% url 'main:index' %}">Back to main</a>
 	</body>
 </html>
