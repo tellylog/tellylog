@@ -2,7 +2,6 @@ from django.views.generic import TemplateView
 from django.views.generic.edit import FormView
 from .forms import SignInForm
 from User.forms import UserForm
-from User.models import UserProfile
 
 
 class Index(FormView):
@@ -23,6 +22,6 @@ class SignIn(TemplateView):
     template_name = "main/sign_in.html"
 
 
-class SignUp(TemplateView):
+class SignUp(FormView):
     template_name = "main/sign_up.html"
-    user_forms = UserForm
+    form_class = UserForm
