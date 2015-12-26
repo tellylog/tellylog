@@ -1,6 +1,6 @@
 // Typography
 $base-font-family: $roboto , sans-serif;
-$heading-font-family: $roboto-serif , serif;
+$heading-font-family: $roboto , sans-serif;
 
 // Font Sizes
 $base-font-size: 1em;
@@ -17,27 +17,28 @@ $small-spacing: $base-spacing / 2;
 $base-z-index: 0;
 
 // Colors
-$darkblue: #031634;
-$darkgreen: #033649;
-$lightgreen: #036564;
+$dark-blue: #031634;
+$dark-green: #033649;
+$light-green: #036564;
 $brown: #cdb380;
-$lightbrown: #e8ddcb;
+$light-brown: #e8ddcb;
 $blue: #477dca;
 $dark-gray: #333;
 $medium-gray: #999;
 $light-gray: #ddd;
 
 // Font Colors
-$base-font-color: $lightbrown;
-$action-color: $lightgreen;
+$base-font-color: $light-brown;
+$action-color: $light-green;
 
 // Border
 $base-border-color: $brown;
 $base-border: 1px solid $base-border-color;
 
 // Background Colors
-$base-background-color: $darkblue;
-$secondary-background-color: $darkgreen;
+$base-background-color: $dark-blue;
+$secondary-background-color: $dark-green;
+$third-background-color: $light-green;
 
 // Forms
 $form-box-shadow: inset 0 1px 3px rgba(#000, 0.06);

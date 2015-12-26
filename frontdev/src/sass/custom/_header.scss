@@ -1,0 +1,33 @@
+header{
+    @include outer-container(100%);
+    @include media($medium-screen-up){
+        @include outer-container($max-width);
+    }
+    // background-color: orange;
+
+    #logo{
+        @include span-columns(2 of 4);
+
+        @include media($medium-screen-up){
+            @include span-columns(1 of 4);
+        }
+        font-size: 3.5em;
+        @include media($medium-screen-up){
+            font-size: 3em;
+        }
+    }
+    #nav-toggle{
+        @include span-columns(2 of 4);
+        @include omega();
+        @include media($medium-screen-up){
+            @include shift(2 of 4)
+            @include span-columns(1 of 4);
+
+        }
+        text-align: right;
+        font-size: 3.5em;
+        @include media($medium-screen-up){
+            font-size: 3em;
+        }
+    }
+}
