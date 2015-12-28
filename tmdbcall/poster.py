@@ -16,7 +16,7 @@ class Poster(_Parent):
         poster_size (str): Base Size for the Images
     """
 
-    poster_size = "w185/"
+    poster_size = "w500/"
 
     def __init__(self):
         """

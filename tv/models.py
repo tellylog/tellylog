@@ -266,10 +266,6 @@ class Series(models.Model):
         upload_to=TV_IMAGE_PATH.format(type='poster',
                                        category='series', size='small'),
         max_length=254, blank=True, null=True)
-    poster_medium = models.ImageField(
-        upload_to=TV_IMAGE_PATH.format(type='poster',
-                                       category='series', size='medium'),
-        max_length=254, blank=True, null=True)
     poster_large = models.ImageField(
         upload_to=TV_IMAGE_PATH.format(type='poster',
                                        category='series', size='large'),
@@ -342,10 +338,6 @@ class Season(models.Model):
     poster_small = models.ImageField(
         upload_to=TV_IMAGE_PATH.format(type='poster',
                                        category='season', size='small'),
-        max_length=254, blank=True, null=True)
-    poster_medium = models.ImageField(
-        upload_to=TV_IMAGE_PATH.format(type='poster',
-                                       category='season', size='medium'),
         max_length=254, blank=True, null=True)
     poster_large = models.ImageField(
         upload_to=TV_IMAGE_PATH.format(type='poster',
