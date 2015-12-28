@@ -1,4 +1,4 @@
-from User.models import UserProfile
+from user.models import UserProfile
 from django.contrib.auth.models import User
 from django import forms
 

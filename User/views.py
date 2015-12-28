@@ -1,5 +1,5 @@
 from django.shortcuts import render_to_response
-from User.forms import UserForm
+from user.forms import UserForm
 from django.template import RequestContext
 
 

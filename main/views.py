@@ -1,7 +1,7 @@
 from django.views.generic import TemplateView
 from django.views.generic.edit import FormView
 from .forms import SignInForm
-from User.forms import UserForm
+from user.forms import UserForm
 
 
 class Index(FormView):
