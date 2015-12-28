@@ -23,5 +23,5 @@ class SignIn(TemplateView):
 
 
 class SignUp(FormView):
-    template_name = "main/sign_up.html"
+    template_name = "user/signUp.html"
     form_class = UserForm
