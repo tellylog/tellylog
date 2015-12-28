@@ -1,9 +1,13 @@
 from django.shortcuts import render_to_response
-from user.forms import UserForm
 from django.template import RequestContext
 from django.contrib.auth import authenticate, login
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
+from django.contrib.auth import logout
+from django.contrib.auth.decorators import login_required
+from django.core.urlresolvers import reverse
+
+from user.forms import UserForm
 
 
 def SignUp(request):
@@ -46,3 +50,9 @@ def SignIn(request):
             return HttpResponse("Invalid login details supplied.")
     else:
         return render(request, 'user/signIn.html', {})
+
+
+@login_required
+def Logout(request):
+    logout(request)
+    return HttpResponseRedirect(reverse('main:index'))
