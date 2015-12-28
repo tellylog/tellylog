@@ -15,12 +15,12 @@
 	{% else %}
 	tellylog says: <strong>sign up here!</strong><br />
 
-	<form id="user_form" method="post" action="/user/register/"
+	<form id="user_form" method="post" action="/user/about/"
 			enctype="multipart/form-data">
 
 		{% csrf_token %}
 
-		{{ user_form.as_p }}
+		{{ form.as_p }}
 
 		<input type="submit" name="submit" value="Sign Up" />
 	</form>
