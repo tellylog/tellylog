@@ -10,7 +10,7 @@ body{
     footer{
         @include row();
         height: 3em;
-        background-color: $secondary-background-color;
+        background-color: $base-background-color;
         div{
             @include span-columns(4 of 12);
             text-align: center;
@@ -22,12 +22,14 @@ body{
 }
 
 .sign-in{
-    @include span-columns(6 of 12);
-    @include shift(3 of 12);
+    @include span-columns(10 of 12);
+    @include shift(1 of 12);
+    @include media($medium-screen-up){
+        @include span-columns(6 of 12);
+        @include shift(3 of 12)
+    }
     @include pad();
     input{
-        @include appearance(none);
-        //@include transition(border-color);
         border: 0;
         border-radius: 0;
         color: $secondary-background-color;
@@ -35,8 +37,12 @@ body{
         background-color: $base-font-color;
     }
     button{
-        @include span-columns(2 of 6);
-        @include shift(2 of 6);
+        @include span-columns(4 of 10);
+        @include shift(3 of 10);
+        @include media($medium-screen-up){
+            @include span-columns(4 of 6);
+            @include shift(1 of 6)
+        }
         border: 0;
         border-radius: 0;
     }
