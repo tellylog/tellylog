@@ -21,3 +21,34 @@ body{
     @include row();
 }
 
+.sign-in{
+    @include span-columns(6 of 12);
+    @include shift(3 of 12);
+    @include pad();
+    input{
+        @include appearance(none);
+        //@include transition(border-color);
+        border: 0;
+        border-radius: 0;
+        color: $secondary-background-color;
+        font-weight: 600;
+        background-color: $base-font-color;
+    }
+    button{
+        @include span-columns(2 of 6);
+        @include shift(2 of 6);
+        border: 0;
+        border-radius: 0;
+    }
+}
+.light{
+    background-color: $third-background-color;
+}
+
+.semilight{
+    background-color: $secondary-background-color;
+}
+.text-center{
+    text-align: center;
+}
+
