@@ -1,5 +1,5 @@
 from django import forms
-from User.models import UserProfile
+from user.models import UserProfile
 
 
 class SignInForm(forms.Form):
