@@ -1,0 +1,23 @@
+{% load staticfiles %}
+<link rel="stylesheet" type="text/css" href="{% static 'css.css' %}" />
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>sign in</title>
+    </head>
+
+    <body>
+        <h1>Login to tellylog</h1>
+
+        <form id="login_form" method="post" action="/user/sign-in/">
+            {% csrf_token %}
+            Username: <input type="text" name="username" value="" size="50" />
+            <br />
+            Password: <input type="password" name="password" value="" size="50" />
+            <br />
+
+            <input type="submit" value="submit" />
+        </form>
+
+    </body>
+</html>

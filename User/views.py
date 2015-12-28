@@ -1,6 +1,9 @@
 from django.shortcuts import render_to_response
 from user.forms import UserForm
 from django.template import RequestContext
+from django.contrib.auth import authenticate, login
+from django.http import HttpResponseRedirect, HttpResponse
+from django.shortcuts import render
 
 
 def SignUp(request):
@@ -23,3 +26,23 @@ def SignUp(request):
     return render_to_response(
         'user/signUp.html',
         {'user_form': user_form, 'registered': registered}, context)
+
+
+def SignIn(request):
+
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(username=username, password=password)
+
+        if user:
+            if user.is_active:
+                login(request, user)
+                return HttpResponseRedirect('/overview/')
+            else:
+                return HttpResponse("Your tellylog account is disabled.")
+        else:
+            print("Invalid login details: {0}, {1}".format(username, password))
+            return HttpResponse("Invalid login details supplied.")
+    else:
+        return render(request, 'user/signIn.html', {})
