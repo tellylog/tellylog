@@ -16,7 +16,7 @@ class Poster(_Parent):
         poster_size (str): Base Size for the Images
     """
 
-    poster_size = "w500/"
+    poster_size = "w342/"
 
     def __init__(self):
         """
@@ -29,19 +29,19 @@ class Poster(_Parent):
         self.base_uri = 'https://image.tmdb.org/t/p/'
         self.headers = {}
 
-    def get_poster(self, imagename):
+    def get_poster(self, poster_path):
         """
         Get the Poster via the Name of the Image.
 
         Args:
-            imagename (str): Valid Imagename (e.g.
+            poster_path (str): Valid Imagename (e.g.
                                               44FcYhsLNjJA6d2ce5rYfaIVAJU.jpg)
 
         Returns:
             bool: False if it fails
             Image: If valid image is returned
         """
-        target = self.base_uri + self.poster_size + imagename
+        target = self.base_uri + self.poster_size + poster_path
         result = self.make_request(target=target, json=False)
         try:
             poster = Image.open(BytesIO(result.content))
