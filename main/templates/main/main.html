@@ -3,31 +3,33 @@
 <!DOCTYPE html>
 <html>
 
-	<head>
+<head>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8">
-        <title>index</title>
-	</head>
-	<body>
-            <div id="header">
-                <h1>tellylog</h1>
-                <h2>Index page</h2>
-            </div>
-            <div id="navigation">
-                <ul>
-                    <li><a href="{% url 'main:about' %}">About</a></li>
-					<li><a href="{% url 'main:overview' %}">Overview</a></li>
-                    <li><a href="{% url 'user:sign_in' %}">Sign in</a></li>
-                    <li><a href="{% url 'user:sign_up' %}">Sign up</a></li>
-                </ul>
-            </div>
-			<form id="login_form" method="post" action="{% url 'user:sign_in' %}">
-	            {% csrf_token %}
-	            Username: <input type="text" name="username" value="" size="50" />
-	            <br />
-	            Password: <input type="password" name="password" value="" size="50" />
-	            <br />
+	<title>index</title>
+</head>
 
-	            <input type="submit" value="submit" />
-	        </form>
-	</body>
+<body>
+	<div id="header">
+		<h1>tellylog</h1>
+		<h2>Index page</h2>
+	</div>
+	<div id="navigation">
+		<ul>
+			<li><a href="{% url 'main:about' %}">About</a></li>
+			<li><a href="{% url 'main:overview' %}">Overview</a></li>
+			<li><a href="{% url 'user:sign_in' %}">Sign in</a></li>
+			<li><a href="{% url 'user:sign_up' %}">Sign up</a></li>
+		</ul>
+	</div>
+	<form id="login_form" method="post" action="{% url 'user:sign_in' %}">
+		{% csrf_token %} Username:
+		<input type="text" name="username" value="" size="50" />
+		<br /> Password:
+		<input type="password" name="password" value="" size="50" />
+		<br />
+
+		<input type="submit" value="submit" />
+	</form>
+</body>
+
 </html>
