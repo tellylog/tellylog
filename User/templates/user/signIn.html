@@ -9,7 +9,7 @@
     <body>
         <h1>Login to tellylog</h1>
 
-        <form id="login_form" method="post" action="/user/sign-in/">
+        <form id="login_form" method="post" action="{% url 'user:sign_in' %}">
             {% csrf_token %}
             Username: <input type="text" name="username" value="" size="50" />
             <br />
