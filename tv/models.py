@@ -250,8 +250,6 @@ class Series(models.Model):
         overview (models.TextField): Description of the Series
         poster_large (models.ImageField): Large poster image of Series,
                                            can be blank or null
-        poster_medium (models.ImageField): Medium poster image of Series,
-                                           can be blank or null
         poster_small (models.ImageField): Small poster image of Series,
                                            can be blank or null
         status (models.CharField): Status of the Series, max 100, can be blank
