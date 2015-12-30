@@ -30,19 +30,20 @@ def _calc_av_episode_runtime(runtimes):
 
 
 def _get_posters(poster_path):
-    poster_path = poster_path[1:]
-    tmdb_poster = Poster()
-    poster_large = tmdb_poster.get_poster(poster_path=poster_path)
-    if poster_large:
-        size = (180, 270)
-        poster_small = poster_large.resize(size, PIL.Image.ANTIALIAS)
-    else:
-        poster_large = None
-        poster_small = None
-    return {'poster_large': (hashlib.md5(poster_large.tobytes()).hexdigest(),
-                             poster_large),
-            'poster_small': (hashlib.md5(poster_small.tobytes()).hexdigest(),
-                             poster_small)}
+    if type(poster_path) is str:
+        poster_path = poster_path[1:]
+        tmdb_poster = Poster()
+        poster_large = tmdb_poster.get_poster(poster_path=poster_path)
+        if poster_large:
+            size = (180, 270)
+            poster_small = poster_large.resize(size, PIL.Image.ANTIALIAS)
+            return {'poster_large': (hashlib.md5(
+                                     poster_large.tobytes()).hexdigest(),
+                                     poster_large),
+                    'poster_small': (hashlib.md5(
+                                     poster_small.tobytes()).hexdigest(),
+                                     poster_small)}
+    return False
 
 
 def _check_countrys(countrys):
@@ -72,20 +73,21 @@ def _convert_season(tmdb_series_id, series_id, season_number, new_series):
                                    series=new_series
                                    )
         posters = _get_posters(poster_path=full_season['poster_path'])
-        temp_poster = BytesIO()
-        posters['poster_large'][1].save(temp_poster, 'JPEG')
-        temp_poster.seek(0)
-        new_season.poster_large.save(posters['poster_large'][0] + '.jpg',
-                                     ContentFile(temp_poster.read()),
-                                     save=False)
-        temp_poster.close()
-        temp_poster = BytesIO()
-        posters['poster_small'][1].save(temp_poster, 'JPEG')
-        temp_poster.seek(0)
-        new_season.poster_small.save(posters['poster_small'][0] + '.jpg',
-                                     ContentFile(temp_poster.read()),
-                                     save=False)
-        temp_poster.close()
+        if posters:
+            temp_poster = BytesIO()
+            posters['poster_large'][1].save(temp_poster, 'JPEG')
+            temp_poster.seek(0)
+            new_season.poster_large.save(posters['poster_large'][0] + '.jpg',
+                                         ContentFile(temp_poster.read()),
+                                         save=False)
+            temp_poster.close()
+            temp_poster = BytesIO()
+            posters['poster_small'][1].save(temp_poster, 'JPEG')
+            temp_poster.seek(0)
+            new_season.poster_small.save(posters['poster_small'][0] + '.jpg',
+                                         ContentFile(temp_poster.read()),
+                                         save=False)
+            temp_poster.close()
         new_season.save()
         for episode in full_season['episodes']:
             new_episode = models.Episode(name=episode['name'],
@@ -125,20 +127,21 @@ def convert_series_result(result):
                                    status=full_series['status'],
                                    type=full_series['type'])
         posters = _get_posters(poster_path=full_series['poster_path'])
-        temp_poster = BytesIO()
-        posters['poster_large'][1].save(temp_poster, 'JPEG')
-        temp_poster.seek(0)
-        new_series.poster_large.save(posters['poster_large'][0] + '.jpg',
-                                     ContentFile(temp_poster.read()),
-                                     save=False)
-        temp_poster.close()
-        temp_poster = BytesIO()
-        posters['poster_small'][1].save(temp_poster, 'JPEG')
-        temp_poster.seek(0)
-        new_series.poster_small.save(posters['poster_small'][0] + '.jpg',
-                                     ContentFile(temp_poster.read()),
-                                     save=False)
-        temp_poster.close()
+        if posters:
+            temp_poster = BytesIO()
+            posters['poster_large'][1].save(temp_poster, 'JPEG')
+            temp_poster.seek(0)
+            new_series.poster_large.save(posters['poster_large'][0] + '.jpg',
+                                         ContentFile(temp_poster.read()),
+                                         save=False)
+            temp_poster.close()
+            temp_poster = BytesIO()
+            posters['poster_small'][1].save(temp_poster, 'JPEG')
+            temp_poster.seek(0)
+            new_series.poster_small.save(posters['poster_small'][0] + '.jpg',
+                                         ContentFile(temp_poster.read()),
+                                         save=False)
+            temp_poster.close()
         new_series.save()
         new_series.genres.set(genre_list)
         new_series.origin_country.set(country_list)
