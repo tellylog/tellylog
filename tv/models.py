@@ -321,16 +321,14 @@ class Season(models.Model):
         number (models.IntegerField): Number of the Season
         poster_large (models.ImageField): Large poster image of Season,
                                            can be blank or null
-        poster_medium (models.ImageField): Medium poster image of Season,
-                                           can be blank or null
         poster_small (models.ImageField): Small poster image of Season,
                                            can be blank or null
         series (models.ForeignKey): Series the Season belongs to
         tmdb_id (models.IntegerField): ID of the TMDB entry
     """
-
+    name = models.CharField(max_length=254, blank=True)
     number = models.IntegerField()
-    air_date = models.DateField()
+    air_date = models.DateField(blank=True, null=True)
     tmdb_id = models.IntegerField()
     episode_count = models.IntegerField()
     poster_small = models.ImageField(
