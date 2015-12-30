@@ -6,9 +6,10 @@ from django.views.generic import TemplateView, FormView, ListView
 from django.core.urlresolvers import reverse
 from watson import search as watson
 
-import tv.models as tv
+import tv.models as models
 import tmdbcall as tmdb
 from .forms import SearchForm
+from tv import convert
 
 
 class SearchView(ListView):
@@ -33,8 +34,8 @@ class SearchView(ListView):
             api_series = tmdb_tv.search_for_series(self.query)
             if api_series and api_series['results']:
                 for series in api_series['results']:
-                    # TODO convert function
-                    pass
+                    convert.convert_series_result(series)
+                search_res = watson.search(self.query)
         return search_res
 
     def get_context_data(self, **kwargs):

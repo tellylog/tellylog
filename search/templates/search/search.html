@@ -10,7 +10,7 @@
     {% if object_list %}
         <ul>
             {% for series in object_list %}
-                <li>{{ series.object.name }}</li>
+                <li><a href="{{ series.object.get_absolute_url }}">{{ series.object.name }}</a></li>
             {% endfor %}
         </ul>
 

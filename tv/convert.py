@@ -23,7 +23,10 @@ def _check_genres(genres):
 
 
 def _calc_av_episode_runtime(runtimes):
-    return sum(runtimes) // len(runtimes)
+    if len(runtimes) > 0:
+        return sum(runtimes) // len(runtimes)
+    else:
+        return None
 
 
 def _get_posters(poster_path):
@@ -99,7 +102,9 @@ def _convert_season(tmdb_series_id, series_id, season_number, new_series):
 def convert_series_result(result):
     tmdb_tv = TV()
     full_series = tmdb_tv.get_series_info_by_id(result['id'])
-    if full_series:
+    if (full_series and
+            (full_series['number_of_seasons'] != 0) and
+            (full_series['number_of_episodes'] != 0)):
         genre_list = _check_genres(full_series['genres'])
         country_list = _check_countrys(full_series['origin_country'])
         runtime = _calc_av_episode_runtime(full_series['episode_run_time'])
