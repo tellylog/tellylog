@@ -8,7 +8,10 @@
 <body>
     {{ series.name }} <br>
     Season {{ season.number }} <br>
-    <img src="{% static season.poster_small.url %}" alt="">
+    {% if season.poster_small %}
+        <img src="{% static season.poster_small.url %}" alt="">
+    {% endif %}
+
     <ul>
     {% for episode in episodes %}
         <li>{{ episode.name }} <input type="checkbox"></li>

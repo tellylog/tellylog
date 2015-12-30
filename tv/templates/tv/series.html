@@ -8,7 +8,9 @@
 <body>
     {{ series.name }} <br>
     {{ series.overview }} <br>
-    <img src="{% static series.poster_small.url %}" alt="">
+    {% if series.poster_small %}
+        <img src="{% static series.poster_small.url %}" alt="">
+    {% endif %}
     <ul>
     {% for season in seasons %}
         <li><a href="{{ season.get_absolute_url }}">Season: {{ season.number }}</a> <input type="checkbox"></li>

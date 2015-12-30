@@ -35,7 +35,7 @@ class SearchView(ListView):
             if api_series and api_series['results']:
                 for series in api_series['results']:
                     convert.convert_series_result(series)
-                search_res = watson.search(self.query)
+            search_res = watson.search(self.query)
         return search_res
 
     def get_context_data(self, **kwargs):
