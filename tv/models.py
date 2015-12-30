@@ -371,7 +371,7 @@ class Season(models.Model):
         kwargs = {
             'series_id': self.series.id,
             'season_number': self.number
-            }
+        }
         return reverse('tv:season', kwargs=kwargs)
 
 
