@@ -6,16 +6,6 @@ body{
     @include media($medium-screen-up){
         @include outer-container($max-width);
     }
-
-    footer{
-        @include row();
-        height: 3em;
-        background-color: $base-background-color;
-        div{
-            @include span-columns(4 of 12);
-            text-align: center;
-        }
-    }
 }
 .row{
     @include row();

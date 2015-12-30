@@ -1,0 +1,24 @@
+footer{
+        @include row();
+        background-color: $base-background-color;
+            ul{
+                @include span-columns(6 of 12);
+                list-style-type: none;
+                li{
+                    @include pad();
+                    display: inline-block;
+                }
+            }
+        a{
+            color: $base-font-color;
+        }
+        div{
+            @include span-columns(4 of 12);
+            @include shift(2 of 12);
+            .tmdb-logo{
+                img{
+                    width: 100%;
+                }
+            }
+        }
+    }
