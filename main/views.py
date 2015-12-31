@@ -17,7 +17,7 @@ class About(TemplateView):
     template_name = "main/about.html"
 
 
-@login_required
+@login_required(login_url='/user/sign_in/')
 class Overview(TemplateView):
     template_name = "main/overview.html"
 
