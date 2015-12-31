@@ -5,10 +5,11 @@ header{
 
     }
     .row{
-        @include pad();
+        @include pad(1%);
     }
     #logo{
         @include span-columns(2 of 4);
+        margin-top: 0.3em;
         @include media($medium-screen-up){
             @include span-columns(4 of 12);
             font-size: 2em;
@@ -46,6 +47,7 @@ header{
             @include appearance(none);
             @include transition(border-color);
             border: 1px solid $base-border-color;
+            border-radius: 0;
             box-sizing: border-box;
             display: block;
             font-size: 1em;
