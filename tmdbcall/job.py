@@ -1,5 +1,5 @@
 """This module holds the Job class."""
-from .parent import _Parent
+from ._parent import _Parent
 
 
 class Job(_Parent):

@@ -34,7 +34,7 @@ class TestPoster(TestCase):
         self.assertIsInstance(result.info, dict)
         self.assertEqual(result.format, 'JPEG')
 
-    @patch('tmdbcall.parent._logger')  # Mocks the logger
+    @patch('tmdbcall._parent._logger')  # Mocks the logger
     def test_get_poster_with_invalid_name(self, mock_logging):
         """
         Should return False and the incident should get logged.

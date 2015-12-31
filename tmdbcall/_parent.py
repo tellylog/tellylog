@@ -2,6 +2,8 @@
 import requests
 import requests_cache
 import logging
+from celery import shared_task
+from celery.contrib.methods import task_method
 
 # The cache of requests is set to a sqlite Database named test_cache.
 # The cache is deleted after one hour (3600 Seconds).
@@ -33,11 +35,12 @@ class _Parent(object):
 
     def __init__(self):
         """Import the API_KEY. Set the base_uri, headers and params."""
-        from .key import _API_KEY
+        from ._key import _API_KEY
         self.base_uri = 'https://api.themoviedb.org/3/'
         self.params = {'api_key': _API_KEY}
         self.headers = {'Accept': 'application/json'}
 
+    @shared_task(filter=task_method, rate_limit='4/s', name='make_request')
     def make_request(self, target, json=True, headers=0, params=0):
         """Make a request to the given target.
 

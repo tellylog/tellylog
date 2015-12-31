@@ -1,7 +1,7 @@
 """This file holds the Person class."""
 from datetime import datetime, timedelta
 
-from .parent import _Parent
+from ._parent import _Parent
 
 
 class Person(_Parent):

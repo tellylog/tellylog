@@ -1,5 +1,5 @@
 """This module holds the Genre class."""
-from .parent import _Parent
+from ._parent import _Parent
 
 
 class Genre(_Parent):

@@ -45,7 +45,7 @@ class TestTV(TestCase):
         result = self.test.get_series_info_by_id(series_id=VALID_SERIES_ID)
         self.assertEqual(result['id'], VALID_SERIES_ID)
 
-    @patch('tmdbcall.parent._logger')  # Mocks the logger
+    @patch('tmdbcall._parent._logger')  # Mocks the logger
     def test_get_series_info_by_id_with_invalid_id(self, mock_logging):
         """
         The function should return False on fail.
@@ -63,7 +63,7 @@ class TestTV(TestCase):
             series_id=VALID_SERIES_ID, season_number=VALID_SEASON_NUMBER)
         self.assertEqual(result['season_number'], VALID_SEASON_NUMBER)
 
-    @patch('tmdbcall.parent._logger')  # Mocks the logger
+    @patch('tmdbcall._parent._logger')  # Mocks the logger
     def test_get_season_info_by_number_with_invalid_number(self, mock_logging):
         """
         The function should return false on fail.
@@ -140,7 +140,7 @@ class TestTV(TestCase):
         result = self.test.get_credits(VALID_SERIES_ID)
         self.assertIsInstance(result, dict)
 
-    @patch('tmdbcall.parent._logger')  # Mocks the logger
+    @patch('tmdbcall._parent._logger')  # Mocks the logger
     def test_get_credits_with_invalid_series_id(self, mock_logging):
         """
         The function should return false on fail.

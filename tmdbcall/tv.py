@@ -1,7 +1,7 @@
 """This file holds the TV class which is used to get TV-Data."""
 from datetime import datetime, timedelta
 
-from .parent import _Parent
+from ._parent import _Parent
 
 
 class TV(_Parent):
