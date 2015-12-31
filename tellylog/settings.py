@@ -12,27 +12,25 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 
 import os
 
-from getenv import env
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 
-if 'CI' in os.environ:
-    SECRET_KEY = os.environ['SECRET_KEY']
-else:
-    SECRET_KEY = env('SECRET_KEY')
+
+SECRET_KEY = os.environ['SECRET_KEY']
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
 
 # SECURITY WARNING: don't run with debug turned on in production!
 
-if 'CI' in os.environ:
-    DEBUG = False
+if 'DEBUG' in os.environ:
+    DEBUG = os.environ['DEBUG']
 else:
-    DEBUG = env('DEBUG')
+    DEBUG = False
 
 
 ALLOWED_HOSTS = ['*', ]
