@@ -10,7 +10,8 @@ from user.forms import UserForm
 class Index(FormView):
     """
     Index View. Page that is found at www.tellylog.com.
-    template_name :
+    template_name : takes the given template and rendes it to the view.
+    form_class : takes the form and renders it to the view
 
     """
     template_name = "main/main.html"
