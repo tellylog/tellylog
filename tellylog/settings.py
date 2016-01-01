@@ -149,6 +149,7 @@ STATICFILES_DIRS = [
 
 LOGIN_URL = '/user/sign-in/'
 
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
 # Logging
 
