@@ -40,7 +40,8 @@ class _Parent(object):
         self.params = {'api_key': _API_KEY}
         self.headers = {'Accept': 'application/json'}
 
-    @shared_task(filter=task_method, rate_limit='4/s', name='make_request')
+    # TODO Make Task work
+    @shared_task(bind=True, filter=task_method, rate_limit='4/s')
     def make_request(self, target, json=True, headers=0, params=0):
         """Make a request to the given target.
 
