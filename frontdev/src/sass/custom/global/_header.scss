@@ -1,0 +1,44 @@
+.header{
+    @include pad(1%);
+    @include media($large-screen-up){
+        @include pad(0);
+    }
+    &__logo{
+        @include span-columns(2 of 4);
+        margin-top: 0.3em;
+        @include media($medium-screen-up){
+            @include span-columns(4 of 12);
+            font-size: 2em;
+        }
+        font-size: 2em;
+    }
+    &__navtoggle .sliding-panel-button{
+        @include span-columns(2 of 4);
+        @include omega();
+        @include media($medium-screen-up){
+            @include span-columns(2 of 12);
+            @include shift(6 of 12);
+            @include omega();
+            font-size: 2em;
+        }
+        text-align: right;
+        font-size: 2em;
+    }
+
+    &__searchbar {
+
+        @include span-columns(6 of 8);
+        @include shift(1 of 8);
+        @include media($medium-screen-up){
+            @include span-columns(4 of 12);
+            @include shift(-8 of 18);
+            margin-top: 1em;
+
+        }
+        @include media($large-screen-up){
+            @include shift(-7 of 18);
+            margin-top: 1em;
+
+        }
+    }
+}
