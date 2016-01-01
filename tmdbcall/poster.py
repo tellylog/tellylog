@@ -5,6 +5,7 @@ from ._parent import _Parent
 
 
 class Poster(_Parent):
+
     """
     The Poster Class can get Images from TheMovieDataBase.
 
@@ -42,9 +43,12 @@ class Poster(_Parent):
             Image: If valid image is returned
         """
         target = self.base_uri + self.poster_size + imagename
-        result = self.make_request(target=target, json=False)
+        request = self.make_request.delay(
+            target=target, json=False,
+            headers=self.headers, params=self.params)
+        response = request.get()
         try:
-            poster = Image.open(BytesIO(result.content))
+            poster = Image.open(BytesIO(response.content))
             return poster
         except AttributeError:
             return False

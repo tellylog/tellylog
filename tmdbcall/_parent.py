@@ -3,7 +3,6 @@ import requests
 import requests_cache
 import logging
 from celery import shared_task
-from celery.contrib.methods import task_method
 
 # The cache of requests is set to a sqlite Database named test_cache.
 # The cache is deleted after one hour (3600 Seconds).
@@ -41,8 +40,8 @@ class _Parent(object):
         self.headers = {'Accept': 'application/json'}
 
     # TODO Make Task work
-    @shared_task(bind=True, filter=task_method, rate_limit='4/s')
-    def make_request(self, target, json=True, headers=0, params=0):
+    @shared_task(rate_limit='4/s')
+    def make_request(target, headers, params, json=True):
         """Make a request to the given target.
 
         Either uses the given headers and params or the default ones.
@@ -56,10 +55,6 @@ class _Parent(object):
             params (dict, optional): Parametes for request.
                 If none is given the default is used
         """
-        if params is 0:
-            params = self.params
-        if headers is 0:
-            headers = self.headers
         try:
             request = requests.get(
                 target, headers=headers, params=params)

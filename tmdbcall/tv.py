@@ -5,6 +5,7 @@ from ._parent import _Parent
 
 
 class TV(_Parent):
+
     """
     Class to get TV-Data from the TheMovieDataBase.
 
@@ -38,7 +39,9 @@ class TV(_Parent):
         params['query'] = query  # Append the Query to the default params
         params['page'] = page
         target = self.base_uri + self.URLS['search_series']
-        response = self.make_request(target=target, params=params)
+        request = self.make_request.delay(
+            target=target, params=params, headers=self.headers)
+        response = request.get()
         if not response:
             return False
         elif response['total_results'] is 0:
@@ -61,7 +64,9 @@ class TV(_Parent):
         """
         target = self.base_uri + \
             self.URLS['tv_url'] + self.URLS['series'].format(id=series_id)
-        response = self.make_request(target=target)
+        request = self.make_request.delay(
+            target=target, headers=self.headers, params=self.params)
+        response = request.get()
         if not response:
             return False
         return response
@@ -81,7 +86,9 @@ class TV(_Parent):
         """
         target = self.base_uri + self.URLS['tv_url'] + \
             self.URLS['season'].format(id=series_id, number=season_number)
-        response = self.make_request(target=target)
+        request = self.make_request.delay(
+            target=target, headers=self.headers, params=self.params)
+        response = request.get()
         if not response:
             return False
         return response
@@ -121,7 +128,8 @@ class TV(_Parent):
         params = self.params
         params['start_date'] = start_date
         params['end_date'] = end_date
-        response = self.make_request(target=target, params=params)
+        request = self.make_request.delay(target=target, params=params)
+        response = request.get()
         if not response:
             return False
         elif not response['changes']:
@@ -142,7 +150,9 @@ class TV(_Parent):
         target = (self.base_uri +
                   self.URLS['tv_url'] +
                   self.URLS['credits'].format(id=series_id))
-        response = self.make_request(target=target)
+        request = self.make_request.delay(
+            target=target, headers=self.headers, params=self.params)
+        response = request.get()
         if not response:
             return False
         elif not response['cast']:

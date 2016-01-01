@@ -3,6 +3,7 @@ from ._parent import _Parent
 
 
 class Genre(_Parent):
+
     """
     Class to get Genre Data.
 
@@ -20,5 +21,7 @@ class Genre(_Parent):
         Builds the URL to the target and makes a request.
         """
         target = self.base_uri + self.URLS['genre_list']
-        response = self.make_request(target=target)
+        request = self.make_request.delay(
+            target=target, headers=self.headers, params=self.params)
+        response = request.get()
         return response

@@ -2,4 +2,3 @@
 import os
 
 _API_KEY = os.environ['TMDB_API_KEY']
-

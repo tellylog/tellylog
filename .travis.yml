@@ -8,6 +8,7 @@ install:
 - pip install flake8
 before_script:
 - 'flake8 . '
+- 'celery -A tellylog worker -D'
 script:
 - python manage.py test
 notifications:
