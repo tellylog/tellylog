@@ -147,7 +147,7 @@ STATICFILES_DIRS = [
 ]
 
 
-LOGIN_URL = '/user/sign_in/'
+LOGIN_URL = '/user/sign-in/'
 
 
 # Logging
