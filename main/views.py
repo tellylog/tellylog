@@ -8,6 +8,11 @@ from user.forms import UserForm
 
 
 class Index(FormView):
+    """
+    Index View. Page that is found at www.tellylog.com.
+    template_name :
+
+    """
     template_name = "main/main.html"
     form_class = SignInForm
     success_url = '/about/'
