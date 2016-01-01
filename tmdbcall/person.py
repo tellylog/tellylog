@@ -30,7 +30,8 @@ class Person(_Parent):
             dict: Dictionary with the response on success
         """
         target = self.base_uri + self.URLS['person_url'].format(id=person_id)
-        request = self.make_request.delay(target=target)
+        request = self.make_request.delay(
+            target=target, headers=self.headers, params=self.params)
         response = request.get()
         if not response:
             return False
