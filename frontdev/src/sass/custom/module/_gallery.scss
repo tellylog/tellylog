@@ -17,6 +17,20 @@
             @include span-columns(2 of 12);
             @include omega(6n);
         }
+        &--small{
+            @include span-columns(4 of 12);
+            @include omega(3n);
+            margin-bottom: 0.5em;
+            @include media($medium-screen-up){
+                @include omega(3n)
+                @include span-columns(4 of 12);
+            }
+            @include media($large-screen-up){
+                @include omega-reset(3n);
+                @include span-columns(2 of 12);
+                @include omega(6n);
+            }
+        }
     }
     &__image{
         width: 100%;
