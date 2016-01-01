@@ -8,20 +8,21 @@
 
     <body>
         <h1>Register with tellylog</h1>
-
-        {% if registered %}
-        tellylog says: <strong>thank you for signing up!</strong>
+        {% if is_authenticated %}
+            {% if registered %}
+                tellylog says: thank you for signing up!
+            {% else %}
+                tellylog says: sign up here!<br>
+                <form id="user_form" method="post" action="{% url 'user:sign_up' %}"
+                    enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ user_form.as_p }}
+                    <input type="submit" name="submit" value="Sign Up"/>
+                </form>
+            {% endif %}
         {% else %}
-        tellylog says: <strong>sign up here!</strong><br />
-
-        <form id="user_form" method="post" action="{% url 'user:sign_up' %}"
-                enctype="multipart/form-data">
-
-            {% csrf_token %}
-            {{ user_form.as_p }}
-
-            <input type="submit" name="submit" value="Sign Up" />
-        </form>
+            You are already signed in!
         {% endif %}
+
     </body>
 </html>
