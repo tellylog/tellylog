@@ -7,31 +7,29 @@ from .forms import SignInForm
 from user.forms import UserForm
 
 
-class Index(FormView):
+class Index(TemplateView):
     """
-    Index View. Page that is found at www.tellylog.com.
+    Index View.
     template_name : takes the given template and rendes it to the view.
-    form_class : takes the form and renders it to the view
-
     """
     template_name = "main/main.html"
-    form_class = SignInForm
-    success_url = '/about/'
 
 
 class About(TemplateView):
+    """
+    About View.
+    template_name : takes the given template and rendes it to the view.
+    """
     template_name = "main/about.html"
 
 
 @login_required(login_url='/user/sign-in/')
 class Overview(TemplateView):
+    """
+    Overview View.
+    template_name : takes the given template and rendes it to the view.
+    @login_required : this view can only be accessed when the user is
+        logged in(signed in).
+    login_url : is the url wich is taken when the user is not logged in.
+    """
     template_name = "main/overview.html"
-
-
-class SignIn(TemplateView):
-    template_name = "main/sign_in.html"
-
-
-class SignUp(FormView):
-    template_name = "user/signUp.html"
-    form_class = UserForm
