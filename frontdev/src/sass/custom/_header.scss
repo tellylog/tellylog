@@ -46,7 +46,7 @@ header{
         input[type=search] {
             @include appearance(none);
             @include transition(border-color);
-            border: 1px solid $base-border-color;
+            border: 0;
             border-radius: 0;
             box-sizing: border-box;
             display: block;

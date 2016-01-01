@@ -27,18 +27,26 @@ $dark-gray: #333;
 $medium-gray: #999;
 $light-gray: #ddd;
 
+
+$dark-bluegrey: #2b2d42;
+$bluegrey: lighten($dark-bluegrey,10);
+$light-bluegrey: #8d99ae;
+$nearly-white: #edf2f4;
+$light-chery: #ef233c;
+$chery: #d90429;
+
 // Font Colors
-$base-font-color: $light-brown;
-$action-color: $light-green;
+$base-font-color: $nearly-white;
+$action-color: $light-chery;
 
 // Border
-$base-border-color: $brown;
+$base-border-color: $bluegrey;
 $base-border: 1px solid $base-border-color;
 
 // Background Colors
-$base-background-color: $dark-blue;
-$secondary-background-color: $dark-green;
-$third-background-color: $light-green;
+$base-background-color: $dark-bluegrey;
+$secondary-background-color: $light-bluegrey;
+$third-background-color: $bluegrey;
 
 // Forms
 $form-box-shadow: inset 0 1px 3px rgba(#000, 0.06);

@@ -6,7 +6,7 @@
             @include span-columns(4 of 12, $display: table);
         }
 
-        background-color: $secondary-background-color;
+        background-color: $third-background-color;
         text-align: center;
         i{
             font-size: 5em;
@@ -16,7 +16,7 @@
 
     }
     .light{
-            background-color: $third-background-color;
+            background-color: $secondary-background-color;
         }
 }
 
