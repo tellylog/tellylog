@@ -11,6 +11,9 @@ from user.forms import UserForm
 
 
 def SignUp(request):
+    """
+    Function that saves the given userinfo to the user database.
+    """
     context = RequestContext(request)
 
     registered = False
@@ -33,7 +36,10 @@ def SignUp(request):
 
 
 def SignIn(request):
-
+    """
+    Function that checks given info with the user database and if info exists
+    in the database signs user in
+    """
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
