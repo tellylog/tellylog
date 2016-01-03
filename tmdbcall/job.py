@@ -1,8 +1,9 @@
 """This module holds the Job class."""
-from .parent import _Parent
+from ._parent import _Parent
 
 
 class Job(_Parent):
+
     """
     Class to get Job Data.
 
@@ -22,5 +23,10 @@ class Job(_Parent):
             bool: False if an error occurred
         """
         target = self.base_uri + self.URLS['job_list']
-        response = self.make_request(target=target)
+        request = self.make_request.delay(
+            target=target, headers=self.headers, params=self.params, json=True)
+        try:
+            response = request.get()
+        except:
+            response = False
         return response

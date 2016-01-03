@@ -1,10 +1,13 @@
 """This file holds the Poster class which is used to get poster Imgages."""
+import os
 from io import BytesIO
 from PIL import Image
-from .parent import _Parent
+
+from ._parent import _Parent
 
 
 class Poster(_Parent):
+
     """
     The Poster Class can get Images from TheMovieDataBase.
 
@@ -42,9 +45,25 @@ class Poster(_Parent):
             Image: If valid image is returned
         """
         target = self.base_uri + self.poster_size + imagename
-        result = self.make_request(target=target, json=False)
-        try:
-            poster = Image.open(BytesIO(result.content))
-            return poster
-        except AttributeError:
+        # Make the request with json set to False
+        request = self.make_request.delay(
+            target=target, headers=self.headers,
+            params=self.params, json=False)
+        response = request.get()
+        if response:
+            try:
+                # open the temporary File in binary read mode
+                temp = open(response, 'rb')
+                # create a PIL Image from the Bytes
+                poster = Image.open(BytesIO(temp.read()))
+                # close the temporary File
+                temp.close()
+                # delete the temporary File
+                os.remove(response)
+                return poster
+            except (AttributeError, TypeError):
+                # return False is something goes wrong
+                return False
+        else:
+            # no response -> False
             return False
