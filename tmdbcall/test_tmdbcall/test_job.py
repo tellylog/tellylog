@@ -18,8 +18,11 @@ class TestJob(TestCase):
         Test if the get_jobs() method returns a dictionary with the jobs key.
         """
         result = self.test.get_jobs()
-        if 'jobs' in result:  # Check if the jobs key exists in the dict
-            got_jobs = True
+        if result:
+            if 'jobs' in result:  # Check if the jobs key exists in the dict
+                got_jobs = True
+            else:
+                got_jobs = False
         else:
             got_jobs = False
         self.assertTrue(got_jobs)
