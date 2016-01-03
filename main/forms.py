@@ -3,7 +3,6 @@ This file holds all forms for the main app.
 
 """
 from django import forms
-from user.models import UserProfile
 
 
 class SignInForm(forms.Form):
