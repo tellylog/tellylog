@@ -5,6 +5,7 @@ from tmdbcall.genre import Genre
 
 
 class TestGenre(TestCase):
+
     """
     Testcases for the Genre class
 
@@ -19,8 +20,12 @@ class TestGenre(TestCase):
         dictionary with the genres key.
         """
         result = self.test.get_genres()
-        if 'genres' in result:  # Check if the genres key exists in the dict
-            got_genres = True
+        if result:
+            # Check if the genres key exists in the dict
+            if 'genres' in result:
+                got_genres = True
+            else:
+                got_genres = False
         else:
             got_genres = False
         self.assertTrue(got_genres)
