@@ -22,6 +22,9 @@ class Genre(_Parent):
         """
         target = self.base_uri + self.URLS['genre_list']
         request = self.make_request.delay(
-            target=target, headers=self.headers, params=self.params)
-        response = request.get()
+            target=target, headers=self.headers, params=self.params, json=True)
+        try:
+            response = request.get()
+        except:
+            response = False
         return response

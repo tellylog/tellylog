@@ -1,26 +1,19 @@
 """This file holds the Parent class which is used by the tmdbcall modules."""
+import os
+import tempfile
 import requests
 import requests_cache
-import logging
 from celery import shared_task
+from celery.contrib.methods import task_method
+from ._logging import logger
 
-# The cache of requests is set to a sqlite Database named test_cache.
+# The cache of requests is set to a redis Database named test_cache.
 # The cache is deleted after one hour (3600 Seconds).
-requests_cache.install_cache('test_cache', backend='sqlite', expire_after=3600)
-
-_logger = logging.getLogger(__name__)
-_logger.setLevel(logging.DEBUG)
-
-_handler = logging.FileHandler('tmdbcall.log')
-_handler.setLevel(logging.DEBUG)
-
-_formatter = logging.Formatter('%(asctime)s - %(name)s -'
-                               '%(levelname)s - %(message)s')
-_handler.setFormatter(_formatter)
-_logger.addHandler(_handler)
+requests_cache.install_cache('tmdb_cache', backend='redis', expire_after=3600)
 
 
 class _Parent(object):
+
     """
     The Parent class is a master class for all tmdbcall classes.
 
@@ -39,20 +32,20 @@ class _Parent(object):
         self.params = {'api_key': _API_KEY}
         self.headers = {'Accept': 'application/json'}
 
-    # TODO Make Task work
-    @shared_task(rate_limit='4/s')
-    def make_request(target, headers, params, json=True):
+    # make_request is a celery task. it has a rate_limit
+    @shared_task(filter=task_method, rate_limit='4/s')
+    def make_request(target, headers, params, json):
         """Make a request to the given target.
 
         Either uses the given headers and params or the default ones.
 
         Args:
             target (str): Target URL for the request
-            json (bool, optional): If set to false, the request is returned and
+            json (bool): If set to false, the request is returned and
                 not the parsed json.
-            headers (dict, optional): Headers for request.
+            headers (dict): Headers for request.
                 If none is given the default is used
-            params (dict, optional): Parametes for request.
+            params (dict): Parametes for request.
                 If none is given the default is used
         """
         try:
@@ -62,10 +55,14 @@ class _Parent(object):
             if json:
                 return request.json()
             else:
-                return request
+                temp = tempfile.mkstemp()
+                poster = os.fdopen(temp[0], 'wb')
+                poster.write(request.content)
+                poster.close()
+                return temp[1]
         except (
             requests.exceptions.RequestException, ValueError,
                 requests.exceptions.HTTPError,
                 requests.exceptions.Timeout) as e:
-            _logger.warning(e)
+            logger.warning(e)
             return False

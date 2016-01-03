@@ -6,7 +6,6 @@ Attributes:
     VALID_PERSON_ID (int): An existing valid person id
 """
 from datetime import datetime, timedelta
-from unittest.mock import patch
 
 from django.test import TestCase
 
@@ -32,15 +31,12 @@ class TestPerson(TestCase):
         result = self.test.get_person(VALID_PERSON_ID)
         self.assertEqual(result['id'], VALID_PERSON_ID)
 
-    @patch('tmdbcall._parent._logger')  # Mocks the logger
-    def test_get_person_with_invalid_id(self, mock_logging):
+    def test_get_person_with_invalid_id(self):
         """
         The function should return false on fail
-        and log the error to tmdbcall.log
         """
         result = self.test.get_person(INVALID_PERSON_ID)
         self.assertFalse(result)
-        self.assertTrue(mock_logging.warning.called)  # Check if warning logged
 
     def test_get_changes_with_valid_id_and_date(self):
         """

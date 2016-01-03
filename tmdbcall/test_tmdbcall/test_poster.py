@@ -5,7 +5,6 @@ Attributes:
     INVALID_IMAGE_NAME (str): Invalid image name
     VALID_IMAGE_NAME (str): Valid image name (Elementary Poster)
 """
-from unittest.mock import patch
 from django.test import TestCase
 from tmdbcall.poster import Poster
 
@@ -34,11 +33,9 @@ class TestPoster(TestCase):
         self.assertIsInstance(result.info, dict)
         self.assertEqual(result.format, 'JPEG')
 
-    @patch('tmdbcall._parent._logger')  # Mocks the logger
-    def test_get_poster_with_invalid_name(self, mock_logging):
+    def test_get_poster_with_invalid_name(self):
         """
-        Should return False and the incident should get logged.
+        Should return False.
         """
         result = self.test.get_poster(INVALID_IMAGE_NAME)
         self.assertFalse(result)
-        self.assertTrue(mock_logging.warning.called)  # Check if warning logged

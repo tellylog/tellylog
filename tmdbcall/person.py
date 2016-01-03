@@ -1,6 +1,5 @@
 """This file holds the Person class."""
 from datetime import datetime, timedelta
-
 from ._parent import _Parent
 
 
@@ -31,8 +30,11 @@ class Person(_Parent):
         """
         target = self.base_uri + self.URLS['person_url'].format(id=person_id)
         request = self.make_request.delay(
-            target=target, headers=self.headers, params=self.params)
-        response = request.get()
+            target=target, headers=self.headers, params=self.params, json=True)
+        try:
+            response = request.get()
+        except:
+            response = False
         if not response:
             return False
         return response
@@ -73,8 +75,11 @@ class Person(_Parent):
         params['start_date'] = start_date
         params['end_date'] = end_date
         request = self.make_request.delay(
-            target=target, params=params, headers=self.headers)
-        response = request.get()
+            target=target, params=params, headers=self.headers, json=True)
+        try:
+            response = request.get()
+        except:
+            response = False
         if not response['changes']:
             return False
         return response

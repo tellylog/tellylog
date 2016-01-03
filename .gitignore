@@ -7,3 +7,4 @@ tellylog/local_settings.py
 *.sqlite3
 .env
 /media
+dump.rdb
