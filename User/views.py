@@ -38,7 +38,7 @@ def SignUp(request):
 def SignIn(request):
     """
     Function that checks given info with the user database and if info exists
-    in the database signs user in
+    in the database it signs the user in
     """
     if request.method == 'POST':
         username = request.POST.get('username')
@@ -60,5 +60,11 @@ def SignIn(request):
 
 @login_required
 def Logout(request):
+    """
+    Function that logs out a signed in user.
+
+    @login_required: regulates the avaliability of the following function
+    so only logged in users can use it
+    """
     logout(request)
     return HttpResponseRedirect(reverse('main:index'))
