@@ -87,8 +87,17 @@ WSGI_APPLICATION = 'tellylog.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ['PG_NAME'],
+        'USER': os.environ['PG_USER'],
+        'PASSWORD': os.environ['PG_PASSWORD'],
+        'HOST': os.environ['PG_HOST'],
+        'PORT': os.environ['PG_PORT'],
+        'TEST': {
+            'NAME': os.environ['TPG_NAME'],
+            'USER': os.environ['TPG_USER'],
+            'PASSWORD': os.environ['TPG_PASSWORD'],
+        },
     }
 }
 

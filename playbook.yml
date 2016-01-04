@@ -1,0 +1,68 @@
+---
+- hosts: all
+  sudo: true
+  tasks:
+    - name: add ca-certificates
+      apt: name=ca-certificates update_cache=yes
+    - name: add pgsql repository
+      shell: sudo echo "deb http://apt.postgresql.org/pub/repos/apt/ trusty-pgdg main" > /etc/apt/sources.list.d/pgdg.list
+      args:
+        creates: /etc/apt/sources.list.d/pgdg.list
+    - name: add pgsql apt key
+      apt_key: url=https://www.postgresql.org/media/keys/ACCC4CF8.asc
+    - name: install required packages
+      apt: name={{ item }} state=latest update_cache=yes
+      with_items:
+        - redis-server
+        - libtiff5-dev
+        - libjpeg8-dev
+        - zlib1g-dev
+        - libfreetype6-dev
+        - liblcms2-dev
+        - libwebp-dev
+        - tcl8.6-dev
+        - tk8.6-dev
+        - python-tk
+        - python3-dev
+        - python-psycopg2
+        - python3-setuptools
+        - libpq-dev
+        - postgresql
+        - wget
+        - ca-certificates
+        - libffi-dev
+
+    - name: check if python alias in .bashrc
+      command: grep -Fxq "alias python=\"python3\"" /home/vagrant/.bashrc
+      register: checkmyconf
+      always_run: True
+      ignore_errors: True
+      changed_when: False
+    - name: alias python3 to python entry
+      shell: echo "alias python=\"python3\"" >> /home/vagrant/.bashrc
+      when: checkmyconf.rc == 1
+    - name: source .bash_aliases
+      always_run: yes
+      shell: source /home/vagrant/.bashrc
+      args:
+        executable: /bin/bash
+    - name: download pip install script
+      get_url: url=https://bootstrap.pypa.io/get-pip.py dest=/tmp/get-pip.py
+    - name: install pip
+      shell: python3 ./get-pip.py
+      args:
+        chdir: /tmp
+    - name: install pip requirements
+      pip: requirements=./requirements.txt chdir=/vagrant
+    - name: Create postgres tellylog db
+      sudo: yes
+      sudo_user: postgres
+      postgresql_db: name=tellylog encoding=UTF-8
+    - name: Add tellylog postgres user
+      sudo: yes
+      sudo_user: postgres
+      postgresql_user: db=tellylog name=tellyloguser password=password
+    - name: Migrate tellylog
+      command: python3 manage.py migrate
+      args:
+        chdir: /vagrant
