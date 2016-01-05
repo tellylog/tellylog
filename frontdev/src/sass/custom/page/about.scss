@@ -1,0 +1,16 @@
+.about_text{
+    @include span-columns(12 of 12);
+    @include pad();
+
+    &__heading{
+
+    }
+    &__twat{
+        font-weight: bold;
+    }
+    &__list{
+        &__point
+        list-style-type: circle;
+    }
+
+}
