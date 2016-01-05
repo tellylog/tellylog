@@ -32,15 +32,24 @@
         - ca-certificates
         - libffi-dev
 
+    - name: check if /etc/sysctl.conf has command vm.overcommit_memmory=1 (redis)
+      command: grep -Fxq "vm.overcommit_memory = 1" /etc/sysctl.conf
+      register: checksysctl
+      always_run: True
+      ignore_errors: True
+      changed_when: False
+    - name: add vm.overvommit_memory = 1 to /etc/sysctl.conf
+      shell: echo "vm.overcommit_memory = 1" >> /etc/sysctl.conf && sysctl vm.overcommit_memory=1
+      when: checksysctl.rc == 1
     - name: check if python alias in .bashrc
       command: grep -Fxq "alias python=\"python3\"" /home/vagrant/.bashrc
-      register: checkmyconf
+      register: checkbashrc
       always_run: True
       ignore_errors: True
       changed_when: False
     - name: alias python3 to python entry
       shell: echo "alias python=\"python3\"" >> /home/vagrant/.bashrc
-      when: checkmyconf.rc == 1
+      when: checkbashrc.rc == 1
     - name: source .bash_aliases
       always_run: yes
       shell: source /home/vagrant/.bashrc
