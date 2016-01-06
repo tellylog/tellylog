@@ -7,10 +7,14 @@
     }
     &__twat{
         font-weight: bold;
+        color: #D90429;
     }
     &__list{
-        &__point
+        &__point{
         list-style-type: circle;
+        margin-left: 20px;
+
+        }
     }
 
 }
