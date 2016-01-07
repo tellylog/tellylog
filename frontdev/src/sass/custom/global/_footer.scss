@@ -1,0 +1,24 @@
+.footer{
+    @include span-columns(12 of 12);
+    background-color: $chery;
+    &__linklist{
+        @include span-columns(6 of 12);
+        list-style-type: none;
+
+    }
+    &__linkitem{
+        @include pad();
+        display: inline-block;
+    }
+    &__link{
+        color: $base-font-color;
+    }
+    &__link:hover{
+        color: $secondary-background-color;
+    }
+    &__info{
+        @include span-columns(4 of 12);
+        @include shift(2 of 12);
+        font-size: .8em;
+    }
+}

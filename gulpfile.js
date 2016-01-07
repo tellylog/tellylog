@@ -82,6 +82,11 @@ gulp.task('compsass',function(callback) {
 
 });
 
+gulp.task('icons', function(){
+	return gulp.src(bowerBase + 'font-awesome/fonts/**.*') 
+        .pipe(gulp.dest(dest + 'fonts')); 
+	})
+
 //Watches everything and starts browser sync
 gulp.task('watch', function() {
 	browserSync.init({
@@ -96,4 +101,4 @@ gulp.task('watch', function() {
 	gulp.watch(src + "img/*", ['img']).on('change', browserSync.reload);
 });
 
-gulp.task('default', ['html', 'compsass', 'img', 'js']);
+gulp.task('default', ['html', 'compsass', 'img', 'js', 'icons']);

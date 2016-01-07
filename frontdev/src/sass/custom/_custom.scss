@@ -1,1 +1,18 @@
-@import 'page';
+//Mixins
+@import 'mixin/mixins';
+
+//Global Styles
+@import 'global/header';
+@import 'global/page';
+@import 'global/footer';
+
+//Components
+@import 'module/searchbar';
+@import 'module/navigation';
+@import 'module/gallery';
+@import 'module/resultlist';
+
+//Single Pages
+@import 'page/index';
+@import 'page/overview';
+@import 'page/about';

@@ -1,0 +1,28 @@
+.searchbar{
+    position: relative;
+
+    &__field{
+        input[type=search]{
+            @include appearance(none);
+            border: 0;
+            border-radius: 0;
+            box-sizing: border-box;
+            display: block;
+            font-size: 1em;
+            margin: 0;
+            position: relative;
+            width: 100%;
+            color: $secondary-background-color;
+            font-weight: 600;
+            background-color: $base-font-color;
+        }
+    }
+    &__submit{
+        button[type=submit]{
+            @include position(absolute, 0em 0em 0em null);
+            outline: none;
+            border-radius: 0;
+            @include pad();
+        }
+    }
+}
