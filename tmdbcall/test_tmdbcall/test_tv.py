@@ -2,7 +2,6 @@
 This module holds all tests for the TV class
 """
 from datetime import datetime, timedelta
-from unittest.mock import patch
 
 from django.test import TestCase
 
@@ -45,15 +44,12 @@ class TestTV(TestCase):
         result = self.test.get_series_info_by_id(series_id=VALID_SERIES_ID)
         self.assertEqual(result['id'], VALID_SERIES_ID)
 
-    @patch('tmdbcall.parent._logger')  # Mocks the logger
-    def test_get_series_info_by_id_with_invalid_id(self, mock_logging):
+    def test_get_series_info_by_id_with_invalid_id(self):
         """
         The function should return False on fail.
-        And log the error to tmdbcall.log
         """
         result = self.test.get_series_info_by_id(series_id=INVALID_SERIES_ID)
         self.assertFalse(result)
-        self.assertTrue(mock_logging.warning.called)  # Check if warning logged
 
     def test_get_season_info_by_number_with_valid_number(self):
         """
@@ -63,16 +59,13 @@ class TestTV(TestCase):
             series_id=VALID_SERIES_ID, season_number=VALID_SEASON_NUMBER)
         self.assertEqual(result['season_number'], VALID_SEASON_NUMBER)
 
-    @patch('tmdbcall.parent._logger')  # Mocks the logger
-    def test_get_season_info_by_number_with_invalid_number(self, mock_logging):
+    def test_get_season_info_by_number_with_invalid_number(self):
         """
         The function should return false on fail.
-        And log the error to tmdbcall.log
         """
         result = self.test.get_season_info_by_number(
             series_id=VALID_SERIES_ID, season_number=INVALID_SEASON_NUMBER)
         self.assertFalse(result)
-        self.assertTrue(mock_logging.warning.called)  # Check if warning logged
 
     def test_get_changes_with_valid_id_and_date(self):
         """
@@ -134,3 +127,15 @@ class TestTV(TestCase):
             self.assertIsInstance(result, dict)
         except self.failureException:
             self.assertFalse(result)
+
+    def test_get_credits_with_valid_series_id(self):
+        """Should return a dict."""
+        result = self.test.get_credits(VALID_SERIES_ID)
+        self.assertIsInstance(result, dict)
+
+    def test_get_credits_with_invalid_series_id(self):
+        """
+        The function should return false on fail.
+        """
+        result = self.test.get_credits(INVALID_SERIES_ID)
+        self.assertFalse(result)

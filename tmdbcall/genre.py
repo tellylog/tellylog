@@ -1,8 +1,9 @@
 """This module holds the Genre class."""
-from .parent import _Parent
+from ._parent import _Parent
 
 
 class Genre(_Parent):
+
     """
     Class to get Genre Data.
 
@@ -20,5 +21,10 @@ class Genre(_Parent):
         Builds the URL to the target and makes a request.
         """
         target = self.base_uri + self.URLS['genre_list']
-        response = self.make_request(target=target)
+        request = self.make_request.delay(
+            target=target, headers=self.headers, params=self.params, json=True)
+        try:
+            response = request.get()
+        except:
+            response = False
         return response
