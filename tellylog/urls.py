@@ -17,7 +17,10 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 
+
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^tv/', include('tv.urls', namespace='tv')),
+    url(r'^', include('main.urls', namespace='main')),
+    url(r'^user/', include('user.urls', namespace='user')),
 ]
