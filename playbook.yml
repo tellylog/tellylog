@@ -1,0 +1,107 @@
+---
+- hosts: all
+  sudo: true
+  tasks:
+    - name: add ca-certificates
+      apt: name=ca-certificates update_cache=yes
+
+    - name: add pgsql repository
+      shell: sudo echo "deb http://apt.postgresql.org/pub/repos/apt/ trusty-pgdg main" > /etc/apt/sources.list.d/pgdg.list
+      args:
+        creates: /etc/apt/sources.list.d/pgdg.list
+
+    - name: add pgsql apt key
+      apt_key: url=https://www.postgresql.org/media/keys/ACCC4CF8.asc
+
+    - name: add pgsql apt key
+      apt_key: url=https://www.postgresql.org/media/keys/ACCC4CF8.asc
+
+    - name: install required packages
+      apt: name={{ item }} state=latest update_cache=yes
+      with_items:
+        - redis-server
+        - libtiff5-dev
+        - libjpeg8-dev
+        - zlib1g-dev
+        - libfreetype6-dev
+        - liblcms2-dev
+        - libwebp-dev
+        - tcl8.6-dev
+        - tk8.6-dev
+        - python-tk
+        - python3-dev
+        - python-psycopg2
+        - python3-setuptools
+        - libpq-dev
+        - postgresql
+        - wget
+        - ca-certificates
+        - libffi-dev
+        - language-pack-en
+
+
+    - name: check if /etc/sysctl.conf has command vm.overcommit_memmory=1 (redis)
+      command: grep -Fxq "vm.overcommit_memory = 1" /etc/sysctl.conf
+      register: checksysctl
+      always_run: True
+      ignore_errors: True
+      changed_when: False
+    - name: add vm.overvommit_memory = 1 to /etc/sysctl.conf
+      shell: echo "vm.overcommit_memory = 1" >> /etc/sysctl.conf && sysctl vm.overcommit_memory=1
+      when: checksysctl.rc == 1
+
+    - name: check if python alias in .bashrc
+      command: grep -Fxq "alias python=\"python3\"" /home/vagrant/.bashrc
+      register: checkbashrc
+      always_run: True
+      ignore_errors: True
+      changed_when: False
+    - name: alias python3 to python entry
+      shell: echo "alias python=\"python3\"" >> /home/vagrant/.bashrc
+      when: checkbashrc.rc == 1
+
+    - name: check if cd /vagrant in .bashrc
+      command: grep -Fxq "cd /vagrant" /home/vagrant/.bashrc
+      register: checkbashrccd
+      always_run: True
+      ignore_errors: True
+      changed_when: False
+    - name: add cd /vagrant to .bashrc
+      shell: echo "cd /vagrant" >> /home/vagrant/.bashrc
+      when: checkbashrccd.rc == 1
+
+    - name: source .bashrc
+      always_run: yes
+      shell: source /home/vagrant/.bashrc
+      args:
+        executable: /bin/bash
+
+    - name: download pip install script
+      get_url: url=https://bootstrap.pypa.io/get-pip.py dest=/tmp/get-pip.py
+    - name: install pip
+      shell: python3 ./get-pip.py
+      args:
+        chdir: /tmp
+
+    - name: install pip requirements
+      pip: requirements=./requirements.txt chdir=/vagrant
+
+    - name: Create postgres tellylog db
+      sudo: yes
+      sudo_user: postgres
+      postgresql_db: name=tellylog encoding=UTF-8
+
+    - name: Add tellylog postgres user
+      sudo: yes
+      sudo_user: postgres
+      postgresql_user: db=tellylog name=tellyloguser password=password
+
+    - name: Add test postgres user
+      sudo: yes
+      sudo_user: postgres
+      postgresql_user: name=test db=postgres role_attr_flags=CREATEDB
+
+    - name: Migrate tellylog
+      command: python3 manage.py migrate
+      args:
+        chdir: /vagrant
