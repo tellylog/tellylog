@@ -13,6 +13,9 @@
     - name: add pgsql apt key
       apt_key: url=https://www.postgresql.org/media/keys/ACCC4CF8.asc
 
+    - name: add pgsql apt key
+      apt_key: url=https://www.postgresql.org/media/keys/ACCC4CF8.asc
+
     - name: install required packages
       apt: name={{ item }} state=latest update_cache=yes
       with_items:
@@ -35,6 +38,7 @@
         - ca-certificates
         - libffi-dev
         - language-pack-en
+
 
     - name: check if /etc/sysctl.conf has command vm.overcommit_memmory=1 (redis)
       command: grep -Fxq "vm.overcommit_memory = 1" /etc/sysctl.conf
