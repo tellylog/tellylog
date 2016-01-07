@@ -8,10 +8,7 @@
 
     <body>
         <h1>Register with tellylog</h1>
-        {% if is_authenticated %}
-            {% if registered %}
-                tellylog says: thank you for signing up!
-            {% else %}
+        {% if not is_authenticated %}
                 tellylog says: sign up here!<br>
                 <form id="user_form" method="post" action="{% url 'user:sign_up' %}"
                     enctype="multipart/form-data">
@@ -19,7 +16,6 @@
                     {{ user_form.as_p }}
                     <input type="submit" name="submit" value="Sign Up"/>
                 </form>
-            {% endif %}
         {% else %}
             You are already signed in!
         {% endif %}

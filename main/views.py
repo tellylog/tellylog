@@ -3,16 +3,17 @@ from django.views.generic.edit import FormView
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 
-from .forms import SignInForm
-from user.forms import UserForm
+from user.forms import UserForm, SignInForm
 
 
-class Index(TemplateView):
+class Index(FormView):
     """
     Index View.
     template_name : takes the given template and rendes it to the view.
     """
     template_name = "main/main.html"
+    form_class = SignInForm
+
 
 
 class About(TemplateView):
