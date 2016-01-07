@@ -1,25 +1,30 @@
 language: python
-cache: pip
 python:
 - '3.4'
 - '3.5'
-install:
-- pip install -r requirements.txt
-- pip install flake8
-before_script:
-- 'flake8 . '
-- 'celery -A tellylog worker -D'
-script:
-- python manage.py test
-notifications:
-  slack:
-    secure: BuqE8wulPUkC2h3FMTpI6VVhmc4k41QV0AugPhg28F+DnK0+Z/j08kTl81B2b8slj2nY6+q2cKDtFoyHvw8jtgBsEdG4QzDhFe70lv3uStXUweXb5mLdwoWCmonNzY/j1rwfEQNdXm0jRSLtC4g2yABQZT2OLVS7krVlDvoQYUKFJrAJquC/yejWYv/kwPxcKrxCNpelXkvi+aW9MhYFNkVZ6e5qklg4ow3xTCNJvml0HrvO376jLc+tKRm6ipg9x6Kem7R0kXzMQwrCgBMvPSegXvINB/s8ryl2p8P1yqNMsV5yTIn9G3TyKHQ/Q/SgjY8dhug/K+qKX7gac99eEkOptbbR0r1TQ5vGTtolWFlMEQzalsRukkzPA8LVgz3ONDfZ8Daq/D2S0mWn4w2ok7pBqnpt8HnMvIXZ2YAeXB8dCT83XY8cK4MzHIUpCbTMKn7rzeFSdbjuWJ8duJQcsqW1IBX2Y8y2ywWd/X7eNjZDjvcY/1WYy+YmbkfaqKI952yYkvnS9rzhIOuHgBkrLaBFoaor3IwkIkDMTN+ma9WEkBDZ6h5/HuXrHmWhuWHmquULGhWSXXZUzVXi5zweOSWdCG5CRggbgxFQTQGAQot0oDllIBznCJW9oy/MddjHy/HwsS5KC7g64apIHvxzqD7rKD5ThkOOBsepH3wlgpQ=
-services:
-  - redis-server
 branches:
   only:
     - master
+cache: pip
+addons:
+  postgresql: "9.4"
+services:
+  - redis-server
+  - postgresql
 before_install:
   - pip install codecov
+install:
+  - pip install -r requirements.txt
+  - pip install flake8
+before_script:
+  - flake8 .
+  - psql -c "CREATE DATABASE test_tellylog;" -U postgres
+  - celery -A tellylog worker -D
+
+script:
+  - python manage.py test
+notifications:
+  slack:
+    secure: BuqE8wulPUkC2h3FMTpI6VVhmc4k41QV0AugPhg28F+DnK0+Z/j08kTl81B2b8slj2nY6+q2cKDtFoyHvw8jtgBsEdG4QzDhFe70lv3uStXUweXb5mLdwoWCmonNzY/j1rwfEQNdXm0jRSLtC4g2yABQZT2OLVS7krVlDvoQYUKFJrAJquC/yejWYv/kwPxcKrxCNpelXkvi+aW9MhYFNkVZ6e5qklg4ow3xTCNJvml0HrvO376jLc+tKRm6ipg9x6Kem7R0kXzMQwrCgBMvPSegXvINB/s8ryl2p8P1yqNMsV5yTIn9G3TyKHQ/Q/SgjY8dhug/K+qKX7gac99eEkOptbbR0r1TQ5vGTtolWFlMEQzalsRukkzPA8LVgz3ONDfZ8Daq/D2S0mWn4w2ok7pBqnpt8HnMvIXZ2YAeXB8dCT83XY8cK4MzHIUpCbTMKn7rzeFSdbjuWJ8duJQcsqW1IBX2Y8y2ywWd/X7eNjZDjvcY/1WYy+YmbkfaqKI952yYkvnS9rzhIOuHgBkrLaBFoaor3IwkIkDMTN+ma9WEkBDZ6h5/HuXrHmWhuWHmquULGhWSXXZUzVXi5zweOSWdCG5CRggbgxFQTQGAQot0oDllIBznCJW9oy/MddjHy/HwsS5KC7g64apIHvxzqD7rKD5ThkOOBsepH3wlgpQ=
 after_success:
   - codecov
