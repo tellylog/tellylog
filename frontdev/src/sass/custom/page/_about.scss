@@ -1,6 +1,7 @@
 .about-text{
     @include span-columns(12 of 12);
     @include pad();
+    
 
     &__heading{
 
