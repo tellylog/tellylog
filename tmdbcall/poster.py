@@ -1,10 +1,13 @@
 """This file holds the Poster class which is used to get poster Imgages."""
+import os
 from io import BytesIO
 from PIL import Image
-from .parent import _Parent
+
+from ._parent import _Parent
 
 
 class Poster(_Parent):
+
     """
     The Poster Class can get Images from TheMovieDataBase.
 
@@ -29,22 +32,34 @@ class Poster(_Parent):
         self.base_uri = 'https://image.tmdb.org/t/p/'
         self.headers = {}
 
-    def get_poster(self, poster_path):
+    def get_poster(self, imagename):
         """
         Get the Poster via the Name of the Image.
-
         Args:
-            poster_path (str): Valid Imagename (e.g.
+            imagename (str): Valid Imagename (e.g.
                                               44FcYhsLNjJA6d2ce5rYfaIVAJU.jpg)
-
         Returns:
             bool: False if it fails
             Image: If valid image is returned
         """
-        target = self.base_uri + self.poster_size + poster_path
-        result = self.make_request(target=target, json=False)
-        try:
-            poster = Image.open(BytesIO(result.content))
-            return poster
-        except AttributeError:
+        target = self.base_uri + self.poster_size + imagename
+        # Make the request with json set to False
+        request = self.make_request.delay(
+            target=target, headers=self.headers,
+            params=self.params, json=False)
+        response = request.get()
+        if 'data' in response:
+            try:
+                # create a PIL Image from the Bytes
+                poster = Image.frombytes(
+                    mode=response['mode'],
+                    size=response['size'],
+                    data=response['data']
+                    )
+                return poster
+            except (AttributeError, TypeError):
+                # return False if something goes wrong
+                return False
+        else:
+            # no response -> False
             return False

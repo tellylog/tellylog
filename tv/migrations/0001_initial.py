@@ -109,7 +109,7 @@ class Migration(migrations.Migration):
                 ('poster_large', models.ImageField(blank=True, max_length=254, null=True, upload_to='tv/poster/series/large')),
                 ('in_production', models.BooleanField()),
                 ('first_air_date', models.DateField(blank=True, null=True)),
-                ('episode_run_time', models.DurationField(blank=True, null=True)),
+                ('episode_run_time', models.IntegerField(blank=True, null=True)),
                 ('last_air_date', models.DateField(blank=True, null=True)),
                 ('number_of_episodes', models.IntegerField()),
                 ('number_of_seasons', models.IntegerField()),

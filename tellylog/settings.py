@@ -49,6 +49,9 @@ INSTALLED_APPS = [
     'watson',
     'tv',
     'search',
+    'tmdbcall',
+    'user',
+    'main',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -86,12 +89,33 @@ WSGI_APPLICATION = 'tellylog.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+if 'TRAVIS' in os.environ:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': 'test_tellylog',
+            'USER': 'postgres',
+            'PASSWORD': '',
+            'HOST': 'localhost',
+            'PORT': '',
+        }
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': os.environ['PG_NAME'],
+            'USER': os.environ['PG_USER'],
+            'PASSWORD': os.environ['PG_PASSWORD'],
+            'HOST': os.environ['PG_HOST'],
+            'PORT': os.environ['PG_PORT'],
+            'TEST': {
+                'NAME': 'test',
+                'USER': 'test',
+                'PASSWORD': 'test',
+            },
+        }
+    }
 
 
 # Password validation
@@ -116,7 +140,12 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
+PASSWORD_HASHERS = (
+    'django.contrib.auth.hashers.BCryptSHA256PasswordHasher',
+    'django.contrib.auth.hashers.BCryptPasswordHasher',
+    'django.contrib.auth.hashers.PBKDF2PasswordHasher',
+    'django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher',
+)
 # Internationalization
 # https://docs.djangoproject.com/en/1.9/topics/i18n/
 
@@ -142,6 +171,18 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 # Media URL
 
 MEDIA_URL = '/media/'
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
+
+
+LOGIN_URL = '/user/sign-in/'
+# if user is not logged in, this is the URL to which they are redirected
+
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+# does exactly what it sounds like
+
 
 # Logging
 
@@ -174,3 +215,13 @@ LOGGING = {
         },
     }
 }
+
+# Celery
+
+BROKER_URL = 'redis://127.0.0.1:6379/0'
+CELERY_RESULT_BACKEND = 'redis://127.0.0.1:6379/0'
+CELERY_ACCEPT_CONTENT = ['pickle']
+CELERY_TASK_SERIALIZER = 'pickle'
+CELERY_RESULT_SERIALIZER = 'pickle'
+CELERY_TIMEZONE = 'Europe/Vienna'
+CELERY_ENABLE_UTC = True

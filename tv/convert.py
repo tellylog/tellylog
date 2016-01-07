@@ -33,7 +33,7 @@ def _get_posters(poster_path):
     if type(poster_path) is str:
         poster_path = poster_path[1:]
         tmdb_poster = Poster()
-        poster_large = tmdb_poster.get_poster(poster_path=poster_path)
+        poster_large = tmdb_poster.get_poster(imagename=poster_path)
         if poster_large:
             size = (180, 270)
             poster_small = poster_large.resize(size, PIL.Image.ANTIALIAS)

@@ -1,10 +1,10 @@
 """This file holds the Person class."""
 from datetime import datetime, timedelta
-
-from .parent import _Parent
+from ._parent import _Parent
 
 
 class Person(_Parent):
+
     """
     Class to get data of actors, directors, producers,...
 
@@ -29,7 +29,12 @@ class Person(_Parent):
             dict: Dictionary with the response on success
         """
         target = self.base_uri + self.URLS['person_url'].format(id=person_id)
-        response = self.make_request(target=target)
+        request = self.make_request.delay(
+            target=target, headers=self.headers, params=self.params, json=True)
+        try:
+            response = request.get()
+        except:
+            response = False
         if not response:
             return False
         return response
@@ -69,7 +74,12 @@ class Person(_Parent):
         params = self.params
         params['start_date'] = start_date
         params['end_date'] = end_date
-        response = self.make_request(target=target, params=params)
+        request = self.make_request.delay(
+            target=target, params=params, headers=self.headers, json=True)
+        try:
+            response = request.get()
+        except:
+            response = False
         if not response['changes']:
             return False
         return response
