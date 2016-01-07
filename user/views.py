@@ -6,9 +6,8 @@ from django.shortcuts import render
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
-from django.views.generic.edit import FormView
 
-from user.forms import UserForm, SignInForm
+from user.forms import UserForm
 
 
 def SignUp(request):
@@ -36,13 +35,27 @@ def SignUp(request):
         {'user_form': user_form, 'registered': registered}, context)
 
 
-class SignIn(FormView):
+def SignIn(request):
     """
     Function that checks given info with the user database and if info exists
     in the database it signs the user in
     """
-    form_class = SignInForm
-    template_name = "user/signIn.html"
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(username=username, password=password)
+
+        if user:
+            if user.is_active:
+                login(request, user)
+                return HttpResponseRedirect('/overview/')
+            else:
+                return HttpResponse("Your tellylog account is disabled.")
+        else:
+            print("Invalid login details: {0}, {1}".format(username, password))
+            return HttpResponse("Invalid login details supplied.")
+    else:
+        return render(request, 'user/signIn.html', {})
 
 
 @login_required

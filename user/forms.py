@@ -1,6 +1,4 @@
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, login
-from django.http import HttpResponseRedirect
 from django import forms
 
 
@@ -35,23 +33,3 @@ class UserForm(forms.ModelForm):
                 email=email).exclude(username=username).count():
             raise forms.ValidationError(u'Email addresses must be unique.')
         return email
-
-
-class SignInForm(forms.ModelForm):
-    password = forms.CharField(widget=forms.PasswordInput())
-
-    class Meta:
-        model = User
-        fields = ('username', 'password')
-
-    def check_userdata(self):
-        username = self.cleaned_data.get('username')
-        password = self.cleaned_data.get('password')
-        user = authenticate(username=username, password=password)
-
-        if user:
-            login(request, user)
-            return HttpResponseRedirect('/overview/')
-        else:
-            raise forms.ValidationError(
-                u'username/password comination is incorrect!')
