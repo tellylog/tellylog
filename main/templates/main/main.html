@@ -1,40 +1,96 @@
-{% load staticfiles %}
-<link rel="stylesheet" type="text/css" href="{% static 'css.css' %}" />
-<!DOCTYPE html>
-<html>
+<!--=include partials/head.html -->
+<!--=include partials/header.html -->
+<div class="row">
 
-<head>
-	<meta http-equiv="content-type" content="text/html; charset=utf-8">
-	<title>index</title>
-</head>
+    <div class="about">
+        <div class="about__panel">
+            <i class="about__icon fa fa-calendar-check-o"></i>
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+            tempor incididunt ut labore et dolore magna aliqua.
+        </div>
+        <div class="about__panel about__panel--light">
+            <i class="about__icon fa fa-list-alt"></i>
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+            tempor incididunt ut labore et dolore magna aliqua.
+        </div>
+        <div class="about__panel">
+            <i class="about__icon fa fa-trophy"></i>
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+        </div>
+    </div>
+</div>
+<div class="row">
+    <form action="{% url 'user:sign_in' %}" method="post" class="sign-in" id="sign-in">
+        {% csrf_token %}
+        <h2 class="text-center">Sign in</h2>
+        <label class="sign-in__label" for="username">Username</label>
+        <div class="sign-in__input">
+            <input type="text" name="username" id="username">
+        </div>
+        <label class="sign-in__label" for="password">Password</label>
+        <div class="sign-in__input">
+            <input type="password" name="password" id="password">
+        </div>
+        <div class="sign-in__submit">
+            <button type="submit">Sign in</button>
+        </div>
+    </form>
+</div>
+<div class="row semilight">
+    <div class="gallery">
+        <h2 class="gallery__heading">Trending</h2>
 
-<body>
-	<div id="header">
-		<h1>tellylog</h1>
-		<h2>Index page</h2>
-	</div>
-	<div id="navigation">
-		<ul>
-			<li><a href="{% url 'main:about' %}">About</a></li>
-			<li><a href="{% url 'main:overview' %}">Overview</a></li>
-			<li><a href="{% url 'user:sign_in' %}">Sign in</a></li>
-			<li><a href="{% url 'user:sign_up' %}">Sign up</a></li>
-		</ul>
-	</div>
+        <div class="gallery__wrapper">
+            <div class="gallery__poster">
+                <img class="gallery__image" src="img/placeholder.jpg" alt="">
+            </div>
 
-	{% if user.is_authenticated %}
-		<a href="{% url 'user:logout' %}">Logout</a>
-	{% else %}
-		<form id="login_form" method="post" action="{% url 'user:sign_in' %}">
-			{% csrf_token %} Username:
-			<input type="text" name="username" value="" size="50" />
-			<br /> Password:
-			<input type="password" name="password" value="" size="50" />
-			<br />
+            <div class="gallery__poster">
+                <img class="gallery__image" src="img/placeholder.jpg" alt="">
+            </div>
 
-			<input type="submit" value="submit" />
-		</form>
-	{% endif %}
-</body>
+            <div class="gallery__poster">
+                <img class="gallery__image" src="img/placeholder.jpg" alt="">
+            </div>
 
-</html>
+            <div class="gallery__poster">
+                <img class="gallery__image" src="img/placeholder.jpg" alt="">
+            </div>
+
+            <div class="gallery__poster">
+                <img class="gallery__image" src="img/placeholder.jpg" alt="">
+            </div>
+
+            <div class="gallery__poster">
+                <img class="gallery__image" src="img/placeholder.jpg" alt="">
+            </div>
+
+            <div class="gallery__poster">
+                <img class="gallery__image" src="img/placeholder.jpg" alt="">
+            </div>
+
+            <div class="gallery__poster">
+                <img class="gallery__image" src="img/placeholder.jpg" alt="">
+            </div>
+
+            <div class="gallery__poster">
+                <img class="gallery__image" src="img/placeholder.jpg" alt="">
+            </div>
+
+            <div class="gallery__poster">
+                <img class="gallery__image" src="img/placeholder.jpg" alt="">
+            </div>
+
+            <div class="gallery__poster">
+                <img class="gallery__image" src="img/placeholder.jpg" alt="">
+            </div>
+
+            <div class="gallery__poster">
+                <img class="gallery__image" src="img/placeholder.jpg" alt="">
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!--=include partials/footer.html -->

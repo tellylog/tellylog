@@ -53,7 +53,7 @@ def SignIn(request):
                 return HttpResponse("Your tellylog account is disabled.")
         else:
             print("Invalid login details: {0}, {1}".format(username, password))
-            return HttpResponse("Invalid login details supplied.")
+            return HttpResponseRedirect('user:sign_in')
     else:
         return render(request, 'user/signIn.html', {})
 
