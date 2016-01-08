@@ -31,6 +31,8 @@
                 <li><a href="{% url 'main:dummy' %}">Profile</a></li>
                 {% if user.is_authenticated %}
                     <li><a href="{% url 'user:logout' %}">Logout</a></li>
+                {% else %}
+                    <li><a href="{% url 'user:sign_up' %}">Sign up</a></li>
                 {% endif %}
             </ul>
         </nav>
