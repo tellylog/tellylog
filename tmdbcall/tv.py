@@ -38,18 +38,9 @@ class TV(_Parent):
         params['query'] = query  # Append the Query to the default params
         params['page'] = page
         target = self.base_uri + self.URLS['search_series']
-        request = self.make_request.delay(
-            target=target, params=params, headers=self.headers, json=True)
-        try:
-            response = request.get()
-        except:
-            response = False
-        if not response:
-            return False
-        elif response['total_results'] is 0:
-            return False
-        else:
-            return response
+        response = self.make_request.apply(kwargs={
+            'target': target, 'params': params, 'headers': self.headers})
+        return response
 
     def get_series_info_by_id(self, series_id):
         """Get detailed Information of a Series by the tmdb ID.
@@ -66,14 +57,8 @@ class TV(_Parent):
         """
         target = self.base_uri + \
             self.URLS['tv_url'] + self.URLS['series'].format(id=series_id)
-        request = self.make_request.delay(
+        response = self.make_request.apply(
             target=target, headers=self.headers, params=self.params, json=True)
-        try:
-            response = request.get()
-        except:
-            response = False
-        if not response:
-            return False
         return response
 
     def get_season_info_by_number(self, series_id, season_number):
@@ -91,14 +76,8 @@ class TV(_Parent):
         """
         target = self.base_uri + self.URLS['tv_url'] + \
             self.URLS['season'].format(id=series_id, number=season_number)
-        request = self.make_request.delay(
+        response = self.make_request.delay(
             target=target, headers=self.headers, params=self.params, json=True)
-        try:
-            response = request.get()
-        except:
-            response = False
-        if not response:
-            return False
         return response
 
     def get_changes(self, series_id, start_date=None):
@@ -136,16 +115,8 @@ class TV(_Parent):
         params = self.params
         params['start_date'] = start_date
         params['end_date'] = end_date
-        request = self.make_request.delay(
+        response = self.make_request.delay(
             target=target, params=params, headers=self.headers, json=True)
-        try:
-            response = request.get()
-        except:
-            response = False
-        if not response:
-            return False
-        elif not response['changes']:
-            return False
         return response
 
     def get_credits(self, series_id):
@@ -162,15 +133,6 @@ class TV(_Parent):
         target = (self.base_uri +
                   self.URLS['tv_url'] +
                   self.URLS['credits'].format(id=series_id))
-        request = self.make_request.delay(
+        response = self.make_request.delay(
             target=target, headers=self.headers, params=self.params, json=True)
-        try:
-            response = request.get()
-        except:
-            response = False
-            raise
-        if not response:
-            return False
-        elif not response['cast']:
-            return False
         return response

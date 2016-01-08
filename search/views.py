@@ -1,15 +1,14 @@
 """This file holds the views of the search app."""
 from django.shortcuts import get_object_or_404, get_list_or_404
-from django.http import HttpResponse, HttpRequest  # HttpResponseRedirect
+from django.http import HttpResponse, HttpRequest, JsonResponse
 # from django.core.urlresolvers import reverse
 from django.views.generic import TemplateView, FormView, ListView
 from django.core.urlresolvers import reverse
 from watson import search as watson
-
 import tv.models as models
 import tmdbcall as tmdb
 from .forms import SearchForm
-from tv import convert
+import search.tasks as tasks
 
 
 class SearchView(ListView):
@@ -30,12 +29,9 @@ class SearchView(ListView):
         search_res = watson.search(self.query)
 
         if not search_res:
-            tmdb_tv = tmdb.tv.TV()
-            api_series = tmdb_tv.search_for_series(self.query)
-            if api_series and api_series['results']:
-                for series in api_series['results']:
-                    convert.convert_series_result(series)
-            search_res = watson.search(self.query)
+            tasks.search_online.delay(query=self.query)
+            search_res = False
+
         return search_res
 
     def get_context_data(self, **kwargs):
@@ -51,6 +47,12 @@ class SearchView(ListView):
         context = super(SearchView, self).get_context_data(**kwargs)
         context['query'] = self.query
         return context
+
+
+def search_status(task_id):
+    status = SearchView.search_online.AsyncResut(task_id)
+    response = JsonResponse({'status': status.status})
+    return response
 
 
 class TestView(FormView):

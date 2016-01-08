@@ -3,7 +3,7 @@
 Attributes:
     TV_IMAGE_PATH (str): Path is appended to MEDIA_ROOT defined in settings
 """
-
+import datetime
 from django.db import models
 from django.core.urlresolvers import reverse
 TV_IMAGE_PATH = 'tv/{type}/{category}/{size}'
@@ -307,6 +307,13 @@ class Series(models.Model):
     def get_absolute_url(self):
         return reverse('tv:series', kwargs={'series_id': str(self.id)})
 
+    def update_needed(self):
+        if (self.last_update > datetime.datetime.now() -
+                datetime.timedelta(weeks=1)):
+            return True
+        else:
+            return False
+
 
 class Season(models.Model):
 
@@ -374,6 +381,13 @@ class Season(models.Model):
         }
         return reverse('tv:season', kwargs=kwargs)
 
+    def update_needed(self):
+        if (self.last_update > datetime.datetime.now() -
+                datetime.timedelta(weeks=1)):
+            return True
+        else:
+            return False
+
 
 class Episode(models.Model):
 
@@ -430,6 +444,13 @@ class Episode(models.Model):
         return '%s Season %d Ep %d' % (self.series.name,
                                        self.season.number,
                                        self.number)
+
+    def update_needed(self):
+        if (self.last_update > datetime.datetime.now() -
+                datetime.timedelta(weeks=1)):
+            return True
+        else:
+            return False
 
 
 class Credit(models.Model):

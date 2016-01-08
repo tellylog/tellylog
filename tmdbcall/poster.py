@@ -44,22 +44,7 @@ class Poster(_Parent):
         """
         target = self.base_uri + self.poster_size + imagename
         # Make the request with json set to False
-        request = self.make_request.delay(
+        response = self.make_request.delay(
             target=target, headers=self.headers,
             params=self.params, json=False)
-        response = request.get()
-        if 'data' in response:
-            try:
-                # create a PIL Image from the Bytes
-                poster = Image.frombytes(
-                    mode=response['mode'],
-                    size=response['size'],
-                    data=response['data']
-                    )
-                return poster
-            except (AttributeError, TypeError):
-                # return False if something goes wrong
-                return False
-        else:
-            # no response -> False
-            return False
+        return response

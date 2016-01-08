@@ -1,6 +1,4 @@
 """This file holds the Parent class which is used by the tmdbcall modules."""
-import os
-import tempfile
 from io import BytesIO
 from PIL import Image
 import requests
@@ -47,12 +45,15 @@ class _Parent(object):
                 If none is given the default is used
         """
         try:
+            print('Making a request master')
             request = requests.get(
                 target, headers=headers, params=params)
             request.raise_for_status()
             if json:
+                print('It is from the json type master')
                 return request.json()
             else:
+                print('It is from the image type master')
                 temp = Image.open(BytesIO(request.content))
                 poster = {
                     'data': temp.tobytes(),
