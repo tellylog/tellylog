@@ -9,3 +9,4 @@ tellylog/local_settings.py
 media/
 dump.rdb
 .vagrant/
+static/*
