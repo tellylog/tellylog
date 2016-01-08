@@ -38,14 +38,26 @@
         enctype="multipart/form-data">
         {% csrf_token %}
         <div class="sign-up">
-            {% for field in user_form %}
-                <label class="sign-in__label" for="{{ field.name }}">{{ field.name }}:</label>
+
+                <label class="sign-in__label" for="username">Username:</label>
 
                 <div class="sign-in__input sign-in__input--signup">
-                    <input type="text" name="{{ field.name }}" id="{{ field.name }}">
+                    <input type="text" name="username" id="username">
                 </div>
 
-            {% endfor %}
+                <label class="sign-in__label" for="email">Email:</label>
+
+                <div class="sign-in__input sign-in__input--signup">
+                    <input type="text" name="email" id="email">
+                </div>
+
+                <label class="sign-in__label" for="password">Password:</label>
+
+                <div class="sign-in__input sign-in__input--signup">
+                    <input type="text" name="password" input="hidden" id="password">
+                </div>
+
+
             <input type="submit" name="submit" value="Sign Up"/>
         </div>
     </form>
