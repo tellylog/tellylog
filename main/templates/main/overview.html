@@ -5,7 +5,7 @@
 {% load staticfiles %}
 <div class="row">
     <div class="gallery">
-        <h2 class="gallery__heading"><a href="watchlog.html">Watchlog</a></h2>
+        <h2 class="gallery__heading"><a href="{% url 'main:dummy' %}">Watchlog</a></h2>
         <p class="gallery__info">Your latest Watchlog entries:</p>
         <div class="gallery__wrapper">
 
@@ -37,7 +37,7 @@
 </div>
 <div class="row semilight">
     <div class="gallery">
-        <h2 class="gallery__heading"><a href="watchlist.html">Watchlist</a></h2>
+        <h2 class="gallery__heading"><a href="{% url 'main:dummy' %}">Watchlist</a></h2>
         <p class="gallery__info">Your latest Watchlist entries:</p>
         <div class="gallery__wrapper">
             <div class="gallery__poster--small">
