@@ -14,6 +14,9 @@
             font-weight: 600;
             background-color: $base-font-color;
         }
+        &--signup{
+            text-transform: capitalize;
+        }
     }
     &__submit{
         button{
@@ -50,4 +53,14 @@
         margin-bottom: 0.4em;
     }
 
+}
+.sign-up {
+    @include pad();
+    width: 20em;
+    @include media($medium-screen-up){
+        width: 30em;
+    }
+    @include media($large-screen-up){
+        width: 30em;
+    }
 }

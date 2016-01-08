@@ -37,11 +37,17 @@
     <form id="user_form" method="post" action="{% url 'user:sign_up' %}"
         enctype="multipart/form-data">
         {% csrf_token %}
-        {% for field in user_form %}
-            {{ field.label_tag }}
-            {{ field }}
-        {% endfor %}
-        <input type="submit" name="submit" value="Sign Up"/>
+        <div class="sign-up">
+            {% for field in user_form %}
+                <label class="sign-in__label" for="{{ field.name }}">{{ field.name }}:</label>
+
+                <div class="sign-in__input sign-in__input--signup">
+                    <input type="text" name="{{ field.name }}" id="{{ field.name }}">
+                </div>
+
+            {% endfor %}
+            <input type="submit" name="submit" value="Sign Up"/>
+        </div>
     </form>
 {% endif %}
 
