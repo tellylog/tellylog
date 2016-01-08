@@ -23,4 +23,5 @@ def search_online(query):
     # while api_series.status in states.UNREADY_STATES:
     #     print(api_series.status)
     #     time.sleep(1)
+    print(api_series)
     start_converting.s(api_series).apply_async()
