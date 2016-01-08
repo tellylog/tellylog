@@ -1,4 +1,3 @@
-
 <!--=include partials/head.html -->
 {% include "main/partials/head.html" %}
 <!--=include partials/header.html -->
@@ -22,6 +21,7 @@
         </div>
     </div>
 </div>
+{% if not user.is_authenticated %}
 <div class="row">
     <form action="{% url 'user:sign_in' %}" method="post" class="sign-in" id="sign-in">
         {% csrf_token %}
@@ -39,57 +39,59 @@
         </div>
     </form>
 </div>
+{% endif %}
+{% load staticfiles %}
 <div class="row semilight">
     <div class="gallery">
         <h2 class="gallery__heading">Trending</h2>
 
         <div class="gallery__wrapper">
             <div class="gallery__poster">
-                <img class="gallery__image" src="img/placeholder.jpg" alt="">
+                <img class="gallery__image" src="{% static 'img/placeholder.jpg' %}" alt="">
             </div>
 
             <div class="gallery__poster">
-                <img class="gallery__image" src="img/placeholder.jpg" alt="">
+                <img class="gallery__image" src="{% static 'img/placeholder.jpg' %}" alt="">
             </div>
 
             <div class="gallery__poster">
-                <img class="gallery__image" src="img/placeholder.jpg" alt="">
+                <img class="gallery__image" src="{% static 'img/placeholder.jpg' %}" alt="">
             </div>
 
             <div class="gallery__poster">
-                <img class="gallery__image" src="img/placeholder.jpg" alt="">
+                <img class="gallery__image" src="{% static 'img/placeholder.jpg' %}" alt="">
             </div>
 
             <div class="gallery__poster">
-                <img class="gallery__image" src="img/placeholder.jpg" alt="">
+                <img class="gallery__image" src="{% static 'img/placeholder.jpg' %}" alt="">
             </div>
 
             <div class="gallery__poster">
-                <img class="gallery__image" src="img/placeholder.jpg" alt="">
+                <img class="gallery__image" src="{% static 'img/placeholder.jpg' %}" alt="">
             </div>
 
             <div class="gallery__poster">
-                <img class="gallery__image" src="img/placeholder.jpg" alt="">
+                <img class="gallery__image" src="{% static 'img/placeholder.jpg' %}" alt="">
             </div>
 
             <div class="gallery__poster">
-                <img class="gallery__image" src="img/placeholder.jpg" alt="">
+                <img class="gallery__image" src="{% static 'img/placeholder.jpg' %}" alt="">
             </div>
 
             <div class="gallery__poster">
-                <img class="gallery__image" src="img/placeholder.jpg" alt="">
+                <img class="gallery__image" src="{% static 'img/placeholder.jpg' %}" alt="">
             </div>
 
             <div class="gallery__poster">
-                <img class="gallery__image" src="img/placeholder.jpg" alt="">
+                <img class="gallery__image" src="{% static 'img/placeholder.jpg' %}" alt="">
             </div>
 
             <div class="gallery__poster">
-                <img class="gallery__image" src="img/placeholder.jpg" alt="">
+                <img class="gallery__image" src="{% static 'img/placeholder.jpg' %}" alt="">
             </div>
 
             <div class="gallery__poster">
-                <img class="gallery__image" src="img/placeholder.jpg" alt="">
+                <img class="gallery__image" src="{% static 'img/placeholder.jpg' %}" alt="">
             </div>
         </div>
 

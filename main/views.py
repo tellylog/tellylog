@@ -22,6 +22,13 @@ class About(TemplateView):
     """
     template_name = "main/about.html"
 
+class Dummy(TemplateView):
+    """
+    Index View.
+    template_name : takes the given template and rendes it to the view.
+    """
+    template_name = "main/dummy.html"
+
 
 @login_required(login_url='/user/sign-in/')
 class Overview(TemplateView):

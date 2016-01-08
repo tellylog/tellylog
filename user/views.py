@@ -55,7 +55,7 @@ def SignIn(request):
             print("Invalid login details: {0}, {1}".format(username, password))
             return HttpResponseRedirect('user:sign_in')
     else:
-        return render(request, 'user/signIn.html', {})
+        return render(request, 'user:sign_in', {})
 
 
 @login_required

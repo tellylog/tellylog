@@ -1,7 +1,7 @@
             <div class="row">
                 <footer class="footer">
                     <ul class="footer__linklist">
-                        <li class="footer__linkitem"><a class="footer__link" href="about.html">About</a></li>
+                        <li class="footer__linkitem"><a class="footer__link" href="{% url 'main:about' %}">About</a></li>
                         <li class="footer__linkitem"><a class="footer__link" href="help.html">Help</a></li>
                         <li class="footer__linkitem"><a class="footer__link" href="contact.html">Contact</a></li>
                     </ul>
@@ -11,7 +11,8 @@
                     </div>
                 </footer>
             </div>
-            <script type="text/javascript" src="javascript/main.js"></script>
+            {% load staticfiles %}
+            <script type="text/javascript" src="{% static 'javascript/main.js' %}"></script>
         </div>
     </body>
 </html>

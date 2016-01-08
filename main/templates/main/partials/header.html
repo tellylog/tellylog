@@ -25,13 +25,13 @@
         <nav class="js-menu sliding-panel-content">
             <ul>
                 <li><a href="{% url 'main:overview' %}">Overview</a></li>
-                <li><a href="watchlog.html">Watchlog</a></li>
-                <li><a href="watchlist.html">Watchlist</a></li>
-                <li><a href="achivements.html">Achivements</a></li>
-                <li><a href="profile.html">Profile</a></li>
-{% if user.is_authenticated %}
-                <li><a href="#">Logout</a></li>
-{% endif %}
+                <li><a href="{% url 'main:dummy' %}">Watchlog</a></li>
+                <li><a href="{% url 'main:dummy' %}">Watchlist</a></li>
+                <li><a href="{% url 'main:dummy' %}">Achivements</a></li>
+                <li><a href="{% url 'main:dummy' %}">Profile</a></li>
+                {% if user.is_authenticated %}
+                    <li><a href="{% url 'user:logout' %}">Logout</a></li>
+                {% endif %}
             </ul>
         </nav>
 
