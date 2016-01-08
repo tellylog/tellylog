@@ -31,7 +31,15 @@ class Dummy(TemplateView):
     template_name = "main/dummy.html"
 
 
-@login_required(login_url="/user/sign-in/")
+class SignIn(TemplateView):
+    """
+    Index View.
+    template_name : takes the given template and rendes it to the view.
+    """
+    template_name = "main/sign-in.html"
+
+
+@login_required(login_url="/main/sign_in/")
 class Overview(TemplateView):
     """
     Overview View.
