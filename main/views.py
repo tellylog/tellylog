@@ -22,6 +22,7 @@ class About(TemplateView):
     """
     template_name = "main/about.html"
 
+
 class Dummy(TemplateView):
     """
     Index View.
@@ -30,7 +31,7 @@ class Dummy(TemplateView):
     template_name = "main/dummy.html"
 
 
-@login_required(login_url='/user/sign-in/')
+@login_required(login_url="/user/sign-in/")
 class Overview(TemplateView):
     """
     Overview View.
