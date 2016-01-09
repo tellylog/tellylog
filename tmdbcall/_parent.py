@@ -32,7 +32,7 @@ class _Parent(object):
 
     # make_request is a celery task. it has a rate_limit
     @shared_task(filter=task_method, rate_limit='4/s')
-    def make_request(target, headers, params, json):
+    def make_request(target, headers, params, json=True):
         """Make a request to the given target.
         Either uses the given headers and params or the default ones.
         Args:

@@ -1,27 +1,31 @@
 import time
-from celery import shared_task, chain, group
+from celery import shared_task, chain, group, chord
 from tv import convert
 import tmdbcall as tmdb
 from celery import states
+import redis
+import tellylog.settings as s
+import search.status as status
 
 
-@shared_task(ignore_result=True)
-def start_converting(api_series):
-    if api_series and 'results' in api_series:
-        print('Start Converting')
-        to_convert = []
-        for series in api_series['results']:
-            to_convert.append(convert.convert_series_result.s(series))
-        group(to_convert)()
-        return True
+@shared_task()
+def report(result):
+    return result
 
 
-@shared_task(ignore_result=True)
-def search_online(query):
+@shared_task()
+def search_online(query, task_id=None):
     tmdb_tv = tmdb.tv.TV()
     api_series = tmdb_tv.search_for_series(query)
-    # while api_series.status in states.UNREADY_STATES:
-    #     print(api_series.status)
-    #     time.sleep(1)
-    print(api_series)
-    start_converting.s(api_series).apply_async()
+    while api_series.status in states.UNREADY_STATES:
+        time.sleep(1)
+    if api_series.status == states.SUCCESS:
+        if api_series.result and api_series.result['total_results'] > 0:
+            print('Start Converting')
+            to_convert = []
+            for series in api_series.result['results']:
+                to_convert.append(chain(convert.get_full_series.s(series),
+                                        convert._check_genres.s(),
+                                        convert._check_countrys.s(),
+                                        convert._process_full_series.s()))
+            return chord(to_convert)(report.s())

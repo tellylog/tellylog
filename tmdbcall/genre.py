@@ -21,7 +21,7 @@ class Genre(_Parent):
         Builds the URL to the target and makes a request.
         """
         target = self.base_uri + self.URLS['genre_list']
-        response = self.make_request.delay(
-            target=target, headers=self.headers, params=self.params, json=True)
+        response = self.make_request.apply(kwargs={
+            'target': target, 'params': self.params, 'headers': self.headers})
 
         return response

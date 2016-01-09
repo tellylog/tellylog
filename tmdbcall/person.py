@@ -29,8 +29,8 @@ class Person(_Parent):
             dict: Dictionary with the response on success
         """
         target = self.base_uri + self.URLS['person_url'].format(id=person_id)
-        response = self.make_request.delay(
-            target=target, headers=self.headers, params=self.params, json=True)
+        response = self.make_request.apply(kwargs={
+            'target': target, 'params': self.params, 'headers': self.headers})
         return response
 
     def get_changes(self, person_id, start_date=None):
@@ -68,6 +68,6 @@ class Person(_Parent):
         params = self.params
         params['start_date'] = start_date
         params['end_date'] = end_date
-        response = self.make_request.delay(
-            target=target, params=params, headers=self.headers, json=True)
+        response = self.make_request.apply(kwargs={
+            'target': target, 'params': params, 'headers': self.headers})
         return response

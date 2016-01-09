@@ -225,3 +225,11 @@ CELERY_TASK_SERIALIZER = 'pickle'
 CELERY_RESULT_SERIALIZER = 'pickle'
 CELERY_TIMEZONE = 'Europe/Vienna'
 CELERY_ENABLE_UTC = True
+
+# Redis
+
+REDIS = {
+    'HOST': '127.0.0.0.1',
+    'PORT': 6379,
+    'DB': 0,
+}

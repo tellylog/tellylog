@@ -57,8 +57,8 @@ class TV(_Parent):
         """
         target = self.base_uri + \
             self.URLS['tv_url'] + self.URLS['series'].format(id=series_id)
-        response = self.make_request.apply(
-            target=target, headers=self.headers, params=self.params, json=True)
+        response = self.make_request.apply(kwargs={
+            'target': target, 'params': self.params, 'headers': self.headers})
         return response
 
     def get_season_info_by_number(self, series_id, season_number):
@@ -76,8 +76,8 @@ class TV(_Parent):
         """
         target = self.base_uri + self.URLS['tv_url'] + \
             self.URLS['season'].format(id=series_id, number=season_number)
-        response = self.make_request.delay(
-            target=target, headers=self.headers, params=self.params, json=True)
+        response = self.make_request.apply(kwargs={
+            'target': target, 'params': self.params, 'headers': self.headers})
         return response
 
     def get_changes(self, series_id, start_date=None):
@@ -115,8 +115,8 @@ class TV(_Parent):
         params = self.params
         params['start_date'] = start_date
         params['end_date'] = end_date
-        response = self.make_request.delay(
-            target=target, params=params, headers=self.headers, json=True)
+        response = self.make_request.apply(kwargs={
+            'target': target, 'params': params, 'headers': self.headers})
         return response
 
     def get_credits(self, series_id):
@@ -133,6 +133,6 @@ class TV(_Parent):
         target = (self.base_uri +
                   self.URLS['tv_url'] +
                   self.URLS['credits'].format(id=series_id))
-        response = self.make_request.delay(
-            target=target, headers=self.headers, params=self.params, json=True)
+        response = self.make_request.apply(kwargs={
+            'target': target, 'params': self.params, 'headers': self.headers})
         return response

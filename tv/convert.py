@@ -6,44 +6,50 @@ from tmdbcall.tv import TV
 from tmdbcall.poster import Poster
 from tv import models
 from django.core.files.base import ContentFile
-from celery import shared_task, chain, group
+from celery import shared_task
 from celery import states
 
 
 @shared_task()
 def _check_genres(full_series):
-    if (full_series and
-            (full_series['number_of_seasons'] != 0) and
-            (full_series['number_of_episodes'] != 0)):
-        genre_list = []
+    genre_list = []
+    if not full_series:
+        return False
+    if ('genres' in full_series and
+            type(full_series['genres']) == list):
         for genre in full_series['genres']:
-            db_genre = models.Genre.objects.get_or_create(tmdb_id=genre['id'],
-                                                          defaults={
-                'tmdb_id': genre['id'],
-                'name': genre['name']}
+            db_genre = models.Genre.objects.get_or_create(
+                tmdb_id=genre['id'], defaults={
+                    'tmdb_id': genre['id'],
+                    'name': genre['name']}
             )
             if type(db_genre) is tuple:
                 genre_list.append(db_genre[0])
             else:
                 genre_list.append(db_genre)
 
-        full_series = {'series': full_series}
-        full_series += {'genre_list': genre_list}
-        return full_series
+    full_series = {'series': full_series}
+    full_series['genre_list'] = genre_list
+    return full_series
 
 
+@shared_task()
 def _check_countrys(full_series):
     country_list = []
-    for country in full_series['series']['origin_country']:
-        db_country = models.Country.objects.get_or_create(name=country,
-                                                          defaults={
-                                                              'name': country
-                                                          })
-        if type(db_country) is tuple:
-            country_list.append(db_country[0])
-        else:
-            country_list.append(db_country)
-    full_series += {'country_list': country_list}
+    if not full_series:
+        return False
+    if ('origin_country' in full_series['series'] and
+            type(full_series['series']['origin_country']) == list):
+        for country in full_series['series']['origin_country']:
+            db_country = models.Country.objects.get_or_create(name=country,
+                                                              defaults={
+                                                               'name': country
+                                                              })
+            if type(db_country) is tuple:
+                country_list.append(db_country[0])
+            else:
+                country_list.append(db_country)
+    full_series['country_list'] = country_list
     return full_series
 
 
@@ -55,13 +61,12 @@ def _calc_av_episode_runtime(runtimes):
 
 
 def _get_posters(poster_path):
-    print('Printing Poster')
     if type(poster_path) is str:
         poster_path = poster_path[1:]
         tmdb_poster = Poster()
         poster_result = tmdb_poster.get_poster(imagename=poster_path)
         while poster_result.status in states.UNREADY_STATES:
-            time.sleep(0.5)
+            time.sleep(1)
         if poster_result.result and 'data' in poster_result.result:
             poster_result = poster_result.result
             poster_large = PIL.Image.frombytes(
@@ -86,48 +91,56 @@ def _convert_season(tmdb_series_id, series_id, season_number, new_series):
                                                     season_number)
     while full_season.status in states.UNREADY_STATES:
         time.sleep(0.5)
-    full_season = full_season.result
-    if full_season:
-        new_season = models.Season(number=full_season['season_number'],
-                                   air_date=full_season['air_date'],
-                                   name=full_season['name'],
-                                   tmdb_id=full_season['id'],
-                                   episode_count=len(full_season['episodes']),
-                                   series=new_series
-                                   )
-        posters = _get_posters(poster_path=full_season['poster_path'])
-        if posters:
-            temp_poster = BytesIO()
-            posters['poster_large'][1].save(temp_poster, 'JPEG')
-            temp_poster.seek(0)
-            new_season.poster_large.save(posters['poster_large'][0] + '.jpg',
+    if full_season.status == states.SUCCESS:
+        full_season = full_season.result
+        if full_season:
+            new_season = models.Season(number=full_season['season_number'],
+                                       air_date=full_season['air_date'],
+                                       name=full_season['name'],
+                                       tmdb_id=full_season['id'],
+                                       episode_count=len(
+                                           full_season['episodes']),
+                                       series=new_series
+                                       )
+            posters = _get_posters(poster_path=full_season['poster_path'])
+            if posters:
+                temp_poster = BytesIO()
+                posters['poster_large'][1].save(temp_poster, 'JPEG')
+                temp_poster.seek(0)
+                new_season.poster_large.save(
+                                         posters['poster_large'][0] + '.jpg',
                                          ContentFile(temp_poster.read()),
                                          save=False)
-            temp_poster.close()
-            temp_poster = BytesIO()
-            posters['poster_small'][1].save(temp_poster, 'JPEG')
-            temp_poster.seek(0)
-            new_season.poster_small.save(posters['poster_small'][0] + '.jpg',
+                temp_poster.close()
+                temp_poster = BytesIO()
+                posters['poster_small'][1].save(temp_poster, 'JPEG')
+                temp_poster.seek(0)
+                new_season.poster_small.save(
+                                         posters['poster_small'][0] + '.jpg',
                                          ContentFile(temp_poster.read()),
                                          save=False)
-            temp_poster.close()
-        new_season.save()
-        for episode in full_season['episodes']:
-            new_episode = models.Episode(name=episode['name'],
-                                         air_date=episode['air_date'],
-                                         tmdb_id=episode['id'],
-                                         overview=episode['overview'],
-                                         number=episode['episode_number'],
-                                         series=new_series,
-                                         season=new_season
-                                         )
-            new_episode.save()
+                temp_poster.close()
+            new_season.save()
+            for episode in full_season['episodes']:
+                new_episode = models.Episode(name=episode['name'],
+                                             air_date=episode['air_date'],
+                                             tmdb_id=episode['id'],
+                                             overview=episode['overview'],
+                                             number=episode['episode_number'],
+                                             series=new_series,
+                                             season=new_season
+                                             )
+                new_episode.save()
+            return True
+    return False
 
 
-@shared_task(ignore_result=True)
-def process_full_series(full_series):
-    print('Processing full series')
-    runtime = _calc_av_episode_runtime(full_series['episode_run_time'])
+@shared_task()
+def _process_full_series(full_series):
+    if not full_series:
+        return False
+    runtime = _calc_av_episode_runtime(
+        full_series['series']['episode_run_time'])
     new_series = models.Series(name=full_series['series']['name'],
                                tmdb_id=full_series['series']['id'],
                                in_production=full_series['series'][
@@ -167,23 +180,25 @@ def process_full_series(full_series):
     new_series.save()
     new_series.genres.set(full_series['genre_list'])
     new_series.origin_country.set(full_series['country_list'])
-    to_convert_seasons = []
     for number in range(1, new_series.number_of_seasons + 1):
-        to_convert_seasons.append(_convert_season.s(
-                                    new_series.tmdb_id,
-                                    new_series.id, number, new_series))
-    group(to_convert_seasons)
+        _convert_season(
+            new_series.tmdb_id,
+            new_series.id, number, new_series)
     return True
 
 
 @shared_task(ignore_result=True)
-def convert_series_result(result):
-    print('I need to convert')
+def get_full_series(result):
     tmdb_tv = TV()
     full_series = tmdb_tv.get_series_info_by_id(result['id'])
     while full_series.status in states.UNREADY_STATES:
-        print(full_series.status)
         time.sleep(1)
-    if full_series.status in states.SUCCES_STATES:
-        chain(_check_genres.s(full_series.result),
-              _get_posters.s(), process_full_series.s())()
+    if full_series.status == states.SUCCESS:
+        print('It was successfull')
+        if (full_series.result and
+            full_series.result['number_of_seasons'] and
+            (full_series.result['number_of_seasons'] != 0) and
+                full_series.result['number_of_episodes'] and
+                (full_series.result['number_of_episodes'] != 0)):
+            return full_series.result
+    return False
