@@ -1,3 +1,4 @@
+{% load staticfiles %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,9 +8,12 @@
 <body>
     {{ query }}
     {% if  task_id %}
-        {{ task_id }}
+        <script type="text/javascript">
+            var task_id = "{{ task_id }}"
+            var status_url = "{{ status_url }}"
+        </script>
     {% endif %}
-
+    <div id="results">
     {% if object_list %}
         <ul>
             {% for series in object_list %}
@@ -18,6 +22,9 @@
         </ul>
 
     {% endif %}
+    </div>
     <script src="//code.jquery.com/jquery-2.2.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.1.0/js.cookie.js"></script>
+    <script src="{% static "search/javascript/search.js" %}"></script>
 </body>
 </html>

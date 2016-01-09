@@ -16,6 +16,7 @@ gulp.task('js', function() {
 		.pipe(plugins.filter('*.js'))
 		.pipe(plugins.order([
 			'jquery.js',
+			'js.cookie.js'
 			'*'
 		]))
 		.pipe(plugins.concat('main.js'))

@@ -5,6 +5,8 @@ from django.http import HttpResponse, HttpRequest, JsonResponse
 from django.views.generic import View, FormView, ListView
 from django.core.urlresolvers import reverse
 from watson import search as watson
+from celery.result import AsyncResult
+from tellylog.celery import app
 import tv.models as models
 import tmdbcall as tmdb
 from .forms import SearchForm
@@ -48,14 +50,19 @@ class SearchView(ListView):
         """
         context = super(SearchView, self).get_context_data(**kwargs)
         context['query'] = self.query
-        context['task_id'] = self.task_id if self.task_id else False
+        context['task_id'] = (self.task_id if
+                              self.task_id is not None else False)
+        url = reverse('search:status')
+        url = self.request.build_absolute_uri(url)
+        context['status_url'] = url
         return context
 
 
 class SearchStatus(View):
     def post(self, request):
-        status = SearchView.search_online.AsyncResut(task_id)
-        response = JsonResponse({'status': status.status})
+        task_id = request.POST['task_id']
+        result = AsyncResult(task_id, app=app)
+        response = JsonResponse({'status': result.status})
         return response
 
 

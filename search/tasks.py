@@ -6,7 +6,7 @@ from celery import states
 
 
 @shared_task()
-def report(result):
+def search_ready(result):
     return result
 
 
@@ -25,4 +25,4 @@ def search_online(query, task_id=None):
                                         convert._check_genres.s(),
                                         convert._check_countrys.s(),
                                         convert._process_full_series.s()))
-            return chord(to_convert)(report.s())
+            return chord(to_convert)(search_ready.s())
