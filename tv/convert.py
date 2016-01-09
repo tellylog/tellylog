@@ -141,28 +141,28 @@ def _process_full_series(full_series):
         return False
     runtime = _calc_av_episode_runtime(
         full_series['series']['episode_run_time'])
-    new_series = models.Series(name=full_series['series']['name'],
-                               tmdb_id=full_series['series']['id'],
-                               in_production=full_series['series'][
-        'in_production'],
-        first_air_date=full_series['series'][
-                                   'first_air_date'],
-        last_air_date=full_series['series'][
-        'last_air_date'],
-        episode_run_time=runtime,
-        number_of_episodes=full_series['series'][
-                                   'number_of_episodes'],
-        number_of_seasons=full_series['series'][
-                                   'number_of_seasons'],
-        original_language=full_series['series'][
-                                   'original_language'],
-        overview=full_series['series']['overview'],
-        status=full_series['series']['status'],
-        type=full_series['series']['type'])
-
+    update_values = {
+        'in_production': full_series['series']['in_production'],
+        'first_air_date': full_series['series']['first_air_date'],
+        'last_air_date': full_series['series']['last_air_date'],
+        'episode_run_time': runtime,
+        'number_of_episodes': full_series['series']['number_of_episodes'],
+        'number_of_seasons': full_series['series']['number_of_seasons'],
+        'original_language': full_series['series']['original_language'],
+        'overview': full_series['series']['overview'],
+        'status': full_series['series']['status'],
+        'type': full_series['series']['type']
+    }
+    updated_series = models.Series.objects.update_or_create(
+        name=full_series['series']['name'],
+        tmdb_id=full_series['series']['id'],
+        defaults=update_values)
+    new_series = updated_series[0]
     posters = _get_posters(poster_path=full_series['series'][
                            'poster_path'])
-    if posters:
+    if (posters and
+            ('poster_large' in posters) and
+            ('poster_small' in posters)):
         temp_poster = BytesIO()
         posters['poster_large'][1].save(temp_poster, 'JPEG')
         temp_poster.seek(0)

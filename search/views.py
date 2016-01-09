@@ -2,7 +2,7 @@
 from django.shortcuts import get_object_or_404, get_list_or_404
 from django.http import HttpResponse, HttpRequest, JsonResponse
 # from django.core.urlresolvers import reverse
-from django.views.generic import TemplateView, FormView, ListView
+from django.views.generic import View, FormView, ListView
 from django.core.urlresolvers import reverse
 from watson import search as watson
 import tv.models as models
@@ -32,7 +32,8 @@ class SearchView(ListView):
             search_task = tasks.search_online.delay(query=self.query)
             self.task_id = search_task.task_id
             search_res = False
-
+        else:
+            self.task_id = False
         return search_res
 
     def get_context_data(self, **kwargs):
@@ -51,10 +52,11 @@ class SearchView(ListView):
         return context
 
 
-def search_status(task_id):
-    status = SearchView.search_online.AsyncResut(task_id)
-    response = JsonResponse({'status': status.status})
-    return response
+class SearchStatus(View):
+    def post(self, request):
+        status = SearchView.search_online.AsyncResut(task_id)
+        response = JsonResponse({'status': status.status})
+        return response
 
 
 class TestView(FormView):

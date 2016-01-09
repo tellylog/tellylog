@@ -1,11 +1,8 @@
 import time
-from celery import shared_task, chain, group, chord
+from celery import shared_task, chain, chord
 from tv import convert
 import tmdbcall as tmdb
 from celery import states
-import redis
-import tellylog.settings as s
-import search.status as status
 
 
 @shared_task()

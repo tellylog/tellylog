@@ -6,7 +6,10 @@
 </head>
 <body>
     {{ query }}
-    {{ task_id }}
+    {% if  task_id %}
+        {{ task_id }}
+    {% endif %}
+
     {% if object_list %}
         <ul>
             {% for series in object_list %}
@@ -15,5 +18,6 @@
         </ul>
 
     {% endif %}
+    <script src="//code.jquery.com/jquery-2.2.0.min.js"></script>
 </body>
 </html>
