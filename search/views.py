@@ -31,7 +31,7 @@ class SearchView(ListView):
         search_res = watson.search(self.query)
 
         if not search_res:
-            search_task = tasks.search_online.delay(query=self.query)
+            search_task = tasks.search_online(query=self.query)
             self.task_id = search_task.task_id
             search_res = False
         else:

@@ -18,11 +18,11 @@ def search_online(query, task_id=None):
         time.sleep(1)
     if api_series.status == states.SUCCESS:
         if api_series.result and api_series.result['total_results'] > 0:
-            print('Start Converting')
             to_convert = []
             for series in api_series.result['results']:
                 to_convert.append(chain(convert.get_full_series.s(series),
                                         convert._check_genres.s(),
                                         convert._check_countrys.s(),
                                         convert._process_full_series.s()))
-            return chord(to_convert)(search_ready.s())
+            converter = chord(to_convert)(search_ready.s())
+            return converter

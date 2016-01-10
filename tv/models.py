@@ -379,6 +379,7 @@ class Season(models.Model):
 
         verbose_name = "Season"
         verbose_name_plural = "Seasons"
+        ordering = ['number']
 
     def __str__(self):
         """
@@ -463,6 +464,7 @@ class Episode(models.Model):
 
         verbose_name = "Episode"
         verbose_name_plural = "Episodes"
+        ordering = ['-number']
 
     def __str__(self):
         """
