@@ -32,6 +32,10 @@ else:
     DEBUG = False
 
 
+RECAPTCHA_PUBLIC_KEY = os.environ['RECAPTCHA_PUBLIC_KEY']
+RECAPTCHA_PRIVATE_KEY = os.environ['RECAPTCHA_PRIVATE_KEY']
+
+
 ALLOWED_HOSTS = ['*', ]
 
 
@@ -48,6 +52,7 @@ INSTALLED_APPS = [
     'tmdbcall',
     'user',
     'main',
+    'captcha',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -171,6 +176,7 @@ LOGIN_URL = '/sign-in/'
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 # does exactly what it sounds like
+
 
 # Logging
 

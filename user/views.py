@@ -7,6 +7,7 @@ from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.views.generic import TemplateView
+import tellylog.settings as settings
 
 from user.forms import UserForm
 
@@ -16,6 +17,7 @@ def SignUp(request):
     Function that saves the given userinfo to the user database.
     """
     context = RequestContext(request)
+    context['recaptcha'] = settings.RECAPTCHA_PUBLIC_KEY
 
     registered = False
 

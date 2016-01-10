@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User
+from captcha.fields import ReCaptchaField
 from django import forms
 
 
@@ -11,6 +12,7 @@ class UserForm(forms.ModelForm):
         password (forms.CharField): Takes the users password(hidden on page).
     """
     password = forms.CharField(widget=forms.PasswordInput())
+    captcha = ReCaptchaField()
 
     class Meta:
         """
@@ -33,3 +35,7 @@ class UserForm(forms.ModelForm):
                 email=email).exclude(username=username).count():
             raise forms.ValidationError(u'Email addresses must be unique.')
         return email
+
+
+class FormWithCaptcha(forms.Form):
+    captcha = ReCaptchaField()
