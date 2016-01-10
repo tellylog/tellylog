@@ -12,6 +12,7 @@ import tellylog.settings as settings
 from user.forms import UserForm
 
 
+
 def SignUp(request):
     """
     Function that saves the given userinfo to the user database.

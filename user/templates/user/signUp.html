@@ -11,17 +11,19 @@
         enctype="multipart/form-data">
         {% csrf_token %}
         <div class="sign-in__input--signup">
-            {{ user_form.as_p }}
 
-        <div class="g-recaptcha" data-sitekey="{{ recaptcha }}"></div>
+            {{ user_form }}
 
+            <div class="g-recaptcha" data-sitekey="{{ recaptcha }}"></div>
+        
         <div class="sign-in__submit">
             <button type="submit">Sign up</button>
         </div>
-
-
-
         </div>
+
+
+
+
     </form>
 {% endif %}
 
