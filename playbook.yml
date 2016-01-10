@@ -70,18 +70,54 @@
       shell: echo "cd /vagrant" >> /home/vagrant/.bashrc
       when: checkbashrccd.rc == 1
 
+    - name: check if 'host al all all password' in pg_hba.conf
+      sudo: yes
+      command: grep -Fxq "host al all all password" /etc/postgresql/9.4/main/pg_hba.conf
+      register: checkpghba
+      always_run: True
+      ignore_errors: True
+      changed_when: False
+    - name: add 'host al all all password' to pg_hba.conf
+      sudo: yes
+      shell: echo "host al all all password" >> /etc/postgresql/9.4/main/pg_hba.conf
+      when: checkpghba.rc == 1
+
+    - name: check if 'listen_addresses = '*'' in postgresql.conf
+      sudo: yes
+      command: grep -Fxq "listen_addresses = '*'" /etc/postgresql/9.4/main/postgresql.conf
+      register: checkpgconf
+      always_run: True
+      ignore_errors: True
+      changed_when: False
+    - name: add 'listen_addresses = '*'' to postgresql.conf
+      sudo: yes
+      shell: echo "listen_addresses = '*'" >> /etc/postgresql/9.4/main/postgresql.conf
+      when: checkpgconf.rc == 1
+
+    - name: restart postgres
+      sudo: yes
+      command: service postgresql restart
+
     - name: source .bashrc
       always_run: yes
       shell: source /home/vagrant/.bashrc
       args:
         executable: /bin/bash
 
+    - name: check if pip is allready installed
+      shell: type pip >/dev/null 2>&1 || { echo >&2 "pip not installed"; exit 1; }
+      register: checkpip
+      always_run: True
+      ignore_errors: True
+      changed_when: False
     - name: download pip install script
       get_url: url=https://bootstrap.pypa.io/get-pip.py dest=/tmp/get-pip.py
+      when: checkpip.rc == 1
     - name: install pip
       shell: python3 ./get-pip.py
       args:
         chdir: /tmp
+      when: checkpip.rc == 1
 
     - name: install pip requirements
       pip: requirements=./requirements.txt chdir=/vagrant

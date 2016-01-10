@@ -10,5 +10,5 @@ media/
 dump.rdb
 .vagrant/
 static/*
-.vagrant/
 celeryd.pid
+
