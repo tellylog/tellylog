@@ -47,11 +47,8 @@ def SignIn(request):
         user = authenticate(username=username, password=password)
 
         if user:
-            if user.is_active:
-                login(request, user)
-                return HttpResponseRedirect('/overview/')
-            else:
-                return HttpResponse("Your tellylog account is disabled.")
+            login(request, user)
+            return HttpResponseRedirect('/overview/')
         else:
             print("Invalid login details: {0}, {1}".format(username, password))
             return HttpResponseRedirect('user:sign_in')
