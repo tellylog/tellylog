@@ -135,7 +135,7 @@ def _convert_season(tmdb_series_id, series_id, season_number, new_series):
     return False
 
 
-@shared_task()
+@shared_task(rate_limit='10/s')
 def _process_full_series(full_series):
     if not full_series:
         return False

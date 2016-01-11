@@ -30,12 +30,13 @@ class SearchView(ListView):
         self.query = self.get_query(self.request)
         search_res = watson.search(self.query)
 
-        if not search_res:
-            search_task = tasks.search_online(query=self.query)
+        search_task = tasks.search_online(query=self.query)
+        if search_task:
             self.task_id = search_task.task_id
-            search_res = False
         else:
             self.task_id = False
+        search_res = False
+
         return search_res
 
     def get_context_data(self, **kwargs):
@@ -52,9 +53,12 @@ class SearchView(ListView):
         context['query'] = self.query
         context['task_id'] = (self.task_id if
                               self.task_id is not None else False)
-        url = reverse('search:status')
-        url = self.request.build_absolute_uri(url)
-        context['status_url'] = url
+        status_url = reverse('search:status')
+        status_url = self.request.build_absolute_uri(status_url)
+        context['status_url'] = status_url
+        result_url = reverse('search:result')
+        result_url = self.request.build_absolute_uri(result_url)
+        context['result_url'] = result_url
         return context
 
 
@@ -63,6 +67,32 @@ class SearchStatus(View):
         task_id = request.POST['task_id']
         result = AsyncResult(task_id, app=app)
         response = JsonResponse({'status': result.status})
+        return response
+
+
+class SearchResult(View):
+    """docstring for SearchResult"""
+    def post(self, request):
+        query = request.POST['query']
+        # TODO JSON Serialize the Search results
+        search_res = watson.search(query)
+        if search_res.count() < 1:
+            response = JsonResponse({'search_res': False})
+        else:
+            search_res_list = []
+            for sres in search_res:
+                sres = sres.object
+                res = {}
+                res['name'] = sres.name
+                res['overview'] = sres.overview
+                res['year'] = (sres.first_air_date.year if
+                               sres.first_air_date else None)
+                res['genres'] = sres.get_genre_list()
+                res['poster'] = sres.poster_small.url
+                res['url'] = sres.get_absolute_url()
+                search_res_list.append(res)
+
+            response = JsonResponse({'search_res': search_res_list})
         return response
 
 

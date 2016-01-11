@@ -4,6 +4,7 @@ Attributes:
     TV_IMAGE_PATH (str): Path is appended to MEDIA_ROOT defined in settings
 """
 import datetime
+from django.utils import timezone
 from django.db import models
 from django.core.urlresolvers import reverse
 TV_IMAGE_PATH = 'tv/{type}/{category}/{size}'
@@ -296,6 +297,9 @@ class Series(models.Model):
         verbose_name = "Series"
         verbose_name_plural = "Series"
 
+    class UpdateMe(Exception):
+        pass
+
     def __str__(self):
         """Return a string representation of the Series.
 
@@ -322,8 +326,17 @@ class Series(models.Model):
             pass
         super(Series, self).save(*args, **kwargs)
 
+    def get_genre_list(self):
+        genre_res = self.genres.all()
+        genre_list = []
+        if not genre_res:
+            return genre_list
+        for genre in genre_res:
+            genre_list.append({'name': genre.name, 'id': genre.id})
+        return genre_list
+
     def update_needed(self):
-        if (self.last_update > datetime.datetime.now() -
+        if (self.last_update < timezone.now() -
                 datetime.timedelta(weeks=1)):
             return True
         else:

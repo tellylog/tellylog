@@ -20,5 +20,6 @@ from search import views
 urlpatterns = [
     url(r'^test/$', views.TestView.as_view(), name='test'),
     url(r'^status/$', views.SearchStatus.as_view(), name='status'),
+    url(r'^result/$', views.SearchResult.as_view(), name='result'),
     url(r'^$', views.SearchView.as_view(), name='search'),
 ]
