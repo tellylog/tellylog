@@ -8,6 +8,7 @@ var browserSync = require('browser-sync').create();
 var dest = 'frontdev/build/';
 var src = 'frontdev/src/';
 var bowerBase = src + 'bower/';
+var collect = 'static/';
 
 //concatenates js files
 gulp.task('js', function() {
@@ -20,7 +21,9 @@ gulp.task('js', function() {
 			'*'
 		]))
 		.pipe(plugins.concat('main.js'))
-		.pipe(gulp.dest(dest + 'javascript'));
+		.pipe(gulp.dest(dest + 'javascript'))
+		.pipe(plugins.uglify())
+		.pipe(gulp.dest(collect + 'javascript'));
 });
 
 //compiles sass files and autoprefixes the outgoing css
@@ -28,7 +31,7 @@ gulp.task('sass', function() {
 	var sassFiles = [src + 'sass/**/*.scss'];
 	return gulp.src(sassFiles)
 		.pipe(plugins.sass().on('error', plugins.sass.logError))
-		.pipe(plugins.autoprefixer('last 2 version', 'safari 5', 'ie 8', 'ie 9'))
+		.pipe(plugins.autoprefixer('last 2 version'))
 		.pipe(gulp.dest(dest + 'css'));
 });
 
@@ -45,7 +48,9 @@ gulp.task('css',  function(){
 		]))
 
 	.pipe(plugins.concat('main.css'))
-	.pipe(gulp.dest(dest + 'css'));
+	.pipe(gulp.dest(dest + 'css'))
+	.pipe(plugins.cssnano())
+	.pipe(gulp.dest(collect + 'css'));
 
 });
 
@@ -66,14 +71,16 @@ gulp.task('img', function() {
 	var imgFiles = [src + 'img/*'];
 
 	gulp.src(imgFiles)
-		.pipe(gulp.dest(dest + 'img'));
+		.pipe(gulp.dest(dest + 'img'))
+		.pipe(gulp.dest(collect + 'img'));
 });
 
 gulp.task('browserSyncStream', function(){
 	var cssFiles = [dest + 'css/*.css'];
 
 	gulp.src(cssFiles)
-		.pipe(browserSync.stream());
+		.pipe(browserSync.stream())
+		.pipe(gulp.dest(collect + 'fonts'));
 })
 
 gulp.task('compsass',function(callback) {
@@ -82,6 +89,12 @@ gulp.task('compsass',function(callback) {
 	                    callback);
 
 });
+
+gulp.task('icons', function(){
+	return gulp.src(bowerBase + 'font-awesome/fonts/**.*') 
+        .pipe(gulp.dest(dest + 'fonts'))
+        .pipe(gulp.dest(collect + 'fonts')); 
+	})
 
 //Watches everything and starts browser sync
 gulp.task('watch', function() {
@@ -97,4 +110,4 @@ gulp.task('watch', function() {
 	gulp.watch(src + "img/*", ['img']).on('change', browserSync.reload);
 });
 
-gulp.task('default', ['html', 'compsass', 'img', 'js']);
+gulp.task('default', ['html', 'compsass', 'img', 'js', 'icons']);
