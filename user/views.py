@@ -9,7 +9,7 @@ from django.core.urlresolvers import reverse
 from django.views.generic import TemplateView
 import tellylog.settings as settings
 
-from user.forms import UserForm
+from user.forms import UserForm, CaptchaForm
 
 
 
@@ -19,8 +19,8 @@ def SignUp(request):
     """
     context = RequestContext(request)
     context['recaptcha'] = settings.RECAPTCHA_PUBLIC_KEY
-
     registered = False
+    captcha = CaptchaForm()
 
     if request.method == 'POST':
         user_form = UserForm(data=request.POST)

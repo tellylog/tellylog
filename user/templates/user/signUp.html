@@ -13,17 +13,12 @@
         <div class="sign-in__input--signup">
 
             {{ user_form }}
+            {{ captcha_form }}
 
-            <div class="g-recaptcha" data-sitekey="{{ recaptcha }}"></div>
-        
+        </div>
         <div class="sign-in__submit">
             <button type="submit">Sign up</button>
         </div>
-        </div>
-
-
-
-
     </form>
 {% endif %}
 

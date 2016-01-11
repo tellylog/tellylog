@@ -25,6 +25,8 @@ class UserForm(forms.ModelForm):
         model = User
         fields = ('username', 'email', 'password')
 
+
+
     def clean_email(self):
         """
         Additional function to check if the given email adress is unique.
@@ -37,5 +39,5 @@ class UserForm(forms.ModelForm):
         return email
 
 
-class FormWithCaptcha(forms.Form):
+class CaptchaForm(forms.Form):
     captcha = ReCaptchaField()
