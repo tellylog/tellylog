@@ -12,7 +12,7 @@ class UserForm(forms.ModelForm):
         password (forms.CharField): Takes the users password(hidden on page).
     """
     password = forms.CharField(widget=forms.PasswordInput())
-    captcha = ReCaptchaField()
+    captcha = ReCaptchaField(attrs={'theme': 'clean'})
 
     class Meta:
         """

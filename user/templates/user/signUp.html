@@ -1,6 +1,4 @@
-<!--=include partials/head.html -->
 {% include "main/partials/head.html" %}
-<!--=include partials/header.html -->
 {% include "main/partials/header.html" %}
 
 {% if user.is_authenticated %}
@@ -13,7 +11,6 @@
         <div class="sign-in__input--signup">
 
             {{ user_form }}
-            {{ captcha_form }}
 
         </div>
         <div class="sign-in__submit">
@@ -22,5 +19,4 @@
     </form>
 {% endif %}
 
-<!--=include partials/footer.html -->
 {% include "main/partials/footer.html" %}
