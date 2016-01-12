@@ -2,8 +2,13 @@
     <header class="header">
         <div class="row">
             <div id="logo" class="header__logo">
-                <a href="{% url 'main:index' %}">tellylog</a>
+                {% if user.is_authenticated %}
+                    <a href="{% url 'main:overview' %}">tellylog</a>
+                {% else %}
+                    <a href="{% url 'main:index' %}">tellylog</a>
+                {% endif %}
             </div>
+            {% if user.is_authenticated %}
             <div id="nav-toggle" class="header__navtoggle">
                 <a class="js-menu-trigger sliding-panel-button">
                     <i class="fa fa-bars fa-lg"></i>
@@ -22,6 +27,7 @@
                 </form>
             </div>
         </div>
+
         <nav class="js-menu sliding-panel-content">
             <ul>
                 <li><a href="{% url 'main:overview' %}">Overview</a></li>
@@ -29,13 +35,21 @@
                 <li><a href="{% url 'main:dummy' %}">Watchlist</a></li>
                 <li><a href="{% url 'main:dummy' %}">Achivements</a></li>
                 <li><a href="{% url 'main:dummy' %}">Profile</a></li>
-                {% if user.is_authenticated %}
-                    <li><a href="{% url 'user:logout' %}">Logout</a></li>
-                {% else %}
-                    <li><a href="{% url 'user:sign_up' %}">Sign up</a></li>
-                {% endif %}
+                <li><a href="{% url 'user:logout' %}">Logout</a></li>
+
+
+
             </ul>
         </nav>
+        {% else %}
+        <div class="header__signup">
+            <a href="{% url 'user:sign_up' %}">
+                <button>
+                    Sign Up
+                </button>
+            </a>
+        </div>
+        {% endif %}
 
         <div class="js-menu-screen sliding-panel-fade-screen"></div>
     </header>

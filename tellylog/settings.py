@@ -20,6 +20,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 SECRET_KEY = os.environ['SECRET_KEY']
+NOCAPTCHA = True
 
 
 # Quick-start development settings - unsuitable for production
@@ -31,6 +32,10 @@ if 'DEBUG' in os.environ:
     DEBUG = os.environ['DEBUG']
 else:
     DEBUG = False
+
+
+RECAPTCHA_PUBLIC_KEY = os.environ['RECAPTCHA_PUBLIC_KEY']
+RECAPTCHA_PRIVATE_KEY = os.environ['RECAPTCHA_PRIVATE_KEY']
 
 
 ALLOWED_HOSTS = ['*', ]
@@ -53,6 +58,7 @@ INSTALLED_APPS = [
     'user',
     'main',
     'watchlog',
+    'captcha',
 ]
 
 MIDDLEWARE_CLASSES = [

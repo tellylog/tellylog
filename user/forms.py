@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User
+from captcha.fields import ReCaptchaField
 from django import forms
 
 
@@ -11,6 +12,7 @@ class UserForm(forms.ModelForm):
         password (forms.CharField): Takes the users password(hidden on page).
     """
     password = forms.CharField(widget=forms.PasswordInput())
+    captcha = ReCaptchaField(attrs={'theme': 'clean'})
 
     class Meta:
         """
@@ -23,6 +25,8 @@ class UserForm(forms.ModelForm):
         model = User
         fields = ('username', 'email', 'password')
 
+
+
     def clean_email(self):
         """
         Additional function to check if the given email adress is unique.
@@ -33,3 +37,7 @@ class UserForm(forms.ModelForm):
                 email=email).exclude(username=username).count():
             raise forms.ValidationError(u'Email addresses must be unique.')
         return email
+
+
+class CaptchaForm(forms.Form):
+    captcha = ReCaptchaField()

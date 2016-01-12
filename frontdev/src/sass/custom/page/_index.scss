@@ -15,19 +15,48 @@
             background-color: $base-font-color;
         }
         &--signup{
-            text-transform: capitalize;
+            @include span-columns(12 of 12);
+            @include pad();
+            @include omega();
+            text-align: center;
+            align-content: center;
+
+            @include media($medium-screen-up){
+                @include span-columns(6 of 12);
+                @include shift(3 of 12);
+                @include omega();
+                text-align: center;
+            }
+                input{
+                    border: 0;
+                    border-radius: 0;
+                    color: $base-background-color;
+                    font-weight: 600;
+                    background-color: $base-font-color;
+            }
+        }
+        &--captcha{
+            @include span-columns(4 of 6);
+            @include shift(1 of 6);
+
         }
     }
     &__submit{
         button{
             @include span-columns(4 of 10);
             @include shift(3 of 10);
+            @include pad();
+            margin-bottom: 3em;
             @include media($medium-screen-up){
                 @include span-columns(4 of 6);
                 @include shift(1 of 6)
             }
             border: 0;
             border-radius: 0;
+        }
+        &--signup{
+
+            text-align: center;
         }
     }
 }
@@ -62,5 +91,14 @@
     }
     @include media($large-screen-up){
         width: 30em;
+    }
+}
+.g-recaptcha{
+    div{
+        @include span-columns(6 of 6);
+        @include omega();
+        margin-left: auto;
+        margin-right: auto;
+        
     }
 }
