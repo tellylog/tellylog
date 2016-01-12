@@ -18,6 +18,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 
+
 SECRET_KEY = os.environ['SECRET_KEY']
 
 
@@ -45,6 +46,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'debug_toolbar',
+    'watson',
+    'tv',
+    'search',
     'tmdbcall',
     'user',
     'main',
@@ -161,6 +165,13 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+# Media ROOT
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+
+# Media URL
+
+MEDIA_URL = '/media/'
+
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
@@ -171,6 +182,7 @@ LOGIN_URL = '/user/sign-in/'
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 # does exactly what it sounds like
+
 
 # Logging
 
@@ -206,8 +218,18 @@ LOGGING = {
 
 # Celery
 
-BROKER_URL = 'redis://localhost:6379/0'
-CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
-CELERY_ACCEPT_CONTENT = ['json']
-CELERY_TASK_SERIALIZER = 'json'
-CELERY_RESULT_SERIALIZER = 'json'
+BROKER_URL = 'redis://127.0.0.1:6379/0'
+CELERY_RESULT_BACKEND = 'redis://127.0.0.1:6379/0'
+CELERY_ACCEPT_CONTENT = ['pickle']
+CELERY_TASK_SERIALIZER = 'pickle'
+CELERY_RESULT_SERIALIZER = 'pickle'
+CELERY_TIMEZONE = 'Europe/Vienna'
+CELERY_ENABLE_UTC = True
+
+# Redis
+
+REDIS = {
+    'HOST': '127.0.0.0.1',
+    'PORT': 6379,
+    'DB': 0,
+}

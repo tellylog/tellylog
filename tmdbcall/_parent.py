@@ -1,6 +1,6 @@
 """This file holds the Parent class which is used by the tmdbcall modules."""
-import os
-import tempfile
+from io import BytesIO
+from PIL import Image
 import requests
 import requests_cache
 from celery import shared_task
@@ -16,9 +16,7 @@ class _Parent(object):
 
     """
     The Parent class is a master class for all tmdbcall classes.
-
     It defines the base_uri, headers and params and base functions.
-
     Attributes:
         base_uri (str): Base URI to the TMDB API
         headers (dict): Base Headers, accept only json
@@ -34,11 +32,9 @@ class _Parent(object):
 
     # make_request is a celery task. it has a rate_limit
     @shared_task(filter=task_method, rate_limit='4/s')
-    def make_request(target, headers, params, json):
+    def make_request(target, headers, params, json=True):
         """Make a request to the given target.
-
         Either uses the given headers and params or the default ones.
-
         Args:
             target (str): Target URL for the request
             json (bool): If set to false, the request is returned and
@@ -49,17 +45,22 @@ class _Parent(object):
                 If none is given the default is used
         """
         try:
+            print('Making a request master')
             request = requests.get(
                 target, headers=headers, params=params)
             request.raise_for_status()
             if json:
+                print('It is from the json type master')
                 return request.json()
             else:
-                temp = tempfile.mkstemp()
-                poster = os.fdopen(temp[0], 'wb')
-                poster.write(request.content)
-                poster.close()
-                return temp[1]
+                print('It is from the image type master')
+                temp = Image.open(BytesIO(request.content))
+                poster = {
+                    'data': temp.tobytes(),
+                    'size': temp.size,
+                    'mode': temp.mode,
+                }
+                return poster
         except (
             requests.exceptions.RequestException, ValueError,
                 requests.exceptions.HTTPError,

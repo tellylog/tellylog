@@ -23,10 +23,6 @@ class Job(_Parent):
             bool: False if an error occurred
         """
         target = self.base_uri + self.URLS['job_list']
-        request = self.make_request.delay(
-            target=target, headers=self.headers, params=self.params, json=True)
-        try:
-            response = request.get()
-        except:
-            response = False
+        response = self.make_request.apply(kwargs={
+            'target': target, 'params': self.params, 'headers': self.headers})
         return response

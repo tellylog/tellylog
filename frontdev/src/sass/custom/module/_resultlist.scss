@@ -1,0 +1,58 @@
+.result-list{
+    @include span-columns(12 of 12);
+
+    &__divider{
+        border-width: .2em;
+    }
+
+    &__heading{
+
+        &--strong{
+            color: $chery;
+        }
+    }
+
+    &__info{
+        @include row();
+        @include omega();
+        @include pad(0 0 default 0);
+    }
+}
+
+.result{
+
+    @include row();
+    @include pad(1%);
+    margin-bottom: 1em;
+    background-color: $third-background-color;
+    &__image{
+        @include span-columns(4 of 12);
+        @include pad(0 2% 0 0);
+        @include media($medium-screen-up){
+            @include span-columns(2 of 12);
+        }
+
+    }
+    &__text{
+        @include span-columns(8 of 12);
+        @include omega();
+        @include media($medium-screen-up){
+            @include span-columns(10 of 12);
+        }
+
+    }
+    &__heading{
+        font-size: 1.3em;
+        margin-bottom: .2em;
+
+    }
+    &__subheading{
+        font-size: 1em;
+        font-style: italic;
+    }
+    &__description{
+        font-size: .9em;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+}
