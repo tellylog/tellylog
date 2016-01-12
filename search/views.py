@@ -1,15 +1,10 @@
 """This file holds the views of the search app."""
-from django.shortcuts import get_object_or_404, get_list_or_404
-from django.http import HttpResponse, HttpRequest, JsonResponse
-# from django.core.urlresolvers import reverse
-from django.views.generic import View, FormView, ListView
+from django.http import JsonResponse
+from django.views.generic import View, ListView
 from django.core.urlresolvers import reverse
 from watson import search as watson
 from celery.result import AsyncResult
 from tellylog.celery import app
-import tv.models as models
-import tmdbcall as tmdb
-from .forms import SearchForm
 import search.tasks as tasks
 
 
@@ -97,9 +92,3 @@ class SearchResult(View):
 
             response = JsonResponse({'search_res': search_res_list})
         return response
-
-
-class TestView(FormView):
-    template_name = "search/test.html"
-    form_class = SearchForm
-    form = SearchForm()

@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'tmdbcall',
     'user',
     'main',
+    'watchlog',
 ]
 
 MIDDLEWARE_CLASSES = [

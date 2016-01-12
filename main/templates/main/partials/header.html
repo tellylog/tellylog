@@ -10,9 +10,9 @@
                 </a>
             </div>
             <div class="header__searchbar">
-                <form method="get" action="search.html" class="searchbar" role="search">
+                <form method="get" action="{% url 'search:search' %}" class="searchbar" role="search">
                     <div class="searchbar__field">
-                        <input type="search" placeholder="Enter Search" />
+                        <input type="search" name="q" placeholder="Enter Search" />
                     </div>
                     <div class="searchbar__submit">
                         <button type="submit" class="searchbar__submit">
@@ -25,7 +25,7 @@
         <nav class="js-menu sliding-panel-content">
             <ul>
                 <li><a href="{% url 'main:overview' %}">Overview</a></li>
-                <li><a href="{% url 'main:dummy' %}">Watchlog</a></li>
+                <li><a href="{% url 'wlog:index' %}">Watchlog</a></li>
                 <li><a href="{% url 'main:dummy' %}">Watchlist</a></li>
                 <li><a href="{% url 'main:dummy' %}">Achivements</a></li>
                 <li><a href="{% url 'main:dummy' %}">Profile</a></li>

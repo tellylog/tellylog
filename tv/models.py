@@ -425,13 +425,6 @@ class Season(models.Model):
             pass
         super(Season, self).save(*args, **kwargs)
 
-    def update_needed(self):
-        if (self.last_update > datetime.datetime.now() -
-                datetime.timedelta(weeks=1)):
-            return True
-        else:
-            return False
-
 
 class Episode(models.Model):
 
@@ -489,13 +482,6 @@ class Episode(models.Model):
         return '%s Season %d Ep %d' % (self.series.name,
                                        self.season.number,
                                        self.number)
-
-    def update_needed(self):
-        if (self.last_update > datetime.datetime.now() -
-                datetime.timedelta(weeks=1)):
-            return True
-        else:
-            return False
 
 
 class Credit(models.Model):
