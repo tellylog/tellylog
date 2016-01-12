@@ -77,7 +77,7 @@ class SearchResult(View):
         # TODO JSON Serialize the Search results
         search_res = watson.search(query)
         if search_res.count() < 1:
-            response = JsonResponse({'search_res': False})
+            response = JsonResponse({'search_res': []})
         else:
             search_res_list = []
             for sres in search_res:
@@ -88,7 +88,10 @@ class SearchResult(View):
                 res['year'] = (sres.first_air_date.year if
                                sres.first_air_date else None)
                 res['genres'] = sres.get_genre_list()
-                res['poster'] = sres.poster_small.url
+                try:
+                    res['poster'] = sres.poster_large.url
+                except ValueError:
+                    res['poster'] = False
                 res['url'] = sres.get_absolute_url()
                 search_res_list.append(res)
 

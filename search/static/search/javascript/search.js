@@ -1,38 +1,76 @@
-var s
-var Search = {
-  settings: {
-    csrftoken: window.Cookies.get('csrftoken'),
-    task_id: window.Telly.task_id,
-    status_url: window.Telly.status_url,
-    result_url: window.Telly.result_url,
-    query: window.Telly.query
-  },
+;(function () {
+  var s
+  var Search = {
+    settings: {
+      csrftoken: window.Cookies.get('csrftoken'),
+      task_id: window.Telly.task_id,
+      status_url: window.Telly.status_url,
+      result_url: window.Telly.result_url,
+      query: window.Telly.query,
+      placeholder: window.Telly.placeholder,
+      result_list: $('#result-list'),
+      result_list_info: $('#result-list_info')
+    },
 
-  init: function () {
-    s = this.settings
-  },
+    init: function ($) {
+      s = this.settings
+    },
 
-  poll: function ($, number) {
-    if (number <= 300) {
+    poll: function ($, number) {
+      if (number <= 300) {
+        $.ajax({
+          url: s.status_url,
+          type: 'POST',
+          dataType: 'json',
+          data: {
+            task_id: s.task_id
+          },
+          beforeSend: function (xhr) {
+            xhr.setRequestHeader('X-CSRFToken', s.csrftoken)
+          }
+        })
+          .done(function (data) {
+            console.log(data)
+            if (data.status === 'PENDING') {
+              if (number <= 3) {
+                setTimeout(function () { Search.poll($, number) }, 1000)
+              } else {
+                setTimeout(function () { Search.poll($, number) }, 5000)
+              }
+            } else if (data.status === 'SUCCESS') {
+              Search.load_results($)
+            } else {
+              Search.search_error()
+            }
+            console.log('success')
+          })
+          .fail(function () {
+            console.log('error')
+          })
+          .always(function () {
+            console.log('complete')
+          })
+      } else {
+      }
+    },
+    search_error: function () {
+      s.result_list_info.replaceWith('There was an error with your search request. <i class="fa fa-frown-o"></i>')
+    },
+    load_results: function ($) {
       $.ajax({
-        url: s.status_url,
+        url: s.result_url,
         type: 'POST',
         dataType: 'json',
-        data: {
-          task_id: s.task_id
-        },
+        data: {query: s.query},
         beforeSend: function (xhr) {
           xhr.setRequestHeader('X-CSRFToken', s.csrftoken)
         }
       })
         .done(function (data) {
-          console.log(data)
-          if (data.status === 'PENDING') {
-            setTimeout(function () { Search.poll($, number) }, 5000)
-          } else if (data.status === 'SUCCESS') {
-            Search.load_results($)
+          if (data.search_res.length) {
+            Search.build_results($, data)
           } else {
-            Search.search_error()
+            Search.no_results($, data)
           }
           console.log('success')
         })
@@ -42,36 +80,44 @@ var Search = {
         .always(function () {
           console.log('complete')
         })
-    } else {
-    }
-  },
-  search_error: function () {
-    console.log('There was an error with your search request :(')
-  },
-  load_results: function ($) {
-    $.ajax({
-      url: s.result_url,
-      type: 'POST',
-      dataType: 'json',
-      data: {query: s.query},
-      beforeSend: function (xhr) {
-        xhr.setRequestHeader('X-CSRFToken', s.csrftoken)
+    },
+    build_results: function ($, data) {
+      var res_count = data.search_res.length
+      s.result_list_info.replaceWith('Your search returned ' + res_count + ' ' + ((res_count > 1) ? 'results' : 'result') + '.')
+      for (var i = 0; i < data.search_res.length; i++) {
+        var search_res = data.search_res[i]
+        var poster_url = (search_res.poster ? search_res.poster : s.placeholder)
+        var genre_str = ''
+        for (var j = 0; j < search_res.genres.length; j++) {
+          if (j === (search_res.genres.length - 1)) {
+            genre_str += search_res.genres[j].name
+          } else {
+            genre_str += search_res.genres[j].name + ', '
+          }
+        }
+        var result = $('<div class="result"><a class="result__link"><img class="result__image"></a><div class="result__text"><a class="result__link"><h1 class="result__heading"></h1></a><h2 class="result__subheading"></h2><p class="result__description"></p></div></div>')
+        $('.result__link', result).attr('href', search_res.url)
+        $('.result__image', result).attr('src', poster_url)
+        $('.result__heading', result).append(search_res.name + ' (' + search_res.year + ')')
+        $('.result__subheading', result).append(genre_str)
+        var description = search_res.overview
+        var maxLength = 240
+        var trimmedDescription = description.substr(0, maxLength)
+        trimmedDescription = trimmedDescription.substr(0, Math.min(trimmedDescription.length, trimmedDescription.lastIndexOf(' ')))
+        trimmedDescription += '...'
+        $('.result__description', result).append(trimmedDescription)
+        s.result_list.append(result)
       }
-    })
-      .done(function (data) {
-        console.log(data)
-        console.log('success')
-      })
-      .fail(function () {
-        console.log('error')
-      })
-      .always(function () {
-        console.log('complete')
-      })
+    },
+    no_results: function ($, data) {
+      s.result_list_info.replaceWith('Your search did not return any results. <i class="fa fa-frown-o"></i>')
+    }
   }
-}
 
-jQuery(document).ready(function ($) {
-  Search.init()
-  Search.poll($, 0)
-})
+  $(document).ready(function ($) {
+    if (window.Telly.task_id) {
+      Search.init()
+      Search.poll($, 0)
+    }
+  })
+})($)
