@@ -1,0 +1,92 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <title>tellylog</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+</head>
+<body>
+
+<div class="wrapper">
+    <header class="header">
+        <div class="row">
+            <div id="logo" class="header__logo">
+                <a href="index.html">tellylog</a>
+            </div>
+            <div id="nav-toggle" class="header__navtoggle">
+                <a class="js-menu-trigger sliding-panel-button">
+                    <i class="fa fa-bars fa-lg"></i>
+                </a>
+            </div>
+            <div class="header__searchbar">
+                <form method="get" action="{% url 'search:search' %}" class="searchbar" role="search">
+                    <div class="searchbar__field">
+                        <input type="search" name="q" placeholder="Enter Search" />
+                    </div>
+                    <div class="searchbar__submit">
+                        <button type="submit" class="searchbar__submit">
+                            <i class="fa fa-search fa-lg"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <nav class="js-menu sliding-panel-content">
+            <ul>
+                <li><a href="overview.html">Overview</a></li>
+                <li><a href="watchlog.html">Watchlog</a></li>
+                <li><a href="watchlist.html">Watchlist</a></li>
+                <li><a href="achivements.html">Achivements</a></li>
+                <li><a href="profile.html">Profile</a></li>
+                <li><a href="#">Logout</a></li>
+            </ul>
+        </nav>
+
+        <div class="js-menu-screen sliding-panel-fade-screen"></div>
+    </header>
+
+<div class="row  result-list" id="result-list">
+    <h1 class="result-list__heading">Search for: <strong class="result-list__heading--strong">{{ query }}</strong></h1>
+    {% if  task_id %}
+        <div class="result-list__info" id="result-list_info">
+            We are currently searching for your Query <i class="fa fa-television fa-spin"></i>
+        </div>
+    {% else %}
+        <div class="result-list__info">
+            Your search did not return any results. <i class="fa fa-frown-o"></i>
+        </div>
+    {% endif %}
+
+</div>
+            <div class="row">
+                <footer class="footer">
+                    <ul class="footer__linklist">
+                        <li class="footer__linkitem"><a class="footer__link" href="about.html">About</a></li>
+                        <li class="footer__linkitem"><a class="footer__link" href="help.html">Help</a></li>
+                        <li class="footer__linkitem"><a class="footer__link" href="contact.html">Contact</a></li>
+                    </ul>
+
+                    <div class="footer__info">
+                            Tellylog uses the TMDb API but is not endorsed or certified by TMDb.
+                    </div>
+                </footer>
+            </div>
+            {% if  task_id %}
+                <script type="text/javascript">
+                    window.Telly = {};
+                    window.Telly.task_id = "{{ task_id }}"
+                    window.Telly.status_url = "{{ status_url }}"
+                    window.Telly.result_url = "{{ result_url }}"
+                    window.Telly.query = "{{ query }}"
+                    window.Telly.placeholder = "{% static "img/placeholder.jpg" %}"
+                </script>
+            {% endif %}
+            <script type="text/javascript" src="{% static 'javascript/main.js' %}"></script>
+            {% if  task_id %}
+                <script src="{% static "search/javascript/search.js" %}"></script>
+            {% endif %}
+        </div>
+    </body>
+</html>

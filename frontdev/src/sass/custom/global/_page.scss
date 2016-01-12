@@ -1,0 +1,26 @@
+body{
+    background-color: $base-background-color;
+}
+.wrapper{
+    @include outer-container(100%);
+    @include media($medium-screen-up){
+        @include outer-container($max-width);
+
+    }
+
+}
+.row{
+    @include row();
+}
+
+.light{
+    background-color: $secondary-background-color;
+}
+
+.semilight{
+    background-color: $third-background-color;
+}
+.text-center{
+    text-align: center;
+}
+
