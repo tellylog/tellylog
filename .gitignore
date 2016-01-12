@@ -11,3 +11,4 @@ dump.rdb
 celeryd.pid
 .vagrant/
 static/*
+

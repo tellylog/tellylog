@@ -1,3 +1,4 @@
+<!--
 {% load staticfiles %}
 <link rel="stylesheet" type="text/css" href="{% static 'css.css' %}" />
 <!DOCTYPE html>
@@ -8,21 +9,60 @@
 
     <body>
         <h1>Register with tellylog</h1>
-        {% if is_authenticated %}
-            {% if registered %}
-                tellylog says: thank you for signing up!
-            {% else %}
-                tellylog says: sign up here!<br>
-                <form id="user_form" method="post" action="{% url 'user:sign_up' %}"
-                    enctype="multipart/form-data">
-                    {% csrf_token %}
-                    {{ user_form.as_p }}
-                    <input type="submit" name="submit" value="Sign Up"/>
-                </form>
-            {% endif %}
-        {% else %}
+        {% if user.is_authenticated %}
             You are already signed in!
+            <a href="{% url 'user:logout' %}">Logout</a>
+        {% else %}
+            tellylog says: sign up here!<br>
+            <form id="user_form" method="post" action="{% url 'user:sign_up' %}"
+                enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ user_form.as_p }}
+                <input type="submit" name="submit" value="Sign Up"/>
+            </form>
         {% endif %}
 
     </body>
 </html>
+-->
+<!--=include partials/head.html -->
+{% include "main/partials/head.html" %}
+<!--=include partials/header.html -->
+{% include "main/partials/header.html" %}
+
+{% if user.is_authenticated %}
+    You are already signed in!
+    <a href="{% url 'user:logout' %}">Logout</a>
+{% else %}
+    <form id="user_form" method="post" action="{% url 'user:sign_up' %}"
+        enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="sign-up">
+
+                <label class="sign-in__label" for="username">Username:</label>
+
+                <div class="sign-in__input sign-in__input--signup">
+                    <input type="text" name="username" id="username">
+                </div>
+
+                <label class="sign-in__label" for="email">Email:</label>
+
+                <div class="sign-in__input sign-in__input--signup">
+                    <input type="text" name="email" id="email">
+                </div>
+
+                <label class="sign-in__label" for="password">Password:</label>
+
+                <div class="sign-in__input sign-in__input--signup">
+                    <input type="text" name="password" input="hidden" id="password">
+                </div>
+
+
+            <input type="submit" name="submit" value="Sign Up"/>
+        </div>
+    </form>
+{% endif %}
+
+
+<!--=include partials/footer.html -->
+{% include "main/partials/footer.html" %}

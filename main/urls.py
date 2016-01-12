@@ -9,4 +9,6 @@ urlpatterns = [
     url(r'^about/$', views.About.as_view(), name='about'),
     url(r'^overview/$', login_required(TemplateView.as_view(
         template_name='main/overview.html')), name='overview'),
+    url(r'^dummy/$', views.Dummy.as_view(), name='dummy'),
+    url(r'^sign-in/$', views.SignIn.as_view(), name='signin'),
 ]

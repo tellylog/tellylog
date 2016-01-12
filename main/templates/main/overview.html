@@ -1,19 +1,71 @@
+<!--=include partials/head.html -->
+{% include "main/partials/head.html" %}
+<!--=include partials/header.html -->
+{% include "main/partials/header.html" %}
 {% load staticfiles %}
-<link rel="stylesheet" type="text/css" href="{% static 'css.css' %}" />
+<div class="row">
+    <div class="gallery">
+        <h2 class="gallery__heading"><a href="{% url 'main:dummy' %}">Watchlog</a></h2>
+        <p class="gallery__info">Your latest Watchlog entries:</p>
+        <div class="gallery__wrapper">
 
-<!DOCTYPE html>
-<html>
+            <div class="gallery__poster--small">
+                <a href=""><img class="gallery__image" src="{% static 'img/placeholder.jpg' %}" alt=""></a>
+            </div>
 
+            <div class="gallery__poster--small">
+                <a href=""><img class="gallery__image" src="{% static 'img/placeholder.jpg' %}" alt=""></a>
+            </div>
 
-<head>
-	<meta http-equiv="content-type" content="text/html; charset=utf-8">
-</head>
+            <div class="gallery__poster--small">
+                <a href=""><img class="gallery__image" src="{% static 'img/placeholder.jpg' %}" alt=""></a>
+            </div>
 
-<body>
-	<title>about</title>
-	Here we will create the overview page
-	<br>
-	<a href="{% url 'main:index' %}">Back to main</a>
-</body>
+            <div class="gallery__poster--small">
+                <a href=""><img class="gallery__image" src="{% static 'img/placeholder.jpg' %}" alt=""></a>
+            </div>
 
-</html>
+            <div class="gallery__poster--small">
+                <a href=""><img class="gallery__image gallery__image--small" src="{% static 'img/placeholder.jpg' %}" alt=""></a>
+            </div>
+
+            <div class="gallery__poster--small">
+                <a href=""><img class="gallery__image gallery__image--small" src="{% static 'img/placeholder.jpg' %}" alt=""></a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row semilight">
+    <div class="gallery">
+        <h2 class="gallery__heading"><a href="{% url 'main:dummy' %}">Watchlist</a></h2>
+        <p class="gallery__info">Your latest Watchlist entries:</p>
+        <div class="gallery__wrapper">
+            <div class="gallery__poster--small">
+                <a href=""><img class="gallery__image" src="{% static 'img/placeholder.jpg' %}" alt=""></a>
+            </div>
+
+            <div class="gallery__poster--small">
+                <a href=""><img class="gallery__image" src="{% static 'img/placeholder.jpg' %}" alt=""></a>
+            </div>
+
+            <div class="gallery__poster--small">
+                <a href=""><img class="gallery__image" src="{% static 'img/placeholder.jpg' %}" alt=""></a>
+            </div>
+
+            <div class="gallery__poster--small">
+                <a href=""><img class="gallery__image" src="{% static 'img/placeholder.jpg' %}" alt=""></a>
+            </div>
+
+            <div class="gallery__poster--small">
+                <a href=""><img class="gallery__image gallery__image--small" src="{% static 'img/placeholder.jpg' %}" alt=""></a>
+            </div>
+
+            <div class="gallery__poster--small">
+                <a href=""><img class="gallery__image gallery__image--small" src="{% static 'img/placeholder.jpg' %}" alt=""></a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--=include partials/footer.html -->
+{% include "main/partials/footer.html" %}

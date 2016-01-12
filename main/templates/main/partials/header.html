@@ -1,0 +1,41 @@
+<div class="wrapper">
+    <header class="header">
+        <div class="row">
+            <div id="logo" class="header__logo">
+                <a href="{% url 'main:index' %}">tellylog</a>
+            </div>
+            <div id="nav-toggle" class="header__navtoggle">
+                <a class="js-menu-trigger sliding-panel-button">
+                    <i class="fa fa-bars fa-lg"></i>
+                </a>
+            </div>
+            <div class="header__searchbar">
+                <form method="get" action="search.html" class="searchbar" role="search">
+                    <div class="searchbar__field">
+                        <input type="search" placeholder="Enter Search" />
+                    </div>
+                    <div class="searchbar__submit">
+                        <button type="submit" class="searchbar__submit">
+                            <i class="fa fa-search fa-lg"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <nav class="js-menu sliding-panel-content">
+            <ul>
+                <li><a href="{% url 'main:overview' %}">Overview</a></li>
+                <li><a href="{% url 'main:dummy' %}">Watchlog</a></li>
+                <li><a href="{% url 'main:dummy' %}">Watchlist</a></li>
+                <li><a href="{% url 'main:dummy' %}">Achivements</a></li>
+                <li><a href="{% url 'main:dummy' %}">Profile</a></li>
+                {% if user.is_authenticated %}
+                    <li><a href="{% url 'user:logout' %}">Logout</a></li>
+                {% else %}
+                    <li><a href="{% url 'user:sign_up' %}">Sign up</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+
+        <div class="js-menu-screen sliding-panel-fade-screen"></div>
+    </header>

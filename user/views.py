@@ -6,6 +6,7 @@ from django.shortcuts import render
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
+from django.views.generic import TemplateView
 
 from user.forms import UserForm
 
@@ -53,9 +54,9 @@ def SignIn(request):
                 return HttpResponse("Your tellylog account is disabled.")
         else:
             print("Invalid login details: {0}, {1}".format(username, password))
-            return HttpResponse("Invalid login details supplied.")
+            return HttpResponseRedirect('user:sign_in')
     else:
-        return render(request, 'user/signIn.html', {})
+        return render(request, 'user:sign_in', {})
 
 
 @login_required
@@ -68,3 +69,9 @@ def Logout(request):
     """
     logout(request)
     return HttpResponseRedirect(reverse('main:index'))
+
+
+class Profile(TemplateView):
+        template_name = "user/profile.html"
+
+        # def change_password():
