@@ -1,10 +1,11 @@
 {% include "main/partials/head.html" %}
 {% include "main/partials/header.html" %}
-
+<div class="row">
 {% if user.is_authenticated %}
     You are already signed in!
     <a href="{% url 'user:logout' %}">Logout</a>
 {% else %}
+
     <form id="user_form" method="post" action="{% url 'user:sign_up' %}"
         enctype="multipart/form-data">
         {% csrf_token %}
@@ -12,12 +13,13 @@
 
             {{ user_form }}
 
-        </div>
-        <div class="sign-in__submit">
-            <button type="submit">Sign up</button>  
-        </div>
 
+        <div class="sign-in__submit--signup">
+            <button type="submit">Sign up</button>
+        </div>
+</div>
     </form>
+</div>
 {% endif %}
 
 {% include "main/partials/footer.html" %}
