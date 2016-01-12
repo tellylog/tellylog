@@ -24,11 +24,14 @@ def SignUp(request):
 
     if request.method == 'POST':
         user_form = UserForm(data=request.POST)
+        password = request.POST.get('password')
+        repassword = request.POST.get('repassword')
 
-        if user_form.is_valid():
+        if user_form.is_valid() and password == repassword:
             user = user_form.save()
             user.set_password(user.password)
             user.save()
+            return HttpResponseRedirect('/overview/')
         else:
             print(user_form.errors)
     else:
@@ -53,8 +56,8 @@ def SignIn(request):
             login(request, user)
             return HttpResponseRedirect('/overview/')
         else:
-            print("Invalid login details: {0}, {1}".format(username, password))
-            return HttpResponseRedirect('user:sign_in')
+            return HttpResponseRedirect('/sign-in/')
+            print("Invalid login details.")
     else:
         return render(request, 'user:sign_in', {})
 

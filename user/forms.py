@@ -12,7 +12,13 @@ class UserForm(forms.ModelForm):
         password (forms.CharField): Takes the users password(hidden on page).
     """
     password = forms.CharField(widget=forms.PasswordInput())
+    repassword = forms.CharField(widget=forms.PasswordInput())
+    repassword.label = "Password repeat"
+    repassword.help_text = "please repeat your password"
+    repassword.errors = {'a': ("asf")}
     captcha = ReCaptchaField(attrs={'theme': 'clean'})
+    # captcha.label = ""
+
 
     class Meta:
         """
@@ -24,8 +30,14 @@ class UserForm(forms.ModelForm):
         """
         model = User
         fields = ('username', 'email', 'password')
-
-
+        labels = {
+            'username': ('Username'),
+            'email': ('Email'),
+            'password': ('Password'),
+        }
+        help_texts = {
+            # 'username': ('Some useful help text.'),
+        }
 
     def clean_email(self):
         """
@@ -37,6 +49,13 @@ class UserForm(forms.ModelForm):
                 email=email).exclude(username=username).count():
             raise forms.ValidationError(u'Email addresses must be unique.')
         return email
+
+    def password_repeat(self):
+        password = self.cleaned_data.get('password')
+        repassword = self.cleaned_data.get('repassword')
+        if password is not repassword:
+            raise forms.ValidationError(u'Password inputs did not match!')
+
 
 
 class CaptchaForm(forms.Form):
