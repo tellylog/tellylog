@@ -8,6 +8,9 @@ from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.views.generic import TemplateView
 import tellylog.settings as settings
+from django.shortcuts import get_object_or_404, get_list_or_404
+from django.contrib.auth.models import User
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from user.forms import UserForm, CaptchaForm
 
@@ -74,7 +77,18 @@ def Logout(request):
     return HttpResponseRedirect(reverse('main:index'))
 
 
-class Profile(TemplateView):
-        template_name = "user/profile.html"
+class Profile(LoginRequiredMixin, TemplateView):
+        model = User
+        template_name = 'user/profile.html'
 
-        # def change_password():
+        def post(request):
+            oldpw = request.POST.get('oldpw')
+            new_pw1 = request.POST.get('new_pw1')
+            new_pw2 = request.POST.get('new_pw2')
+            password = authenticate(password=oldpw)
+            if password and (new_pw1 is new_pw2):
+                User.set_password(new_pw1)
+                User.save()
+                return HttpResponseRedirect('/overview/')
+            else:
+                return HttpResponseRedirect('/sign-in/')

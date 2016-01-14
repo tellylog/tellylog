@@ -5,7 +5,10 @@
         <h1>Login to tellylog</h1>
 
         <div class="row">
-            {% if not user.is_authenticated %}
+            {% if user.is_authenticated %}
+            You are already signed in.
+            Back to <a href="{% main:overview %}">Overview</a>.
+            {% else %}
             <div class="row">
                 <form action="{% url 'user:sign_in' %}" method="post" class="sign-in" id="sign-in">
                     {% csrf_token %}
