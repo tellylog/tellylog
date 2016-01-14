@@ -1,0 +1,17 @@
+{% load staticfiles %}
+{% include "main/partials/head.html" %}
+{% include "main/partials/header.html" %}
+
+{% if watchlog %}
+    <ul>
+    {% for entry in watchlog %}
+        <li>{{ watchlog.episode.series.name }}</li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <h3>No entrys are present in your log.</h3>
+{% endif %}
+
+
+<script type="text/javascript" src="{% static 'javascript/main.js' %}"></script>
+{% include "main/partials/footer.html" %}

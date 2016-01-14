@@ -18,7 +18,6 @@ from django.conf.urls import url
 from watchlog import views
 
 urlpatterns = [
-    url(r'^/$', views.WatchlogListView.as_view(), name='index'),
-    # url(r'^log/$', views.WatchlogListView.as_view(), name='result'),
-    # url(r'^$', views.SearchView.as_view(), name='search'),
+    url(r'^$', views.WatchlogListView.as_view(), name='index'),
+    url(r'^log/$', views.Log.as_view(), name='log'),
 ]

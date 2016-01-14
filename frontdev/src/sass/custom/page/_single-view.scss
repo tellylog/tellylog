@@ -1,0 +1,22 @@
+.single-page{
+    @include pad();
+    &__heading{
+        font-size: 1.4em;
+        margin-bottom: .2em;
+    }
+    &__subheading{
+        font-size: 1.1em;
+        font-style: italic;
+        color: $chery;
+    }
+    &__controls{
+        @include span-columns(8 of 12)
+    }
+    &__img{
+        width: 100%;
+    }
+    &__poster{
+        @include span-columns(4 of 12);
+        @include omega();
+    }
+}

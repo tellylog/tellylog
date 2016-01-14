@@ -96,9 +96,7 @@ gulp.task('icons', function () {
 // Watches everything and starts browser sync
 gulp.task('watch', function () {
   browserSync.init({
-    server: {
-      baseDir: dest,
-    }
+    proxy: '127.0.0.1:8080'
   })
   gulp.watch(src + 'sass/**/*.scss', ['compsass'])
   gulp.watch(dest + 'css/**/*.css', ['browserSyncStream'])
