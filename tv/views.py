@@ -38,7 +38,7 @@ class SeriesView(TemplateView):
             episode__series_id=context['series_id']).count()
         context['wlog_seasons'] = {}
         for season in context['seasons']:
-            context['wlog_seasons'][season.number] = (
+            context['wlog_seasons'][season.id] = (
                 Watchlog.objects.filter(user_id=self.request.user.id,
                                         episode__season_id=season.id).count())
 

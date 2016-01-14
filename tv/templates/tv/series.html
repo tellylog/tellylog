@@ -19,7 +19,7 @@
                 </h2>
                 <div class="single-page__controls__btn">
                     {% if wlog and wlog == series.number_of_episodes %}
-                        <span class="log-btn log-btn--logged" data-id="{{ series.id }}" data-kind="series">
+                        <span id="log-series" class="log-btn log-btn--logged" data-id="{{ series.id }}" data-kind="series">
                             <i class="fa fa-calendar-check-o" ></i>
                         </span>
                     {% else %}
@@ -45,6 +45,7 @@
                 <li class="single-page__entry">
                     <a href="{{ season.get_absolute_url }}" class="single-page__entry__link">Season {{ season.number }}</a>
                     <div  class="single-page__entry__btn">
+
                     {% if wlog_seasons and wlog_seasons|access:season.id == season.episode_count %}
                         <span class="log-btn log-btn--logged" data-kind="season" data-id="{{ season.id }}">
                             <i class="fa fa-calendar-check-o" ></i>

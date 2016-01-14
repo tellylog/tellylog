@@ -22,7 +22,9 @@ gulp.task('js', function () {
     ]))
     .pipe(plugins.concat('main.js'))
     .pipe(gulp.dest(dest + 'javascript'))
+    .pipe(plugins.sourcemaps.init())
     .pipe(plugins.uglify())
+    .pipe(plugins.sourcemaps.write())
     .pipe(gulp.dest(collect + 'javascript'))
 })
 

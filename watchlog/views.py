@@ -32,9 +32,6 @@ class Log(LoginRequiredMixin, View):
             else:
                 rating = None
             user = request.user
-            print(kind)
-            print(given_id)
-            print(user)
             if kind == 'series':
                 episodes = list(Episode.objects.filter(series__id=given_id))
             elif kind == 'season':
@@ -52,12 +49,26 @@ class Log(LoginRequiredMixin, View):
                         new_entry[0].rating = rating
                     new_entry[0].save()
             return JsonResponse({'error': False})
-
-        else:
-            return JsonResponse({'error': True})
+        return JsonResponse({'error': True})
 
 
 class Unlog(LoginRequiredMixin, View):
     def post(self, request):
-        return JsonResponse({'error': False})
+        print(request.POST)
+        if 'kind' in request.POST and 'id' in request.POST:
+            kind = request.POST['kind']
+            given_id = request.POST['id']
+            user = request.user
 
+            if kind == 'series':
+                episodes = list(Episode.objects.filter(series__id=given_id))
+            elif kind == 'season':
+                episodes = list(Episode.objects.filter(season__id=given_id))
+            elif kind == 'episode':
+                episodes = list(Episode.objects.get(pk=given_id))
+            else:
+                return JsonResponse({'error': True})
+            for episode in episodes:
+                Watchlog.objects.filter(user=user, episode=episode).delete()
+            return JsonResponse({'error': False})
+        return JsonResponse({'error': True})
