@@ -5,6 +5,9 @@
     &--unlogged{
 
     }
+    &--logged{
+        color: $green;
+    }
 }
 .log-btn:hover{
     color: $light-chery;

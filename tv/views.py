@@ -5,19 +5,7 @@ from django.core.urlresolvers import reverse
 from django.views.generic import TemplateView
 # from django.utils import timezone
 from tv.models import Series, Season, Episode
-
-
-def index(request):
-    """Dummy function for developing.
-
-    Args:
-        request (TYPE): Description
-
-    Returns:
-        HttpResponse: Quote from Sherlock
-    """
-    return HttpResponse("'Anderson, don’t talk out loud. You lower the " +
-                        "IQ of the whole street.'-Sherlock")
+from watchlog.models import Watchlog
 
 
 class SeriesView(TemplateView):
@@ -45,6 +33,15 @@ class SeriesView(TemplateView):
             get_object_or_404(Series, pk=context['series_id'])
         context['seasons'] = get_list_or_404(Season,
                                              series_id=context['series_id'])
+        context['wlog'] = Watchlog.objects.filter(
+            user_id=self.request.user.id,
+            episode__series_id=context['series_id']).count()
+        context['wlog_seasons'] = {}
+        for season in context['seasons']:
+            context['wlog_seasons'][season.number] = (
+                Watchlog.objects.filter(user_id=self.request.user.id,
+                                        episode__season_id=season.id).count())
+
         context['genre_list'] = context['series'].get_genre_list()
         wlog_log_url = reverse('wlog:log')
         wlog_log_url = self.request.build_absolute_uri(wlog_log_url)
