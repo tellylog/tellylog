@@ -11,6 +11,9 @@
     }
     &__controls{
         @include span-columns(8 of 12)
+        &__btn{
+            font-size: 3em;
+        }
     }
     &__img{
         width: 100%;
@@ -19,4 +22,34 @@
         @include span-columns(4 of 12);
         @include omega();
     }
+    &__overview{
+        @include span-columns(12 of 12);
+        @include pad();
+        background-color: $bluegrey;
+    }
+    &__list{
+        @include span-columns(12 of 12);
+    }
+    &__entry{
+        @include span-columns(12 of 12);
+        @include pad(2%);
+        background-color: $bluegrey;
+        margin-bottom: 0.3em;
+        &__link{
+            @include span-columns(6 of 12);
+            text-align: left;
+            font-weight: bold;
+            color: $base-font-color;
+
+        }
+        &__link:hover{
+            color: $light-chery;
+        }
+        &__btn{
+            @include span-columns(6 of 12);
+            text-align: right;
+            font-size: 1.5em;
+        }
+    }
+
 }

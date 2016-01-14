@@ -16,24 +16,19 @@ $base-spacing: $base-line-height * 1em;
 $small-spacing: $base-spacing / 2;
 $base-z-index: 0;
 
+// Footer
+$footer-height: 90px;
+
+
 // Colors
-$dark-blue: #031634;
-$dark-green: #033649;
-$light-green: #036564;
-$brown: #cdb380;
-$light-brown: #e8ddcb;
-$blue: #477dca;
-$dark-gray: #333;
-$medium-gray: #999;
-$light-gray: #ddd;
-
-
 $dark-bluegrey: #2b2d42;
 $bluegrey: lighten($dark-bluegrey,10);
 $light-bluegrey: #8d99ae;
 $nearly-white: #edf2f4;
 $light-chery: #ef233c;
 $chery: #d90429;
+$greyish: darken($nearly-white, 20);
+$green: #a8dba8;
 
 // Font Colors
 $base-font-color: $nearly-white;

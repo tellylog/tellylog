@@ -1,7 +1,7 @@
 """This file holds the views of the tv app."""
 from django.shortcuts import get_object_or_404, get_list_or_404
 from django.http import HttpResponse  # HttpResponseRedirect
-# from django.core.urlresolvers import reverse
+from django.core.urlresolvers import reverse
 from django.views.generic import TemplateView
 # from django.utils import timezone
 from tv.models import Series, Season, Episode
@@ -45,6 +45,13 @@ class SeriesView(TemplateView):
             get_object_or_404(Series, pk=context['series_id'])
         context['seasons'] = get_list_or_404(Season,
                                              series_id=context['series_id'])
+        context['genre_list'] = context['series'].get_genre_list()
+        wlog_log_url = reverse('wlog:log')
+        wlog_log_url = self.request.build_absolute_uri(wlog_log_url)
+        context['wlog_log_url'] = wlog_log_url
+        wlog_unlog_url = reverse('wlog:unlog')
+        wlog_unlog_url = self.request.build_absolute_uri(wlog_unlog_url)
+        context['wlog_unlog_url'] = wlog_unlog_url
         return context
 
 

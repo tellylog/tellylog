@@ -23,29 +23,41 @@ class WatchlogListView(LoginRequiredMixin, ListView):
 
 
 class Log(LoginRequiredMixin, View):
-    def post(self):
-        if 'kind' in self.request.POST and 'id' in self.request.POST:
-            kind = self.request.POST['kind']
-            given_id = self.request.POST['id']
-            rating = self.request.POST['rating']
-            user = self.request.user
-            if kind is 'series':
+    def post(self, request):
+        if 'kind' in request.POST and 'id' in request.POST:
+            kind = request.POST['kind']
+            given_id = request.POST['id']
+            if 'rating' in request.POST:
+                rating = request.POST['rating']
+            else:
+                rating = None
+            user = request.user
+            print(kind)
+            print(given_id)
+            print(user)
+            if kind == 'series':
                 episodes = list(Episode.objects.filter(series__id=given_id))
-            elif kind is 'season':
+            elif kind == 'season':
                 episodes = list(Episode.objects.filter(season__id=given_id))
-            elif kind is 'episode':
+            elif kind == 'episode':
                 episodes = list(Episode.objects.get(pk=given_id))
             else:
                 return JsonResponse({'error': True})
 
             for episode in episodes:
-                new_entry = Watchlog(user=user, episode=episode)
-                if(rating >= 0):
-                    new_entry.rating = rating
-                new_entry.save()
+                new_entry = Watchlog.objects.get_or_create(user=user,
+                                                           episode=episode)
+                if not new_entry[1]:
+                    if((rating is not None) and (rating >= 0)):
+                        new_entry[0].rating = rating
+                    new_entry[0].save()
             return JsonResponse({'error': False})
 
         else:
             return JsonResponse({'error': True})
 
+
+class Unlog(LoginRequiredMixin, View):
+    def post(self, request):
+        return JsonResponse({'error': False})
 

@@ -13,6 +13,7 @@ class Watchlog(models.Model):
         verbose_name = "Watchlog"
         verbose_name_plural = "Watchlogs"
         ordering = ['added']
+        unique_together = ('episode', 'user',)
 
     def __str__(self):
         return '%s: %s %d/%d' % (self.user.username, self.episode.series.name,

@@ -1,0 +1,11 @@
+.log-btn{
+    color: $greyish;
+    cursor: pointer;
+    @include transition(color 0.5s);
+    &--unlogged{
+
+    }
+}
+.log-btn:hover{
+    color: $light-chery;
+}

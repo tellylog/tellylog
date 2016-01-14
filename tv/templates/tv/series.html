@@ -11,7 +11,16 @@
                     ({{ series.first_air_date.year }})
                 {% endif %}
                 </h1>
-                <h2 class="single-page__subheading">Genres, Genres</h2>
+                <h2 class="single-page__subheading">
+                    {% for genre in genre_list %}
+                        {{ genre.name }}
+                    {% endfor %}
+                </h2>
+                <div class="single-page__controls__btn">
+                    <span class="log-btn log-btn--unlogged" data-id="{{ series.id }}" data-kind="series">
+                        <i class="fa fa-calendar-check-o" ></i>
+                    </span>
+                </div>
             </div>
             <div class="single-page__poster">
             {% if series.poster_small %}
@@ -21,15 +30,26 @@
             {% endif %}
             </div>
             <p class="single-page__overview">{{ series.overview }}</p>
-
         </div>
         <div class="row">
             <ul class="single-page__list">
             {% for season in seasons %}
-                <li class="single-page__entry"><a href="{{ season.get_absolute_url }}" class="single-page__link">Season: {{ season.number }}</a> <input type="checkbox"></li>
+                <li class="single-page__entry">
+                    <a href="{{ season.get_absolute_url }}" class="single-page__entry__link">Season {{ season.number }}</a>
+                    <div  class="single-page__entry__btn">
+                        <span class="log-btn log-btn--unlogged" data-kind="season" data-id="{{ season.id }}">
+                            <i class="fa fa-calendar-check-o" ></i>
+                        </span>
+                    </div>
+                </li>
             {% endfor %}
             </ul>
         </div>
     </div>
+<script type="text/javascript">
+    window.Telly = {};
+    window.Telly.wlog_log_url = "{{ wlog_log_url }}"
+    window.Telly.wlog_unlog_url = "{{ wlog_unlog_url }}"
+</script>
 <script type="text/javascript" src="{% static 'javascript/main.js' %}"></script>
 {% include "main/partials/footer.html" %}
