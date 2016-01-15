@@ -1,6 +1,7 @@
 """This file holds the views of the watchlog app."""
 from django.shortcuts import get_object_or_404, get_list_or_404
 from django.http import JsonResponse
+from django.db.utils import IntegrityError
 from django.views.generic import View, ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from watchlog.models import Watchlog
@@ -30,45 +31,63 @@ class Log(LoginRequiredMixin, View):
             if 'rating' in request.POST:
                 rating = request.POST['rating']
             else:
-                rating = None
+                rating = 0
             user = request.user
             if kind == 'series':
-                episodes = list(Episode.objects.filter(series__id=given_id))
+                wlog_entrys = list(
+                    Watchlog.objects.filter(
+                        user=user,
+                        episode__series_id=given_id
+                        ).values_list('episode_id', flat=True))
+                episodes = list(
+                    Episode.objects.filter(
+                           series__id=given_id).exclude(id__in=wlog_entrys))
             elif kind == 'season':
-                episodes = list(Episode.objects.filter(season__id=given_id))
+                wlog_entrys = list(
+                    Watchlog.objects.filter(
+                        user=user,
+                        episode__season_id=given_id
+                        ).values_list('episode_id', flat=True))
+                episodes = list(
+                    Episode.objects.filter(
+                        season__id=given_id).exclude(id__in=wlog_entrys))
             elif kind == 'episode':
-                episodes = list(Episode.objects.get(pk=given_id))
+                wlog_entrys = Watchlog.objects.filter(
+                                user=user, episode_id=given_id)
+                if not wlog_entrys:
+                    episodes = list(Episode.objects.get(pk=given_id))
             else:
                 return JsonResponse({'error': True})
-
+            new_entrys = []
             for episode in episodes:
-                new_entry = Watchlog.objects.get_or_create(user=user,
-                                                           episode=episode)
-                if not new_entry[1]:
-                    if((rating is not None) and (rating >= 0)):
-                        new_entry[0].rating = rating
-                    new_entry[0].save()
+                new_entrys.append(Watchlog(user=user, episode=episode,
+                                           rating=rating))
+            try:
+                Watchlog.objects.bulk_create(new_entrys)
+            except IntegrityError:
+                return JsonResponse({'error': False})
             return JsonResponse({'error': False})
         return JsonResponse({'error': True})
 
 
 class Unlog(LoginRequiredMixin, View):
     def post(self, request):
-        print(request.POST)
         if 'kind' in request.POST and 'id' in request.POST:
             kind = request.POST['kind']
             given_id = request.POST['id']
             user = request.user
 
             if kind == 'series':
-                episodes = list(Episode.objects.filter(series__id=given_id))
+                episodes = Episode.objects.filter(
+                    series__id=given_id).values_list('id', flat=True)
             elif kind == 'season':
-                episodes = list(Episode.objects.filter(season__id=given_id))
+                episodes = Episode.objects.filter(
+                    season__id=given_id).values_list('id', flat=True)
             elif kind == 'episode':
-                episodes = list(Episode.objects.get(pk=given_id))
+                episodes = Episode.objects.get(
+                    pk=given_id).values_list('id', flat=True)
             else:
                 return JsonResponse({'error': True})
-            for episode in episodes:
-                Watchlog.objects.filter(user=user, episode=episode).delete()
+            Watchlog.objects.filter(user=user, episode__in=episodes).delete()
             return JsonResponse({'error': False})
         return JsonResponse({'error': True})

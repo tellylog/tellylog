@@ -80,6 +80,15 @@ class SeasonView(TemplateView):
         context['episodes'] = get_list_or_404(Episode,
                                               series_id=context['series_id'],
                                               season_id=context['season'].id)
+        context['wlog'] = Watchlog.objects.filter(
+            user_id=self.request.user.id,
+            episode__season_id=context['season'].id).count()
+        wlog_log_url = reverse('wlog:log')
+        wlog_log_url = self.request.build_absolute_uri(wlog_log_url)
+        context['wlog_log_url'] = wlog_log_url
+        wlog_unlog_url = reverse('wlog:unlog')
+        wlog_unlog_url = self.request.build_absolute_uri(wlog_unlog_url)
+        context['wlog_unlog_url'] = wlog_unlog_url
         return context
 
 

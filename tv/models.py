@@ -470,7 +470,7 @@ class Episode(models.Model):
 
         verbose_name = "Episode"
         verbose_name_plural = "Episodes"
-        ordering = ['-number']
+        ordering = ['number']
 
     def __str__(self):
         """

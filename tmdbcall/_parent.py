@@ -9,7 +9,7 @@ from ._logging import logger
 
 # The cache of requests is set to a redis Database named test_cache.
 # The cache is deleted after one hour (3600 Seconds).
-requests_cache.install_cache('tmdb_cache', backend='redis', expire_after=3600)
+requests_cache.install_cache('tmdb_cache', backend='redis', expire_after=86400)
 
 
 class _Parent(object):

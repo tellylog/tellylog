@@ -4,8 +4,8 @@
 {% include "main/partials/header.html" %}
 <body>
     <div class="single-page">
-        <div class="row">
-            <div class="single-page__controls">
+        <div class="row header">
+            <div class="single-page__meta">
                 <h1 class="single-page__heading">
                 {{ series.name }}
                 {% if series.first_air_date %}
@@ -17,17 +17,16 @@
                         {{ genre.name }}
                     {% endfor %}
                 </h2>
-                <div class="single-page__controls__btn">
+                <div class="single-page__controls">
                     {% if wlog and wlog == series.number_of_episodes %}
-                        <span id="log-series" class="log-btn log-btn--logged" data-id="{{ series.id }}" data-kind="series">
-                            <i class="fa fa-calendar-check-o" ></i>
+                        <span class=" log-btn log-btn--series log-btn--logged" title="Unlog the whole series" data-id="{{ series.id }}" data-kind="series">
+                            <i class="fa fa-eye" ></i>
                         </span>
                     {% else %}
-                        <span class="log-btn log-btn--unlogged" data-id="{{ series.id }}" data-kind="series">
-                            <i class="fa fa-calendar-o" ></i>
+                        <span class=" log-btn log-btn--series log-btn--unlogged" title="Log the whole series" data-id="{{ series.id }}" data-kind="series">
+                            <i class="fa fa-eye-slash" ></i>
                         </span>
                     {% endif %}
-
                 </div>
             </div>
             <div class="single-page__poster">
@@ -37,22 +36,29 @@
                 <img src="{% static "img/placeholder-small.jpg" %}" srcset="{% static "img/placeholder.jpg" %} 600w" alt="{{ series.name }} Poster Placeholder" class="single-page__img">
             {% endif %}
             </div>
-            <p class="single-page__overview">{{ series.overview }}</p>
+            <p class="single-page__overview">
+                {{ series.overview }}
+            </p>
+
         </div>
         <div class="row">
             <ul class="single-page__list">
             {% for season in seasons %}
                 <li class="single-page__entry">
-                    <a href="{{ season.get_absolute_url }}" class="single-page__entry__link">Season {{ season.number }}</a>
+                    <a href="{{ season.get_absolute_url }}" class="single-page__entry__link">Season {{ season.number }}
+                    {% if season.air_date %}
+                        ({{ season.air_date.year }})
+                    {% endif %}
+                    </a>
                     <div  class="single-page__entry__btn">
 
                     {% if wlog_seasons and wlog_seasons|access:season.id == season.episode_count %}
-                        <span class="log-btn log-btn--logged" data-kind="season" data-id="{{ season.id }}">
-                            <i class="fa fa-calendar-check-o" ></i>
+                        <span class="log-btn log-btn--season log-btn--logged" title="Unlog the whole season" data-kind="season" data-id="{{ season.id }}">
+                            <i class="fa fa-eye" ></i>
                         </span>
                     {% else %}
-                        <span class="log-btn log-btn--unlogged" data-kind="season" data-id="{{ season.id }}">
-                            <i class="fa fa-calendar-o" ></i>
+                        <span class="log-btn log-btn--season log-btn--unlogged" title="Log the whole season" data-kind="season" data-id="{{ season.id }}">
+                            <i class="fa fa-eye-slash" ></i>
                     {% endif %}
                     </div>
                 </li>

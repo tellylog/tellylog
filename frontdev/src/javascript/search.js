@@ -36,11 +36,11 @@
           .done(function (data) {
             if (data.status === 'PENDING') {
               if (number <= 5) {
-                setTimeout(function () { Search.poll($, number) }, 100)
+                setTimeout(function () { Search.poll($, ++number) }, 100)
               } else if (number <= 10) {
-                setTimeout(function () { Search.poll($, number) }, 500)
+                setTimeout(function () { Search.poll($, ++number) }, 500)
               } else {
-                setTimeout(function () { Search.poll($, number) }, 5000)
+                setTimeout(function () { Search.poll($, ++number) }, 5000)
               }
             } else if (data.status === 'SUCCESS') {
               Search.load_results()
