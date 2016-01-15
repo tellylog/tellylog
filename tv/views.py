@@ -83,6 +83,11 @@ class SeasonView(TemplateView):
         context['wlog'] = Watchlog.objects.filter(
             user_id=self.request.user.id,
             episode__season_id=context['season'].id).count()
+        context['wlog_episodes'] = {}
+        for episode in context['episodes']:
+            context['wlog_episodes'][episode.id] = (
+                Watchlog.objects.filter(user_id=self.request.user.id,
+                                        episode_id=episode.id).count())
         wlog_log_url = reverse('wlog:log')
         wlog_log_url = self.request.build_absolute_uri(wlog_log_url)
         context['wlog_log_url'] = wlog_log_url

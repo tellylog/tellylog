@@ -55,7 +55,8 @@ class Log(LoginRequiredMixin, View):
                 wlog_entrys = Watchlog.objects.filter(
                                 user=user, episode_id=given_id)
                 if not wlog_entrys:
-                    episodes = list(Episode.objects.get(pk=given_id))
+                    episodes = []
+                    episodes.append(Episode.objects.get(pk=given_id))
             else:
                 return JsonResponse({'error': True})
             new_entrys = []
@@ -84,8 +85,8 @@ class Unlog(LoginRequiredMixin, View):
                 episodes = Episode.objects.filter(
                     season__id=given_id).values_list('id', flat=True)
             elif kind == 'episode':
-                episodes = Episode.objects.get(
-                    pk=given_id).values_list('id', flat=True)
+                episode = Episode.objects.values('id').get(pk=given_id)
+                episodes = [episode['id']]
             else:
                 return JsonResponse({'error': True})
             Watchlog.objects.filter(user=user, episode__in=episodes).delete()

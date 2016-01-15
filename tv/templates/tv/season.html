@@ -7,13 +7,13 @@
         <div class="row header">
             <div class="single-page__meta">
                 <h1 class="single-page__heading">
-                {{ series.name }}
-                {% if series.first_air_date %}
-                    ({{ series.first_air_date.year }})
-                {% endif %}
+                    {{ season.name }}
+                    {% if season.air_date %}
+                        ({{ season.air_date.year }})
+                    {% endif %}
                 </h1>
                 <h2 class="single-page__subheading">
-                    {{ season.name }}
+                    <a href="{{ series.get_absolute_url }}">{{ series.name }}</a>
                 </h2>
                 <div class="single-page__controls">
                     {% if wlog and wlog == season.episode_count %}
@@ -37,19 +37,25 @@
 
         </div>
         <div class="row">
-            <ul class="single-page__list">
+            <ul class="single-page__list single-page__list--small">
             {% for episode in episodes %}
-                <li class="single-page__entry">
-                    <span class="single-page__entry__link">{{ episode.number }} {{ episode.name }}
-                    </span>
-                    <div  class="single-page__entry__btn">
+                <li class="single-page__entry single-page__entry--small">
+                    <div class="single-page__entry__number--small">
+                        {{ episode.number }}
+                    </div>
+                    <div class="single-page__entry__link--small">{{ episode.name }}
+                    {% if episode.air_date %}
+                        - {{ episode.air_date|date:"d.m.Y"}}
+                    {% endif %}
+                    </div>
+                    <div  class="single-page__entry__btn--small">
 
-                    {% if wlog_seasons and wlog_seasons|access:season.id == season.episode_count %}
-                        <span class="log-btn log-btn--episode log-btn--logged" title="Unlog episode" data-kind="episode" data-id="{{ episode.id }}">
+                    {% if wlog_episodes and wlog_episodes|access:episode.id == 1 %}
+                        <span class="log-btn log-btn--episode log-btn--logged" title="Unlog this episode" data-kind="episode" data-id="{{ episode.id }}">
                             <i class="fa fa-eye" ></i>
                         </span>
                     {% else %}
-                        <span class="log-btn log-btn--episode log-btn--unlogged" title="Log episode" data-kind="episode" data-id="{{ episode.id }}">
+                        <span class="log-btn log-btn--episode log-btn--unlogged" title="Log this episode" data-kind="episode" data-id="{{ episode.id }}">
                             <i class="fa fa-eye-slash" ></i>
                     {% endif %}
                     </div>
@@ -58,7 +64,11 @@
             </ul>
         </div>
     </div>
-
+<script type="text/javascript">
+    window.Telly = {};
+    window.Telly.wlog_log_url = "{{ wlog_log_url }}"
+    window.Telly.wlog_unlog_url = "{{ wlog_unlog_url }}"
+</script>
 <script type="text/javascript" src="{% static 'javascript/main.js' %}"></script>
 {% include "main/partials/footer.html" %}
 

@@ -12,6 +12,7 @@
           log_btn_logged: '.log-btn--logged',
           log_btn_series: '.log-btn--series',
           log_btn_seasons: '.log-btn--season',
+          log_btn_episodes: '.log-btn--episode',
           logged_icon: 'fa-eye',
           unlogged_icon: 'fa-eye-slash',
           log_season_str: 'Log the whole season',
@@ -103,11 +104,20 @@
           $(s.log_btn_series).removeClass('log-btn--unlogged').addClass('log-btn--logged')
           $(s.log_btn_series).prop('title', s.unlog_series_str)
         }
-
+        $(s.log_btn_episodes + s.log_btn_unlogged).each(function () {
+          $(this).prop('title', s.unlog_episode_str)
+          $(this).children('i').removeClass(s.unlogged_icon).addClass(s.logged_icon)
+          $(this).removeClass('log-btn--unlogged').addClass('log-btn--logged')
+        })
       } else if (kind === 'episode') {
         button.children('i').removeClass(s.unlogged_icon).addClass(s.logged_icon)
         button.removeClass('log-btn--unlogged').addClass('log-btn--logged')
         button.prop('title', s.unlog_episode_str)
+        if ($(s.log_btn_episodes).length === $(s.log_btn_logged).length) {
+          $(s.log_btn_seasons).children('i').removeClass(s.unlogged_icon).addClass(s.logged_icon)
+          $(s.log_btn_seasons).removeClass('log-btn--unlogged').addClass('log-btn--logged')
+          $(s.log_btn_seasons).prop('title', s.unlog_season_str)
+        }
       }
       Watchlog.bindUIActions()
     },
@@ -132,10 +142,18 @@
         $(s.log_btn_series).children('i').removeClass(s.logged_icon).addClass(s.unlogged_icon)
         $(s.log_btn_series).removeClass('log-btn--logged').addClass('log-btn--unlogged')
         $(s.log_btn_series).prop('title', s.log_series_str)
+        $(s.log_btn_episodes + s.log_btn_logged).each(function () {
+          $(this).prop('title', s.log_episode_str)
+          $(this).children('i').removeClass(s.logged_icon).addClass(s.unlogged_icon)
+          $(this).removeClass('log-btn--logged').addClass('log-btn--unlogged')
+        })
       } else if (kind === 'episode') {
-        button.children('i').removeClass(s.unlogged_icon).addClass(s.logged_icon)
-        button.removeClass('log-btn--unlogged').addClass('log-btn--logged')
+        button.children('i').removeClass(s.logged_icon).addClass(s.unlogged_icon)
+        button.removeClass('log-btn--logged').addClass('log-btn--unlogged')
         button.prop('title', s.log_episode_str)
+        $(s.log_btn_seasons).children('i').removeClass(s.logged_icon).addClass(s.unlogged_icon)
+        $(s.log_btn_seasons).removeClass('log-btn--logged').addClass('log-btn--unlogged')
+        $(s.log_btn_seasons).prop('title', s.log_season_str)
       }
       Watchlog.bindUIActions()
     }
