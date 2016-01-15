@@ -4,26 +4,12 @@
 {% include "main/partials/header.html" %}
 <p>
     Welcome to your profilepage {{ user.username }}!<br>
-    Your email adress is : {{user.email }}<br>
+    Your email adress is : {{ user.email }}<br>
     If you wish to change your password please use this form:
 </p>
     <form action="{% url 'user:profile' %}" method="post" class="sign-in" id="sign-in">
         {% csrf_token %}
-        <label class="sign-in__label" for="password">Old Password:</label>
-        <div class="sign-in__input">
-            <input type="password" name="oldpw" id="oldpw">
-        </div>
-
-        <label class="sign-in__label" for="new_pw1">New Password:</label>
-        <div class="sign-in__input">
-            <input type="password" name="new_pw1" id="newp_w1">
-        </div>
-
-        <label class="sign-in__label" for="new_pw2">Repeat new Password:</label>
-        <div class="sign-in__input">
-            <input type="password" name="new_pw2" id="new_pw2">
-        </div>
-
+        {{ form }}
         <div class="sign-in__submit">
             <button type="submit">Change PW</button>
         </div>

@@ -1,6 +1,9 @@
 from django.contrib.auth.models import User
 from captcha.fields import ReCaptchaField
+from django.contrib.auth.forms import PasswordChangeForm
+
 from django import forms
+
 
 
 class UserForm(forms.ModelForm):
@@ -57,6 +60,18 @@ class UserForm(forms.ModelForm):
             raise forms.ValidationError(u'Password inputs did not match!')
 
 
-
 class CaptchaForm(forms.Form):
     captcha = ReCaptchaField()
+
+class PWForm(PasswordChangeForm):
+    field['old_password'].label = "FUT"
+
+"""
+    class Meta:
+
+        form = PasswordChangeForm
+        fields = ('old_password', 'new_password1', 'new_password2')
+        labels = {
+            'old_password': ('FUT'),
+        }
+"""
