@@ -27,6 +27,17 @@
                             <i class="fa fa-eye-slash" ></i>
                         </span>
                     {% endif %}
+                    {% if wlog == 0 %}
+                        {% if wlist %}
+                            <span class="list-btn list-btn--listed" title="Remove from list" data-id="{{ series.id }}">
+                                <i class="fa fa-bookmark" ></i>
+                            </span>
+                        {% else %}
+                            <span class="list-btn list-btn--unlisted" title="Add to list" data-id="{{ series.id }}">
+                                <i class="fa fa-bookmark-o" ></i>
+                            </span>
+                        {% endif %}
+                    {% endif %}
                 </div>
             </div>
             <div class="single-page__poster">
@@ -70,6 +81,8 @@
     window.Telly = {};
     window.Telly.wlog_log_url = "{{ wlog_log_url }}"
     window.Telly.wlog_unlog_url = "{{ wlog_unlog_url }}"
+    window.Telly.wlist_list_url = "{{ wlist_list_url }}"
+    window.Telly.wlist_unlist_url = "{{ wlist_unlist_url }}"
 </script>
 <script type="text/javascript" src="{% static 'javascript/main.js' %}"></script>
 {% include "main/partials/footer.html" %}

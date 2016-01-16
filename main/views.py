@@ -1,12 +1,7 @@
 from django.views.generic import TemplateView
-from django.views.generic.edit import FormView
-from django.contrib.auth.decorators import login_required
-from django.utils.decorators import method_decorator
 from django.contrib.auth.mixins import LoginRequiredMixin
-
-from .forms import SignInForm
-from user.forms import UserForm
 from watchlog.models import Watchlog
+from watchlist.models import Watchlist
 
 
 class Index(TemplateView):
@@ -79,6 +74,8 @@ class Overview(LoginRequiredMixin, TemplateView):
         """
         user = self.request.user
         context = super(Overview, self).get_context_data(**kwargs)
+        context['wlist_list'] = list(Watchlist.objects.filter(
+            user=user).order_by('-added'))[:6]
         context['wlog_list'] = list(Watchlog.objects.filter(
             user=user).order_by(
             'episode__series', '-added').distinct('episode__series'))[:6]
