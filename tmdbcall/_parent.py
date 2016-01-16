@@ -45,15 +45,12 @@ class _Parent(object):
                 If none is given the default is used
         """
         try:
-            print('Making a request master')
             request = requests.get(
                 target, headers=headers, params=params)
             request.raise_for_status()
             if json:
-                print('It is from the json type master')
                 return request.json()
             else:
-                print('It is from the image type master')
                 temp = Image.open(BytesIO(request.content))
                 poster = {
                     'data': temp.tobytes(),

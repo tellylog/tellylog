@@ -311,21 +311,6 @@ class Series(models.Model):
     def get_absolute_url(self):
         return reverse('tv:series', kwargs={'series_id': str(self.id)})
 
-    def save(self, *args, **kwargs):
-        try:
-            this = Series.objects.get(id=self.id)
-            if this.poster_small != self.poster_small:
-                this.poster_small.delete()
-        except:
-            pass
-        try:
-            this = Series.objects.get(id=self.id)
-            if this.poster_large != self.poster_large:
-                this.poster_large.delete()
-        except:
-            pass
-        super(Series, self).save(*args, **kwargs)
-
     def get_genre_list(self):
         genre_res = self.genres.all()
         genre_list = []
@@ -409,21 +394,6 @@ class Season(models.Model):
             'season_number': self.number
         }
         return reverse('tv:season', kwargs=kwargs)
-
-    def save(self, *args, **kwargs):
-        try:
-            this = Season.objects.get(id=self.id)
-            if this.poster_small != self.poster_small:
-                this.poster_small.delete()
-        except:
-            pass
-        try:
-            this = Season.objects.get(id=self.id)
-            if this.poster_large != self.poster_large:
-                this.poster_large.delete()
-        except:
-            pass
-        super(Season, self).save(*args, **kwargs)
 
 
 class Episode(models.Model):
