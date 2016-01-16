@@ -57,6 +57,7 @@
     }
     &__entry{
         @include span-columns(12 of 12);
+        @include pad();
         background-color: $bluegrey;
         margin-bottom: 0.3em;
         &--small{
@@ -89,7 +90,7 @@
             }
         }
         &__link{
-            @include span-columns(5 of 12);
+            @include span-columns(6 of 12);
             text-align: left;
             font-weight: bold;
             color: $base-font-color;

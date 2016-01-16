@@ -32,7 +32,8 @@ class SeriesView(TemplateView):
         context['series'] = \
             get_object_or_404(Series, pk=context['series_id'])
         context['seasons'] = get_list_or_404(Season,
-                                             series_id=context['series_id'])
+                                             series_id=context['series_id'],
+                                             episode_count__gt=0)
         context['wlog'] = Watchlog.objects.filter(
             user_id=self.request.user.id,
             episode__series_id=context['series_id']).count()

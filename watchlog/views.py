@@ -12,15 +12,21 @@ class WatchlogListView(LoginRequiredMixin, ListView):
     model = Watchlog
     template_name = 'watchlog/watchlog.html'
     context_object_name = 'wlog_list'
-    paginate_by = 10
+    paginate_by = 12
 
     def get_queryset(self):
         user = self.request.user
-        watchlog = list(Watchlog.objects.filter(user__id=user.id))
-        if not watchlog:
-            return []
-        else:
-            return watchlog
+        watchlog = list(Watchlog.objects.filter(
+            user=user).order_by(
+            '-added'))
+        only_series = []
+        for wlog_entry in watchlog:
+            if wlog_entry.episode.series not in only_series:
+                only_series.append(wlog_entry.episode.series)
+        return only_series
+
+
+
 
 
 class Log(LoginRequiredMixin, View):

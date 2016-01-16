@@ -141,6 +141,9 @@ def _process_full_series(full_series):
         return False
     runtime = _calc_av_episode_runtime(
         full_series['series']['episode_run_time'])
+    if (full_series['series']['overview'] == 'null' or
+            full_series['series']['overview'] is None):
+        full_series['series']['overview'] = ''
     update_values = {
         'in_production': full_series['series']['in_production'],
         'first_air_date': full_series['series']['first_air_date'],
