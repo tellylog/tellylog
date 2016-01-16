@@ -63,10 +63,9 @@ class UserForm(forms.ModelForm):
 class CaptchaForm(forms.Form):
     captcha = ReCaptchaField()
 
-class PWForm(PasswordChangeForm):
-    field['old_password'].label = "FUT"
 
-"""
+class PWForm(PasswordChangeForm):
+
     class Meta:
 
         form = PasswordChangeForm
@@ -74,4 +73,3 @@ class PWForm(PasswordChangeForm):
         labels = {
             'old_password': ('FUT'),
         }
-"""
