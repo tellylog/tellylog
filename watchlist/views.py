@@ -1,6 +1,5 @@
 """This file holds the views of the watchlist app."""
 from django.http import JsonResponse
-from django.db.utils import IntegrityError
 from django.views.generic import View, ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from watchlist.models import Watchlist
