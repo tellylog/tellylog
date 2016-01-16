@@ -1,15 +1,19 @@
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response, render
 from django.template import RequestContext
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect, HttpResponse
-from django.shortcuts import render
-from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.views.generic import TemplateView
 import tellylog.settings as settings
+from django.shortcuts import get_object_or_404, get_list_or_404
+from django.contrib.auth.models import User
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic.edit import FormView
+# from django.contrib.auth.forms import PasswordChangeForm
 
-from user.forms import UserForm, CaptchaForm
+
+from user.forms import UserForm, CaptchaForm, PWForm
 
 
 
@@ -24,11 +28,14 @@ def SignUp(request):
 
     if request.method == 'POST':
         user_form = UserForm(data=request.POST)
+        password = request.POST.get('password')
+        repassword = request.POST.get('repassword')
 
-        if user_form.is_valid():
+        if user_form.is_valid() and password == repassword:
             user = user_form.save()
             user.set_password(user.password)
             user.save()
+            return HttpResponseRedirect('/overview/')
         else:
             print(user_form.errors)
     else:
@@ -53,8 +60,8 @@ def SignIn(request):
             login(request, user)
             return HttpResponseRedirect('/overview/')
         else:
-            print("Invalid login details: {0}, {1}".format(username, password))
-            return HttpResponseRedirect('user:sign_in')
+            return HttpResponseRedirect('/sign-in/')
+            print("Invalid login details.")
     else:
         return render(request, 'user:sign_in', {})
 
@@ -71,7 +78,11 @@ def Logout(request):
     return HttpResponseRedirect(reverse('main:index'))
 
 
-class Profile(TemplateView):
-        template_name = "user/profile.html"
+class Profile(LoginRequiredMixin, FormView):
+    template_name = 'user/profile.html'
+    form_class = PWForm
+    success_url = "/overview/"
+    model = User
 
-        # def change_password():
+    def get_form(self, form_class):
+        return form_class(self.request.user, **self.get_form_kwargs())

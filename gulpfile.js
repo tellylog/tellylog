@@ -106,5 +106,4 @@ gulp.task('watch', function () {
   gulp.watch(src + 'html/**/*.html', ['html']).on('change', browserSync.reload)
   gulp.watch(src + 'img/*', ['img']).on('change', browserSync.reload)
 })
-
 gulp.task('default', ['html', 'compsass', 'img', 'js', 'icons'])
