@@ -4,15 +4,15 @@
 
 <div class="row">
     <div class="gallery">
-        <h2 class="gallery__heading"><a href="{% url 'wlog:index' %}">Watchlog</a></h2>
-        <p class="gallery__info">Your latest Watchlog entries:</p>
+        <h2 class="gallery__heading"><a href="{% url 'wlist:index' %}">Watchlist</a></h2>
+        <p class="gallery__info">Your latest Watchlist entries:</p>
         <div class="gallery__wrapper">
-            {% if wlog_list %}
-                {% for wlog_entry in wlog_list %}
+            {% if wlist_list %}
+                {% for wlist_entry in wlist_list %}
                     <div class="gallery__poster">
-                        <a href="{{ wlog_entry.episode.series.get_absolute_url }}" title="{{ wlog_entry.episode.series.name }}">
-                    {% if wlog_entry.episode.series.poster_small %}
-                            <img src="{{ wlog_entry.episode.series.poster_small.url }}" srcset="{{ wlog_entry.episode.series.poster_large.url }} 600w" alt="{{ wlog_entry.episode.series.name }} Poster" class="gallery__image">
+                        <a href="{{ wlist_entry.series.get_absolute_url }}" title="{{ wlist_entry.series.name }}">
+                    {% if wlist_entry.series.poster_small %}
+                            <img src="{{ wlist_entry.series.poster_small.url }}" srcset="{{ wlist_entry.series.poster_large.url }} 600w" alt="{{ wlist_entry.series.name }} Poster" class="gallery__image">
                         {% else %}
                             <img src="{% static "img/placeholder-small.jpg" %}" srcset="{% static "img/placeholder.jpg" %} 600w" alt="{{ series.name }} Poster Placeholder" class="gallery__image">
                         {% endif %}
@@ -20,7 +20,7 @@
                     </div>
                 {% endfor %}
             {% else %}
-                <h3>No entrys are present in your log.</h3>
+                <h3>No entrys are present in your list.</h3>
             {% endif %}
 
         </div>

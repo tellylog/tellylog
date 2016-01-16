@@ -6,6 +6,7 @@ from django.views.generic import TemplateView
 # from django.utils import timezone
 from tv.models import Series, Season, Episode
 from watchlog.models import Watchlog
+from watchlist.models import Watchlist
 
 
 class SeriesView(TemplateView):
@@ -50,6 +51,19 @@ class SeriesView(TemplateView):
         wlog_unlog_url = reverse('wlog:unlog')
         wlog_unlog_url = self.request.build_absolute_uri(wlog_unlog_url)
         context['wlog_unlog_url'] = wlog_unlog_url
+        try:
+            context['wlist'] = Watchlist.objects.get(user=self.request.user,
+                                                     series_id=context[
+                                                         'series_id']
+                                                     )
+        except Watchlist.DoesNotExist:
+            context['wlist'] = False
+        wlist_list_url = reverse('wlist:list')
+        wlist_list_url = self.request.build_absolute_uri(wlist_list_url)
+        context['wlist_list_url'] = wlist_list_url
+        wlist_unlist_url = reverse('wlist:unlist')
+        wlist_unlist_url = self.request.build_absolute_uri(wlist_unlist_url)
+        context['wlist_unlist_url'] = wlist_unlist_url
         return context
 
 

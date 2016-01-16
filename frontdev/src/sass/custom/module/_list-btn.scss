@@ -1,0 +1,15 @@
+.list-btn{
+    color: $greyish;
+    cursor: pointer;
+    @include transition(color 0.5s);
+    &--unlisted:hover{
+        color: $green;
+        @include pulse();
+    }
+    &--listed{
+        color: $green;
+    }
+    &--listed:hover{
+        color: $light-chery;
+    }
+}

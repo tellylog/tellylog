@@ -58,10 +58,12 @@ INSTALLED_APPS = [
     'tv',
     'search',
     'tmdbcall',
+    'captcha',
     'user',
     'main',
     'watchlog',
-    'captcha',
+    'watchlist',
+
 ]
 
 MIDDLEWARE_CLASSES = [

@@ -1,4 +1,4 @@
-"""tellylog URL Configuration
+"""watchlog app URL Configuration.
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/1.9/topics/http/urls/
@@ -14,19 +14,11 @@ Including another URLconf
     2. Import the include() function: from django.conf.urls import url, include
     3. Add a URL to urlpatterns:  url(r'^blog/', include(blog_urls))
 """
-
-from django.conf import settings
-from django.conf.urls.static import static
-from django.conf.urls import url, include
-from django.contrib import admin
-
+from django.conf.urls import url
+from watchlist import views
 
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
-    url(r'^tv/', include('tv.urls', namespace='tv')),
-    url(r'^search/', include('search.urls', namespace='search')),
-    url(r'^', include('main.urls', namespace='main')),
-    url(r'^user/', include('user.urls', namespace='user')),
-    url(r'^watchlog/', include('watchlog.urls', namespace='wlog')),
-    url(r'^watchlist/', include('watchlist.urls', namespace='wlist')),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    url(r'^$', views.WatchlistListView.as_view(), name='index'),
+    url(r'^list/$', views.List.as_view(), name='list'),
+    url(r'^unlist/$', views.Unlist.as_view(), name='unlist'),
+]
