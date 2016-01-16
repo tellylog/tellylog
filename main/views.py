@@ -2,9 +2,11 @@ from django.views.generic import TemplateView
 from django.views.generic.edit import FormView
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .forms import SignInForm
 from user.forms import UserForm
+from watchlog.models import Watchlog
 
 
 class Index(TemplateView):
@@ -13,6 +15,22 @@ class Index(TemplateView):
     template_name : takes the given template and rendes it to the view.
     """
     template_name = "main/main.html"
+
+    def get_context_data(self, **kwargs):
+        """
+        Fill up the context array.
+
+        Args:
+            **kwargs: Parameters that where given to the view.
+
+        Returns:
+            dict: Context dictionary with all values.
+        """
+        context = super(Index, self).get_context_data(**kwargs)
+        context['wlog_list'] = list(Watchlog.objects.order_by(
+            '-episode__series', '-added').distinct('episode__series'))[:12]
+        context['wlog_list'].sort(key=lambda x: x.added, reverse=True)
+        return context
 
 
 class About(TemplateView):
@@ -23,8 +41,23 @@ class About(TemplateView):
     template_name = "main/about.html"
 
 
-@login_required(login_url='/user/sign-in/')
-class Overview(TemplateView):
+class Dummy(TemplateView):
+    """
+    Index View.
+    template_name : takes the given template and rendes it to the view.
+    """
+    template_name = "main/dummy.html"
+
+
+class SignIn(TemplateView):
+    """
+    Index View.
+    template_name : takes the given template and rendes it to the view.
+    """
+    template_name = "main/sign-in.html"
+
+
+class Overview(LoginRequiredMixin, TemplateView):
     """
     Overview View.
     template_name : takes the given template and rendes it to the view.
@@ -33,3 +66,21 @@ class Overview(TemplateView):
     login_url : is the url wich is taken when the user is not logged in.
     """
     template_name = "main/overview.html"
+
+    def get_context_data(self, **kwargs):
+        """
+        Fill up the context array.
+
+        Args:
+            **kwargs: Parameters that where given to the view.
+
+        Returns:
+            dict: Context dictionary with all values.
+        """
+        user = self.request.user
+        context = super(Overview, self).get_context_data(**kwargs)
+        context['wlog_list'] = list(Watchlog.objects.filter(
+            user=user).order_by(
+            'episode__series', '-added').distinct('episode__series'))[:6]
+        context['wlog_list'].sort(key=lambda x: x.added, reverse=True)
+        return context

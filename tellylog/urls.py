@@ -27,4 +27,5 @@ urlpatterns = [
     url(r'^search/', include('search.urls', namespace='search')),
     url(r'^', include('main.urls', namespace='main')),
     url(r'^user/', include('user.urls', namespace='user')),
+    url(r'^watchlog/', include('watchlog.urls', namespace='wlog')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -9,7 +9,7 @@ from ._logging import logger
 
 # The cache of requests is set to a redis Database named test_cache.
 # The cache is deleted after one hour (3600 Seconds).
-requests_cache.install_cache('tmdb_cache', backend='redis', expire_after=3600)
+requests_cache.install_cache('tmdb_cache', backend='redis', expire_after=86400)
 
 
 class _Parent(object):
@@ -45,15 +45,12 @@ class _Parent(object):
                 If none is given the default is used
         """
         try:
-            print('Making a request master')
             request = requests.get(
                 target, headers=headers, params=params)
             request.raise_for_status()
             if json:
-                print('It is from the json type master')
                 return request.json()
             else:
-                print('It is from the image type master')
                 temp = Image.open(BytesIO(request.content))
                 poster = {
                     'data': temp.tobytes(),

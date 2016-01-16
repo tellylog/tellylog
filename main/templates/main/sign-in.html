@@ -1,0 +1,32 @@
+{% load staticfiles %}
+{% include "main/partials/head.html" %}
+{% include "main/partials/header.html" %}
+        <h1>Login to tellylog</h1>
+
+        <div class="row">
+            {% if user.is_authenticated %}
+                You are already signed in.
+                Back to <a href="{% url 'main:overview' %}">Overview</a>.
+            {% else %}
+            <div class="row">
+                <form action="{% url 'user:sign_in' %}" method="post" class="sign-in" id="sign-in">
+                    {% csrf_token %}
+                    <h2 class="text-center">Sign in</h2>
+                    <label class="sign-in__label" for="username">Username</label>
+                    <div class="sign-in__input">
+                        <input type="text" name="username" id="username">
+                    </div>
+                    <label class="sign-in__label" for="password">Password</label>
+                    <div class="sign-in__input">
+                        <input type="password" name="password" id="password">
+                    </div>
+                    <div class="sign-in__submit">
+                        <button type="submit">Sign in</button>
+                    </div>
+                </form>
+            </div>
+            {% endif %}
+        </div>
+
+<script type="text/javascript" src="{% static 'javascript/main.js' %}"></script>
+{% include "main/partials/footer.html" %}

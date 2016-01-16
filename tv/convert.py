@@ -5,6 +5,7 @@ import PIL
 from tmdbcall.tv import TV
 from tmdbcall.poster import Poster
 from tv import models
+from django.db import transaction
 from django.core.files.base import ContentFile
 from celery import shared_task
 from celery import states
@@ -41,10 +42,11 @@ def _check_countrys(full_series):
     if ('origin_country' in full_series['series'] and
             type(full_series['series']['origin_country']) == list):
         for country in full_series['series']['origin_country']:
-            db_country = models.Country.objects.get_or_create(name=country,
-                                                              defaults={
-                                                               'name': country
-                                                              })
+            default_values = {'name': country}
+            db_country = (
+                models.Country.objects.get_or_create(name=country,
+                                                     defaults=default_values))
+
             if type(db_country) is tuple:
                 country_list.append(db_country[0])
             else:
@@ -85,6 +87,7 @@ def _get_posters(poster_path):
     return False
 
 
+@transaction.atomic
 def _convert_season(tmdb_series_id, series_id, season_number, new_series):
     tmdb_tv = TV()
     full_season = tmdb_tv.get_season_info_by_number(tmdb_series_id,
@@ -94,53 +97,68 @@ def _convert_season(tmdb_series_id, series_id, season_number, new_series):
     if full_season.status == states.SUCCESS:
         full_season = full_season.result
         if full_season:
-            new_season = models.Season(number=full_season['season_number'],
-                                       air_date=full_season['air_date'],
-                                       name=full_season['name'],
-                                       tmdb_id=full_season['id'],
-                                       episode_count=len(
-                                           full_season['episodes']),
-                                       series=new_series
-                                       )
-            posters = _get_posters(poster_path=full_season['poster_path'])
-            if posters:
+            update_values = {
+                'air_date': full_season['air_date'],
+                'name': full_season['name'],
+                'episode_count': len(full_season['episodes'])
+            }
+            updated_season = models.Season.objects.update_or_create(
+                number=season_number,
+                tmdb_id=full_season['id'],
+                series=new_series,
+                defaults=update_values)
+            new_season = updated_season[0]
+
+            if not new_season.poster_large:
+                posters = _get_posters(poster_path=full_season['poster_path'])
+            else:
+                posters = False
+            if (posters and
+                ('poster_large' in posters) and
+                    ('poster_small' in posters)):
                 temp_poster = BytesIO()
                 posters['poster_large'][1].save(temp_poster, 'JPEG')
                 temp_poster.seek(0)
                 new_season.poster_large.save(
-                                         posters['poster_large'][0] + '.jpg',
-                                         ContentFile(temp_poster.read()),
-                                         save=False)
+                    posters['poster_large'][0] + '.jpg',
+                    ContentFile(temp_poster.read()),
+                    save=False)
                 temp_poster.close()
                 temp_poster = BytesIO()
                 posters['poster_small'][1].save(temp_poster, 'JPEG')
                 temp_poster.seek(0)
                 new_season.poster_small.save(
-                                         posters['poster_small'][0] + '.jpg',
-                                         ContentFile(temp_poster.read()),
-                                         save=False)
+                    posters['poster_small'][0] + '.jpg',
+                    ContentFile(temp_poster.read()),
+                    save=False)
                 temp_poster.close()
             new_season.save()
             for episode in full_season['episodes']:
-                new_episode = models.Episode(name=episode['name'],
-                                             air_date=episode['air_date'],
-                                             tmdb_id=episode['id'],
-                                             overview=episode['overview'],
-                                             number=episode['episode_number'],
-                                             series=new_series,
-                                             season=new_season
-                                             )
-                new_episode.save()
+                update_episode_values = {
+                    'name': episode['name'],
+                    'air_date': episode['air_date'],
+                    'overview': episode['overview'],
+                }
+                models.Episode.objects.update_or_create(
+                    tmdb_id=episode['id'],
+                    number=episode['episode_number'],
+                    series=new_series,
+                    season=new_season,
+                    defaults=update_episode_values)
             return True
     return False
 
 
-@shared_task(rate_limit='10/s')
+@shared_task
+@transaction.atomic
 def _process_full_series(full_series):
     if not full_series:
         return False
     runtime = _calc_av_episode_runtime(
         full_series['series']['episode_run_time'])
+    if (full_series['series']['overview'] == 'null' or
+            full_series['series']['overview'] is None):
+        full_series['series']['overview'] = ''
     update_values = {
         'in_production': full_series['series']['in_production'],
         'first_air_date': full_series['series']['first_air_date'],
@@ -158,8 +176,11 @@ def _process_full_series(full_series):
         tmdb_id=full_series['series']['id'],
         defaults=update_values)
     new_series = updated_series[0]
-    posters = _get_posters(poster_path=full_series['series'][
-                           'poster_path'])
+    if not new_series.poster_large:
+        posters = _get_posters(poster_path=full_series['series'][
+                               'poster_path'])
+    else:
+        posters = False
     if (posters and
             ('poster_large' in posters) and
             ('poster_small' in posters)):

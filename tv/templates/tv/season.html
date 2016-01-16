@@ -1,21 +1,74 @@
 {% load staticfiles %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Series</title>
-</head>
+{% load dictionary_extras %}
+{% include "main/partials/head.html" %}
+{% include "main/partials/header.html" %}
 <body>
-    {{ series.name }} <br>
-    Season {{ season.number }} <br>
-    {% if season.poster_small %}
-        <img src="{% static season.poster_small.url %}" alt="">
-    {% endif %}
+    <div class="single-page">
+        <div class="row header">
+            <div class="single-page__meta">
+                <h1 class="single-page__heading">
+                    {{ season.name }}
+                    {% if season.air_date %}
+                        ({{ season.air_date.year }})
+                    {% endif %}
+                </h1>
+                <h2 class="single-page__subheading">
+                    <a href="{{ series.get_absolute_url }}">{{ series.name }}</a>
+                </h2>
+                <div class="single-page__controls">
+                    {% if wlog and wlog == season.episode_count %}
+                        <span class=" log-btn log-btn--season log-btn--logged" title="Unlog the whole season" data-id="{{ season.id }}" data-kind="season">
+                            <i class="fa fa-eye" ></i>
+                        </span>
+                    {% else %}
+                        <span class=" log-btn log-btn--season log-btn--unlogged" title="Log the whole season" data-id="{{ season.id }}" data-kind="season">
+                            <i class="fa fa-eye-slash" ></i>
+                        </span>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="single-page__poster">
+            {% if season.poster_small %}
+                <img src="{{ season.poster_small.url }}" srcset="{{ season.poster_large.url }} 600w" alt="{{ season.name }} Poster" class="single-page__img">
+            {% else %}
+                <img src="{% static "img/placeholder-small.jpg" %}" srcset="{% static "img/placeholder.jpg" %} 600w" alt="{{ series.name }} Poster Placeholder" class="single-page__img">
+            {% endif %}
+            </div>
 
-    <ul>
-    {% for episode in episodes %}
-        <li>{{ episode.name }} <input type="checkbox"></li>
-    {% endfor %}
-    </ul>
-</body>
-</html>
+        </div>
+        <div class="row">
+            <ul class="single-page__list single-page__list--small">
+            {% for episode in episodes %}
+                <li class="single-page__entry single-page__entry--small">
+                    <div class="single-page__entry__number--small">
+                        {{ episode.number }}
+                    </div>
+                    <div class="single-page__entry__link--small">{{ episode.name }}
+                    {% if episode.air_date %}
+                        - {{ episode.air_date|date:"d.m.Y"}}
+                    {% endif %}
+                    </div>
+                    <div  class="single-page__entry__btn--small">
+
+                    {% if wlog_episodes and wlog_episodes|access:episode.id == 1 %}
+                        <span class="log-btn log-btn--episode log-btn--logged" title="Unlog this episode" data-kind="episode" data-id="{{ episode.id }}">
+                            <i class="fa fa-eye" ></i>
+                        </span>
+                    {% else %}
+                        <span class="log-btn log-btn--episode log-btn--unlogged" title="Log this episode" data-kind="episode" data-id="{{ episode.id }}">
+                            <i class="fa fa-eye-slash" ></i>
+                    {% endif %}
+                    </div>
+                </li>
+            {% endfor %}
+            </ul>
+        </div>
+    </div>
+<script type="text/javascript">
+    window.Telly = {};
+    window.Telly.wlog_log_url = "{{ wlog_log_url }}"
+    window.Telly.wlog_unlog_url = "{{ wlog_unlog_url }}"
+</script>
+<script type="text/javascript" src="{% static 'javascript/main.js' %}"></script>
+{% include "main/partials/footer.html" %}
+

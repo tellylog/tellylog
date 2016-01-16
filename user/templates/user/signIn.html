@@ -1,32 +1,31 @@
 {% load staticfiles %}
-<link rel="stylesheet" type="text/css" href="{% static 'css.css' %}" />
-<!DOCTYPE html>
-<html>
-
-    <head>
-        <title>sign in</title>
-    </head>
-
-    <body>
+{% include "main/partials/head.html" %}
+{% include "main/partials/header.html" %}
         <h1>Login to tellylog</h1>
 
-        {% if user.is_authenticated %}
-            You are logged in, to log out click:
-            <a href="{% url 'user:logout' %}">Logout</a>
-    	{% else %}
-    		<form id="login_form" method="post" action="{% url 'user:sign_in' %}">
-    			{% csrf_token %} Username:
-    			<input type="text" name="username" value="" size="50" />
-    			<br /> Password:
-    			<input type="password" name="password" value="" size="50" />
-    			<br />
+        <div class="row">
+            {% if user.is_authenticated %}
+            You are already signed in.
+            Back to <a href="{% main:overview %}">Overview</a>.
+            {% else %}
+            <div class="row">
+                <form action="{% url 'user:sign_in' %}" method="post" class="sign-in" id="sign-in">
+                    {% csrf_token %}
+                    <h2 class="text-center">Sign in</h2>
+                    <label class="sign-in__label" for="username">Username</label>
+                    <div class="sign-in__input">
+                        <input type="text" name="username" id="username">
+                    </div>
+                    <label class="sign-in__label" for="password">Password</label>
+                    <div class="sign-in__input">
+                        <input type="password" name="password" id="password">
+                    </div>
+                    <div class="sign-in__submit">
+                        <button type="submit">Sign in</button>
+                    </div>
+                </form>
+            </div>
+            {% endif %}
+        </div>
 
-    			<input type="submit" value="submit" />
-    		</form>
-            If you wish to sign up click: <a href="{% url 'user:sign_up' %}">Here</a><br>
-
-    	{% endif %}
-        <br>Back to main, click: <a href="{% url 'main:index' %}">Here</a>
-    </body>
-
-</html>
+{% include "main/partials/footer.html" %}

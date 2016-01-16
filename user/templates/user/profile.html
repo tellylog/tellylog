@@ -1,0 +1,19 @@
+<!--=include partials/head.html -->
+{% include "main/partials/head.html" %}
+<!--=include partials/header.html -->
+{% include "main/partials/header.html" %}
+<p>
+    Welcome to your profilepage {{ user.username }}!<br>
+    Your email adress is : {{ user.email }}<br>
+    If you wish to change your password please use this form:
+</p>
+    <form action="{% url 'user:profile' %}" method="post" class="sign-in" id="sign-in">
+        {% csrf_token %}
+        {{ form }}
+        <div class="sign-in__submit">
+            <button type="submit">Change PW</button>
+        </div>
+    </form>
+
+<!--=include partials/footer.html -->
+{% include "main/partials/footer.html" %}

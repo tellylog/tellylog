@@ -1,0 +1,124 @@
+.single-page{
+    @include pad();
+    &__heading{
+        font-size: 1.4em;
+        margin-bottom: .2em;
+    }
+    &__subheading{
+        font-size: 1.1em;
+        font-style: italic;
+        color: $chery;
+    }
+    &__meta{
+        @include span-columns(8 of 12);
+        @include media($medium-screen-up){
+            @include shift(4 of 12);
+        }
+        @include media($large-screen-up){
+            @include shift(3 of 12);
+            @include span-columns(9 of 12);
+        }
+
+    }
+    &__controls{
+        font-size: 3em;
+    }
+    &__img{
+        width: 100%;
+    }
+    &__poster{
+        @include span-columns(4 of 12);
+        @include omega();
+        @include media($medium-screen-up){
+            @include shift(-12 of 12);
+            @include span-columns(4 of 12);
+        }
+        @include media($large-screen-up){
+            @include shift(-12 of 12);
+            @include span-columns(3 of 12);
+        }
+
+    }
+    &__overview{
+        @include span-columns(12 of 12);
+        @include omega();
+        @include pad();
+        @include media($medium-screen-up){
+            @include span-columns(8 of 12);
+        }
+        @include media($large-screen-up){
+            @include span-columns(9 of 12);
+            @include omega();
+        }
+        background-color: $bluegrey;
+    }
+    &__list{
+        @include span-columns(12 of 12);
+    }
+    &__entry{
+        @include span-columns(12 of 12);
+        @include pad();
+        background-color: $bluegrey;
+        margin-bottom: 0.3em;
+        &--small{
+            background-color: transparent;
+            @include span-columns(12 of 12);
+            @include pad(1%);
+            font-size: 1em;
+            @include media($medium-screen-up){
+                @include span-columns(10 of 12);
+                @include shift(1 of 12);
+                @include pad(0);
+            }
+            border-top: solid $bluegrey 0.2em;
+        }
+        &--small:first-child{
+            border-top: none;
+        }
+
+        &__number{
+            &--small{
+                @include span-columns(1 of 12);
+                text-align: center;
+                font-weight: bolder;
+                background-color: $light-bluegrey;
+                color: $dark-bluegrey;
+                @include media($medium-screen-up){
+                    @include span-columns(1 of 10);
+                }
+
+            }
+        }
+        &__link{
+            @include span-columns(6 of 12);
+            text-align: left;
+            font-weight: bold;
+            color: $base-font-color;
+            &--small{
+                @include span-columns(9 of 12);
+                font-weight: bold;
+                @include media($medium-screen-up){
+                    @include span-columns(7 of 10);
+                }
+            }
+        }
+        &__link:hover{
+            color: $light-chery;
+        }
+        &__btn{
+            @include span-columns(6 of 12);
+            text-align: right;
+            font-size: 1.5em;
+            &--small{
+                @include span-columns(2 of 12);
+                @include omega();
+                text-align: right;
+                font-size: 1.4em;
+                @include media($medium-screen-up){
+                    @include span-columns(2 of 10);
+                }
+            }
+        }
+    }
+
+}

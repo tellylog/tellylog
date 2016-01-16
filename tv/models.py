@@ -311,21 +311,6 @@ class Series(models.Model):
     def get_absolute_url(self):
         return reverse('tv:series', kwargs={'series_id': str(self.id)})
 
-    def save(self, *args, **kwargs):
-        try:
-            this = Series.objects.get(id=self.id)
-            if this.poster_small != self.poster_small:
-                this.poster_small.delete()
-        except:
-            pass
-        try:
-            this = Series.objects.get(id=self.id)
-            if this.poster_large != self.poster_large:
-                this.poster_large.delete()
-        except:
-            pass
-        super(Series, self).save(*args, **kwargs)
-
     def get_genre_list(self):
         genre_res = self.genres.all()
         genre_list = []
@@ -410,28 +395,6 @@ class Season(models.Model):
         }
         return reverse('tv:season', kwargs=kwargs)
 
-    def save(self, *args, **kwargs):
-        try:
-            this = Season.objects.get(id=self.id)
-            if this.poster_small != self.poster_small:
-                this.poster_small.delete()
-        except:
-            pass
-        try:
-            this = Season.objects.get(id=self.id)
-            if this.poster_large != self.poster_large:
-                this.poster_large.delete()
-        except:
-            pass
-        super(Season, self).save(*args, **kwargs)
-
-    def update_needed(self):
-        if (self.last_update > datetime.datetime.now() -
-                datetime.timedelta(weeks=1)):
-            return True
-        else:
-            return False
-
 
 class Episode(models.Model):
 
@@ -477,7 +440,7 @@ class Episode(models.Model):
 
         verbose_name = "Episode"
         verbose_name_plural = "Episodes"
-        ordering = ['-number']
+        ordering = ['number']
 
     def __str__(self):
         """
@@ -489,13 +452,6 @@ class Episode(models.Model):
         return '%s Season %d Ep %d' % (self.series.name,
                                        self.season.number,
                                        self.number)
-
-    def update_needed(self):
-        if (self.last_update > datetime.datetime.now() -
-                datetime.timedelta(weeks=1)):
-            return True
-        else:
-            return False
 
 
 class Credit(models.Model):

@@ -19,7 +19,6 @@ from django.conf.urls import url
 from tv import views
 
 urlpatterns = [
-    url(r'^$', views.TestView.as_view(), name='test'),
     # e.g. series/12
     url(r'^series/(?P<series_id>[0-9]+)/$', views.SeriesView.as_view(),
         name='series'),

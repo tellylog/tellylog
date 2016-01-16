@@ -22,7 +22,9 @@ gulp.task('js', function () {
     ]))
     .pipe(plugins.concat('main.js'))
     .pipe(gulp.dest(dest + 'javascript'))
+    .pipe(plugins.sourcemaps.init())
     .pipe(plugins.uglify())
+    .pipe(plugins.sourcemaps.write())
     .pipe(gulp.dest(collect + 'javascript'))
 })
 
@@ -96,9 +98,7 @@ gulp.task('icons', function () {
 // Watches everything and starts browser sync
 gulp.task('watch', function () {
   browserSync.init({
-    server: {
-      baseDir: dest,
-    }
+    proxy: '127.0.0.1:8080'
   })
   gulp.watch(src + 'sass/**/*.scss', ['compsass'])
   gulp.watch(dest + 'css/**/*.css', ['browserSyncStream'])
@@ -106,5 +106,4 @@ gulp.task('watch', function () {
   gulp.watch(src + 'html/**/*.html', ['html']).on('change', browserSync.reload)
   gulp.watch(src + 'img/*', ['img']).on('change', browserSync.reload)
 })
-
 gulp.task('default', ['html', 'compsass', 'img', 'js', 'icons'])

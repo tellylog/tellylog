@@ -20,6 +20,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 SECRET_KEY = os.environ['SECRET_KEY']
+NOCAPTCHA = True
 
 
 # Quick-start development settings - unsuitable for production
@@ -31,6 +32,13 @@ if 'DEBUG' in os.environ:
     DEBUG = os.environ['DEBUG']
 else:
     DEBUG = False
+
+
+RECAPTCHA_PUBLIC_KEY = os.environ['RECAPTCHA_PUBLIC_KEY']
+RECAPTCHA_PRIVATE_KEY = os.environ['RECAPTCHA_PRIVATE_KEY']
+
+if DEBUG:
+    INTERNAL_IPS = ['0.0.0.0', '127.0.0.1', '10.6.6.6']
 
 
 ALLOWED_HOSTS = ['*', ]
@@ -52,6 +60,8 @@ INSTALLED_APPS = [
     'tmdbcall',
     'user',
     'main',
+    'watchlog',
+    'captcha',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -177,7 +187,7 @@ STATICFILES_DIRS = [
 ]
 
 
-LOGIN_URL = '/user/sign-in/'
+LOGIN_URL = '/sign-in/'
 # if user is not logged in, this is the URL to which they are redirected
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True

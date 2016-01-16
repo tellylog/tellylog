@@ -1,40 +1,68 @@
 {% load staticfiles %}
-<link rel="stylesheet" type="text/css" href="{% static 'css.css' %}" />
-<!DOCTYPE html>
-<html>
+{% include "main/partials/head.html" %}
+{% include "main/partials/header.html" %}
+<div class="row">
 
-<head>
-	<meta http-equiv="content-type" content="text/html; charset=utf-8">
-	<title>index</title>
-</head>
+    <div class="about">
+        <div class="about__panel">
+            <i class="about__icon fa fa-eye"></i>
+            Log episodes of your series.
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+            tempor incididunt ut labore et dolore magna aliqua.
+        </div>
+        <div class="about__panel about__panel--light">
+            <i class="about__icon fa fa-pencil-square-o"></i>
+            Save series to watch later.
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+            tempor incididunt ut labore et dolore magna aliqua.
+        </div>
+        <div class="about__panel">
+            <i class="about__icon fa fa-search"></i>
+            Search for new series you might like.
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+        </div>
+    </div>
+</div>
+{% if not user.is_authenticated %}
+<div class="row">
+    <form action="{% url 'user:sign_in' %}" method="post" class="sign-in" id="sign-in">
+        {% csrf_token %}
+        <h2 class="text-center">Sign in</h2>
+        <label class="sign-in__label" for="username">Username</label>
+        <div class="sign-in__input">
+            <input type="text" name="username" id="username">
+        </div>
+        <label class="sign-in__label" for="password">Password</label>
+        <div class="sign-in__input">
+            <input type="password" name="password" id="password">
+        </div>
+        <div class="sign-in__submit">
+            <button type="submit">Sign in</button>
+        </div>
+    </form>
+</div>
+{% endif %}
+{% if wlog_list %}
+<div class="row semilight">
+    <div class="gallery">
+        <h2 class="gallery__heading">Trending</h2>
 
-<body>
-	<div id="header">
-		<h1>tellylog</h1>
-		<h2>Index page</h2>
-	</div>
-	<div id="navigation">
-		<ul>
-			<li><a href="{% url 'main:about' %}">About</a></li>
-			<li><a href="{% url 'main:overview' %}">Overview</a></li>
-			<li><a href="{% url 'user:sign_in' %}">Sign in</a></li>
-			<li><a href="{% url 'user:sign_up' %}">Sign up</a></li>
-		</ul>
-	</div>
+        <div class="gallery__wrapper">
+                {% for wlog_entry in wlog_list %}
+                    <div class="gallery__poster">
+                    {% if wlog_entry.episode.series.poster_small %}
+                            <img src="{{ wlog_entry.episode.series.poster_small.url }}" srcset="{{ wlog_entry.episode.series.poster_large.url }} 600w" alt="{{ wlog_entry.episode.series.name }} Poster" class="gallery__image">
+                        {% else %}
+                            <img src="{% static "img/placeholder-small.jpg" %}" srcset="{% static "img/placeholder.jpg" %} 600w" alt="{{ series.name }} Poster Placeholder" class="gallery__image">
+                        {% endif %}
+                    </div>
+                {% endfor %}
+        </div>
+    </div>
+</div>
+{% endif %}
 
-	{% if user.is_authenticated %}
-		<a href="{% url 'user:logout' %}">Logout</a>
-	{% else %}
-		<form id="login_form" method="post" action="{% url 'user:sign_in' %}">
-			{% csrf_token %} Username:
-			<input type="text" name="username" value="" size="50" />
-			<br /> Password:
-			<input type="password" name="password" value="" size="50" />
-			<br />
 
-			<input type="submit" value="submit" />
-		</form>
-	{% endif %}
-</body>
 
-</html>
+<script type="text/javascript" src="{% static 'javascript/main.js' %}"></script>
+{% include "main/partials/footer.html" %}

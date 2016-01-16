@@ -1,19 +1,23 @@
 ;(function () {
   var s
   var Search = {
-    settings: {
-      csrftoken: window.Cookies.get('csrftoken'),
-      task_id: window.Telly.task_id,
-      status_url: window.Telly.status_url,
-      result_url: window.Telly.result_url,
-      query: window.Telly.query,
-      placeholder: window.Telly.placeholder,
-      result_list: $('#result-list'),
-      result_list_info: $('#result-list_info')
+    settings: function () {
+      if (window.Telly !== undefined) {
+        return {
+          csrftoken: window.Cookies.get('csrftoken'),
+          task_id: window.Telly.task_id,
+          status_url: window.Telly.status_url,
+          result_url: window.Telly.result_url,
+          query: window.Telly.query,
+          placeholder: window.Telly.placeholder,
+          result_list: $('#result-list'),
+          result_list_info: $('#result-list_info')
+        }
+      }
     },
 
     init: function ($) {
-      s = this.settings
+      s = this.settings()
     },
 
     poll: function ($, number) {
@@ -30,33 +34,31 @@
           }
         })
           .done(function (data) {
-            console.log(data)
             if (data.status === 'PENDING') {
-              if (number <= 3) {
-                setTimeout(function () { Search.poll($, number) }, 1000)
+              if (number <= 5) {
+                setTimeout(function () { Search.poll($, ++number) }, 100)
+              } else if (number <= 10) {
+                setTimeout(function () { Search.poll($, ++number) }, 500)
               } else {
-                setTimeout(function () { Search.poll($, number) }, 5000)
+                setTimeout(function () { Search.poll($, ++number) }, 5000)
               }
             } else if (data.status === 'SUCCESS') {
-              Search.load_results($)
+              Search.load_results()
             } else {
               Search.search_error()
             }
-            console.log('success')
           })
           .fail(function () {
-            console.log('error')
-          })
-          .always(function () {
-            console.log('complete')
+            Search.search_error()
           })
       } else {
+        Search.search_error()
       }
     },
     search_error: function () {
       s.result_list_info.replaceWith('There was an error with your search request. <i class="fa fa-frown-o"></i>')
     },
-    load_results: function ($) {
+    load_results: function () {
       $.ajax({
         url: s.result_url,
         type: 'POST',
@@ -68,20 +70,16 @@
       })
         .done(function (data) {
           if (data.search_res.length) {
-            Search.build_results($, data)
+            Search.build_results(data)
           } else {
-            Search.no_results($, data)
+            Search.no_results(data)
           }
-          console.log('success')
         })
         .fail(function () {
-          console.log('error')
-        })
-        .always(function () {
-          console.log('complete')
+          Search.search_error()
         })
     },
-    build_results: function ($, data) {
+    build_results: function (data) {
       var res_count = data.search_res.length
       s.result_list_info.replaceWith('Your search returned ' + res_count + ' ' + ((res_count > 1) ? 'results' : 'result') + '.')
       for (var i = 0; i < data.search_res.length; i++) {
@@ -109,13 +107,13 @@
         s.result_list.append(result)
       }
     },
-    no_results: function ($, data) {
-      s.result_list_info.replaceWith('Your search did not return any results. <i class="fa fa-frown-o"></i>')
+    no_results: function (data) {
+      s.result_list_info.replaceWith('Your search did not return any results. <i class="fa fa-meh-o"></i>')
     }
   }
 
-  $(document).ready(function ($) {
-    if (window.Telly.task_id) {
+  $(document).ready(function () {
+    if ((window.Telly !== undefined) && window.Telly.task_id) {
       Search.init()
       Search.poll($, 0)
     }

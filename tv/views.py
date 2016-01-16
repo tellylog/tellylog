@@ -1,23 +1,11 @@
 """This file holds the views of the tv app."""
 from django.shortcuts import get_object_or_404, get_list_or_404
 from django.http import HttpResponse  # HttpResponseRedirect
-# from django.core.urlresolvers import reverse
+from django.core.urlresolvers import reverse
 from django.views.generic import TemplateView
 # from django.utils import timezone
 from tv.models import Series, Season, Episode
-
-
-def index(request):
-    """Dummy function for developing.
-
-    Args:
-        request (TYPE): Description
-
-    Returns:
-        HttpResponse: Quote from Sherlock
-    """
-    return HttpResponse("'Anderson, don’t talk out loud. You lower the " +
-                        "IQ of the whole street.'-Sherlock")
+from watchlog.models import Watchlog
 
 
 class SeriesView(TemplateView):
@@ -44,7 +32,24 @@ class SeriesView(TemplateView):
         context['series'] = \
             get_object_or_404(Series, pk=context['series_id'])
         context['seasons'] = get_list_or_404(Season,
-                                             series_id=context['series_id'])
+                                             series_id=context['series_id'],
+                                             episode_count__gt=0)
+        context['wlog'] = Watchlog.objects.filter(
+            user_id=self.request.user.id,
+            episode__series_id=context['series_id']).count()
+        context['wlog_seasons'] = {}
+        for season in context['seasons']:
+            context['wlog_seasons'][season.id] = (
+                Watchlog.objects.filter(user_id=self.request.user.id,
+                                        episode__season_id=season.id).count())
+
+        context['genre_list'] = context['series'].get_genre_list()
+        wlog_log_url = reverse('wlog:log')
+        wlog_log_url = self.request.build_absolute_uri(wlog_log_url)
+        context['wlog_log_url'] = wlog_log_url
+        wlog_unlog_url = reverse('wlog:unlog')
+        wlog_unlog_url = self.request.build_absolute_uri(wlog_unlog_url)
+        context['wlog_unlog_url'] = wlog_unlog_url
         return context
 
 
@@ -76,6 +81,20 @@ class SeasonView(TemplateView):
         context['episodes'] = get_list_or_404(Episode,
                                               series_id=context['series_id'],
                                               season_id=context['season'].id)
+        context['wlog'] = Watchlog.objects.filter(
+            user_id=self.request.user.id,
+            episode__season_id=context['season'].id).count()
+        context['wlog_episodes'] = {}
+        for episode in context['episodes']:
+            context['wlog_episodes'][episode.id] = (
+                Watchlog.objects.filter(user_id=self.request.user.id,
+                                        episode_id=episode.id).count())
+        wlog_log_url = reverse('wlog:log')
+        wlog_log_url = self.request.build_absolute_uri(wlog_log_url)
+        context['wlog_log_url'] = wlog_log_url
+        wlog_unlog_url = reverse('wlog:unlog')
+        wlog_unlog_url = self.request.build_absolute_uri(wlog_unlog_url)
+        context['wlog_unlog_url'] = wlog_unlog_url
         return context
 
 

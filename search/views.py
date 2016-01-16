@@ -1,19 +1,15 @@
 """This file holds the views of the search app."""
-from django.shortcuts import get_object_or_404, get_list_or_404
-from django.http import HttpResponse, HttpRequest, JsonResponse
-# from django.core.urlresolvers import reverse
-from django.views.generic import View, FormView, ListView
+from django.http import JsonResponse
+from django.views.generic import View, ListView
 from django.core.urlresolvers import reverse
+from django.contrib.auth.mixins import LoginRequiredMixin
 from watson import search as watson
 from celery.result import AsyncResult
 from tellylog.celery import app
-import tv.models as models
-import tmdbcall as tmdb
-from .forms import SearchForm
 import search.tasks as tasks
 
 
-class SearchView(ListView):
+class SearchView(LoginRequiredMixin, ListView):
     http_method_names = ['get']
     query_param = "q"
     template_name = "search/search.html"
@@ -62,7 +58,7 @@ class SearchView(ListView):
         return context
 
 
-class SearchStatus(View):
+class SearchStatus(LoginRequiredMixin, View):
     def post(self, request):
         task_id = request.POST['task_id']
         result = AsyncResult(task_id, app=app)
@@ -70,7 +66,7 @@ class SearchStatus(View):
         return response
 
 
-class SearchResult(View):
+class SearchResult(LoginRequiredMixin, View):
     """docstring for SearchResult"""
     def post(self, request):
         query = request.POST['query']
@@ -97,9 +93,3 @@ class SearchResult(View):
 
             response = JsonResponse({'search_res': search_res_list})
         return response
-
-
-class TestView(FormView):
-    template_name = "search/test.html"
-    form_class = SearchForm
-    form = SearchForm()
