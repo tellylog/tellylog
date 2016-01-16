@@ -44,7 +44,7 @@ def _check_countrys(full_series):
         for country in full_series['series']['origin_country']:
             db_country = models.Country.objects.get_or_create(name=country,
                                                               defaults={
-                                                               'name': country
+                                                                  'name': country
                                                               })
             if type(db_country) is tuple:
                 country_list.append(db_country[0])
@@ -100,7 +100,7 @@ def _convert_season(tmdb_series_id, series_id, season_number, new_series):
                 'air_date': full_season['air_date'],
                 'name': full_season['name'],
                 'episode_count': len(full_season['episodes'])
-                }
+            }
             updated_season = models.Season.objects.update_or_create(
                 number=season_number,
                 tmdb_id=full_season['id'],
@@ -119,17 +119,17 @@ def _convert_season(tmdb_series_id, series_id, season_number, new_series):
                 posters['poster_large'][1].save(temp_poster, 'JPEG')
                 temp_poster.seek(0)
                 new_season.poster_large.save(
-                                         posters['poster_large'][0] + '.jpg',
-                                         ContentFile(temp_poster.read()),
-                                         save=False)
+                    posters['poster_large'][0] + '.jpg',
+                    ContentFile(temp_poster.read()),
+                    save=False)
                 temp_poster.close()
                 temp_poster = BytesIO()
                 posters['poster_small'][1].save(temp_poster, 'JPEG')
                 temp_poster.seek(0)
                 new_season.poster_small.save(
-                                         posters['poster_small'][0] + '.jpg',
-                                         ContentFile(temp_poster.read()),
-                                         save=False)
+                    posters['poster_small'][0] + '.jpg',
+                    ContentFile(temp_poster.read()),
+                    save=False)
                 temp_poster.close()
             new_season.save()
             for episode in full_season['episodes']:

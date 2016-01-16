@@ -1,12 +1,10 @@
 """This file holds the views of the watchlog app."""
-from django.shortcuts import get_object_or_404, get_list_or_404
 from django.http import JsonResponse
 from django.db.utils import IntegrityError
 from django.views.generic import View, ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.db.models import Max, Min
 from watchlog.models import Watchlog
-from tv.models import Series, Season, Episode
+from tv.models import Episode
 
 
 class WatchlogListView(LoginRequiredMixin, ListView):
@@ -39,22 +37,22 @@ class Log(LoginRequiredMixin, View):
                     Watchlog.objects.filter(
                         user=user,
                         episode__series_id=given_id
-                        ).values_list('episode_id', flat=True))
+                    ).values_list('episode_id', flat=True))
                 episodes = list(
                     Episode.objects.filter(
-                           series__id=given_id).exclude(id__in=wlog_entrys))
+                        series__id=given_id).exclude(id__in=wlog_entrys))
             elif kind == 'season':
                 wlog_entrys = list(
                     Watchlog.objects.filter(
                         user=user,
                         episode__season_id=given_id
-                        ).values_list('episode_id', flat=True))
+                    ).values_list('episode_id', flat=True))
                 episodes = list(
                     Episode.objects.filter(
                         season__id=given_id).exclude(id__in=wlog_entrys))
             elif kind == 'episode':
                 wlog_entrys = Watchlog.objects.filter(
-                                user=user, episode_id=given_id)
+                    user=user, episode_id=given_id)
                 if not wlog_entrys:
                     episodes = []
                     episodes.append(Episode.objects.get(pk=given_id))
