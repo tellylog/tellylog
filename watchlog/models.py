@@ -12,7 +12,7 @@ class Watchlog(models.Model):
     class Meta:
         verbose_name = "Watchlog"
         verbose_name_plural = "Watchlogs"
-        ordering = ['added']
+        ordering = ['-added']
         unique_together = ('episode', 'user',)
 
     def __str__(self):

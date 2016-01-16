@@ -4,6 +4,7 @@ from django.http import JsonResponse
 from django.db.utils import IntegrityError
 from django.views.generic import View, ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Max, Min
 from watchlog.models import Watchlog
 from tv.models import Series, Season, Episode
 
@@ -18,15 +19,9 @@ class WatchlogListView(LoginRequiredMixin, ListView):
         user = self.request.user
         watchlog = list(Watchlog.objects.filter(
             user=user).order_by(
-            '-added'))
-        only_series = []
-        for wlog_entry in watchlog:
-            if wlog_entry.episode.series not in only_series:
-                only_series.append(wlog_entry.episode.series)
-        return only_series
-
-
-
+            'episode__series', '-added').distinct('episode__series'))
+        watchlog.sort(key=lambda x: x.added, reverse=True)
+        return watchlog
 
 
 class Log(LoginRequiredMixin, View):

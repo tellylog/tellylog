@@ -2,18 +2,17 @@
 {% include "main/partials/head.html" %}
 {% include "main/partials/header.html" %}
 
-
 <div class="row">
     <div class="gallery">
         <h2 class="gallery__heading"><a href="watchlog.html">Watchlog</a></h2>
         <p class="gallery__info">Your latest Watchlog entries:</p>
         <div class="gallery__wrapper">
             {% if wlog_list %}
-                {% for series in wlog_list %}
+                {% for wlog_entry in wlog_list %}
                     <div class="gallery__poster">
-                        <a href="{{ series.get_absolute_url }}" title="{{ series.name }}">
-                    {% if series.poster_small %}
-                            <img src="{{ series.poster_small.url }}" srcset="{{ series.poster_large.url }} 600w" alt="{{ series.name }} Poster" class="gallery__image">
+                        <a href="{{ wlog_entry.episode.series.get_absolute_url }}" title="{{ wlog_entry.episode.series.name }}">
+                    {% if wlog_entry.episode.series.poster_small %}
+                            <img src="{{ wlog_entry.episode.series.poster_small.url }}" srcset="{{ wlog_entry.episode.series.poster_large.url }} 600w" alt="{{ wlog_entry.episode.series.name }} Poster" class="gallery__image">
                         {% else %}
                             <img src="{% static "img/placeholder-small.jpg" %}" srcset="{% static "img/placeholder.jpg" %} 600w" alt="{{ series.name }} Poster Placeholder" class="gallery__image">
                         {% endif %}
