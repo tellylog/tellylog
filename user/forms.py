@@ -65,7 +65,6 @@ class CaptchaForm(forms.Form):
 
 
 class PWForm(PasswordChangeForm):
-
     class Meta:
 
         form = PasswordChangeForm

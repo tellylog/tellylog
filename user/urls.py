@@ -7,4 +7,6 @@ urlpatterns = [
     url(r'^sign-in/$', views.SignIn, name='sign_in'),
     url(r'^logout/$', views.Logout, name='logout'),
     url(r'^profile/$', views.Profile.as_view(), name='profile'),
+    # url(r'^password-change/$', views.password_change, name='password_change'),
+
 ]

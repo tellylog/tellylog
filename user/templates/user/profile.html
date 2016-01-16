@@ -9,7 +9,9 @@
 </p>
     <form action="{% url 'user:profile' %}" method="post" class="sign-in" id="sign-in">
         {% csrf_token %}
-        {{ form }}
+        <div class="sign-in__input">
+            {{ form }}
+        </div>
         <div class="sign-in__submit">
             <button type="submit">Change PW</button>
         </div>

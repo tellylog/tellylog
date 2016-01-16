@@ -10,7 +10,8 @@ from django.shortcuts import get_object_or_404, get_list_or_404
 from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.edit import FormView
-# from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth.forms import PasswordChangeForm
+# from django.contrib.auth import update_session_auth_hash
 
 
 from user.forms import UserForm, CaptchaForm, PWForm
@@ -77,12 +78,22 @@ def Logout(request):
     logout(request)
     return HttpResponseRedirect(reverse('main:index'))
 
+"""
+@login_required
+def password_change(request):
+    if request.method == 'POST':
+        form = PasswordChangeForm(user=request.user, data=request.POST)
+        if form.is_valid():
+            form.save()
+            update_session_auth_hash(request, form.user)
+"""
+
+
 
 class Profile(LoginRequiredMixin, FormView):
     template_name = 'user/profile.html'
     form_class = PWForm
     success_url = "/overview/"
-    model = User
 
     def get_form(self, form_class):
         return form_class(self.request.user, **self.get_form_kwargs())
