@@ -42,11 +42,11 @@ def _check_countrys(full_series):
     if ('origin_country' in full_series['series'] and
             type(full_series['series']['origin_country']) == list):
         for country in full_series['series']['origin_country']:
-            db_country = models.Country.objects.get_or_create(
-                                                name=country,
-                                                defaults={
-                                                    'name': country
-                                                })
+            default_values = {'name': country}
+            db_country = (
+                models.Country.objects.get_or_create(name=country,
+                                                     defaults=default_values))
+
             if type(db_country) is tuple:
                 country_list.append(db_country[0])
             else:
