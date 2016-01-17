@@ -94,6 +94,6 @@ class Overview(LoginRequiredMixin, TemplateView):
             user=user).order_by('-added'))[:6]
         context['wlog_list'] = list(Watchlog.objects.filter(
             user=user).order_by(
-            'episode__series', '-added').distinct('episode__series'))[:6]
+            '-episode__series', '-added').distinct('episode__series'))[:6]
         context['wlog_list'].sort(key=lambda x: x.added, reverse=True)
         return context

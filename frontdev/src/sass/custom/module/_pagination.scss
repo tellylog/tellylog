@@ -1,0 +1,9 @@
+.pagination{
+    @include pad();
+    text-align: center;
+    &__link{
+        @include pad();
+        color: $base-font-color;
+        font-size: 1.5em;
+    }
+}
