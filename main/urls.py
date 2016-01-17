@@ -11,4 +11,5 @@ urlpatterns = [
     url(r'^dummy/$', views.Dummy.as_view(), name='dummy'),
     url(r'^sign-in/$', views.SignIn.as_view(), name='signin'),
     url(r'^contact/$', views.Contact.as_view(), name='contact'),
+    url(r'^help/$', views.Help.as_view(), name='help'),
 ]

@@ -17,6 +17,7 @@ select {
   font-size: $base-font-size;
 }
 
+
 label {
   font-weight: 600;
   margin-bottom: $small-spacing / 2;
@@ -32,17 +33,19 @@ label {
 
 #{$all-text-inputs},
 select[multiple=multiple] {
-  background-color: $base-background-color;
-  border: $base-border;
-  border-radius: $base-border-radius;
+  background-color: $base-font-color;
+  border: 0;
+  border-radius: 0;
   box-shadow: $form-box-shadow;
   box-sizing: border-box;
   font-family: $base-font-family;
   font-size: $base-font-size;
+  font-weight: 600;
   margin-bottom: $small-spacing;
   padding: $base-spacing / 3;
   transition: border-color $base-duration $base-timing;
   width: 100%;
+  color: $base-background-color;
 
   &:hover {
     border-color: shade($base-border-color, 20%);

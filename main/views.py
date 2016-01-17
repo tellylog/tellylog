@@ -60,6 +60,14 @@ class Contact(TemplateView):
     template_name = "main/contact.html"
 
 
+class Help(TemplateView):
+    """
+    Contact View.
+    template_name : takes the given template and rendes it to the view.
+    """
+    template_name = "main/help.html"
+
+
 class Overview(LoginRequiredMixin, TemplateView):
     """
     Overview View.

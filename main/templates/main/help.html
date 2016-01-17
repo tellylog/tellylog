@@ -1,0 +1,21 @@
+<!--=include partials/head.html -->
+{% include "main/partials/head.html" %}
+<!--=include partials/header.html -->
+{% include "main/partials/header.html" %}
+<div class="about-text">
+    Were does "tellylog" come from, you ask? Well, its a combiniation of the british
+    slang for television "telly" and "log", for logging in the sense of keeping
+    track of something.<br><br>
+
+    What does tellylog do for you?<br>
+    You can:<br>
+    <ul class="about-text__list">
+        <li class="about-text__list__point">Check episodes of a series you have seen to add them to your <a href="{% url 'main:dummy' %}">Watchlog</a></li>
+        <li class="about-text__list__point">get info on which episodes of a series you have already seen on your <a href="{% url 'main:dummy' %}">Watchlog</a></li>
+        <li class="about-text__list__point">add the series you wish to see in the future to your <a href="{% url 'main:dummy' %}">Watchlist</a></li>
+    </ul>
+
+</div>
+
+<!--=include partials/footer.html -->
+{% include "main/partials/footer.html" %}

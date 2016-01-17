@@ -1,7 +1,7 @@
 .about-text{
     @include span-columns(12 of 12);
     @include pad();
-    
+
 
     &__heading{
 
@@ -16,6 +16,11 @@
         margin-left: 20px;
 
         }
+    }
+    &__data{
+        @include span-columns(6 of 12);
+        @include omega();
+        text-align: center;
     }
 
 }
