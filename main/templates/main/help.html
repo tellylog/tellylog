@@ -1,6 +1,5 @@
-<!--=include partials/head.html -->
+{% load staticfiles %}
 {% include "main/partials/head.html" %}
-<!--=include partials/header.html -->
 {% include "main/partials/header.html" %}
 <div class="about-text">
     Were does "tellylog" come from, you ask? Well, its a combiniation of the british
@@ -16,6 +15,5 @@
     </ul>
 
 </div>
-
-<!--=include partials/footer.html -->
+<script type="text/javascript" src="{% static 'javascript/main.js' %}"></script>
 {% include "main/partials/footer.html" %}
