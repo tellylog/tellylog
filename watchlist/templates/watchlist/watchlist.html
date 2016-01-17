@@ -1,0 +1,50 @@
+{% load staticfiles %}
+{% include "main/partials/head.html" %}
+{% include "main/partials/header.html" %}
+
+<div class="row">
+    <div class="gallery">
+        <h2 class="gallery__heading"><a href="{% url 'wlist:index' %}">Watchlist</a></h2>
+        <p class="gallery__info">Your latest Watchlist entries:</p>
+        <div class="gallery__wrapper">
+            {% if wlist_list %}
+                {% for wlist_entry in wlist_list %}
+                    <div class="gallery__poster">
+                        <a href="{{ wlist_entry.series.get_absolute_url }}" title="{{ wlist_entry.series.name }}">
+                    {% if wlist_entry.series.poster_small %}
+                            <img src="{{ wlist_entry.series.poster_small.url }}" srcset="{{ wlist_entry.series.poster_large.url }} 600w" alt="{{ wlist_entry.series.name }} Poster" class="gallery__image">
+                        {% else %}
+                            <img src="{% static "img/placeholder-small.jpg" %}" srcset="{% static "img/placeholder.jpg" %} 600w" alt="{{ series.name }} Poster Placeholder" class="gallery__image">
+                        {% endif %}
+                        </a>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <h3>No entrys are present in your list.</h3>
+            {% endif %}
+
+        </div>
+    </div>
+</div>
+{% if is_paginated %}
+    <div class="row">
+        <div class="pagination">
+            <span class="step-links">
+                {% if page_obj.has_previous %}
+                    <a href="?page={{ page_obj.previous_page_number }}"><i class="fa fa-arrow-left"></i></a>
+                {% endif %}
+
+                <span class="current">
+                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                </span>
+
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}"><i class="fa fa-arrow-right"></i></a>
+                {% endif %}
+            </span>
+        </div>
+    </div>
+{% endif %}
+
+<script type="text/javascript" src="{% static 'javascript/main.js' %}"></script>
+{% include "main/partials/footer.html" %}

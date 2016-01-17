@@ -1,0 +1,27 @@
+{% load staticfiles %}
+{% include "main/partials/head.html" %}
+{% include "main/partials/header.html" %}
+<div class="row  result-list" id="result-list">
+    <h1 class="result-list__heading">Search for: <strong class="result-list__heading--strong">{{ query }}</strong></h1>
+    {% if  task_id %}
+        <div class="result-list__info" id="result-list_info">
+            We are currently searching for your Query <i class="fa fa-television fa-spin"></i>
+        </div>
+    {% else %}
+        <div class="result-list__info">
+            Your search did not return any results. <i class="fa fa-frown-o"></i>
+        </div>
+    {% endif %}
+</div>
+{% if  task_id %}
+    <script type="text/javascript">
+        window.Telly = {};
+        window.Telly.task_id = "{{ task_id }}"
+        window.Telly.status_url = "{{ status_url }}"
+        window.Telly.result_url = "{{ result_url }}"
+        window.Telly.query = "{{ query }}"
+        window.Telly.placeholder = "{% static "img/placeholder.jpg" %}"
+    </script>
+{% endif %}
+<script type="text/javascript" src="{% static 'javascript/main.js' %}"></script>
+{% include "main/partials/footer.html" %}

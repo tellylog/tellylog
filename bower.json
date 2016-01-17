@@ -6,6 +6,7 @@
     "jquery": "~2.1.4",
     "bourbon": "~4.2.6",
     "animatewithsass": "~3.2.1",
-    "neat": "~1.7.2"
+    "neat": "~1.7.2",
+    "js-cookie": "~2.1.0"
   }
 }

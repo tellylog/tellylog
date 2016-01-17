@@ -38,6 +38,7 @@
         - ca-certificates
         - libffi-dev
         - language-pack-en
+        - dos2unix
 
 
     - name: check if /etc/sysctl.conf has command vm.overcommit_memmory=1 (redis)

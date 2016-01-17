@@ -18,6 +18,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 
+
 SECRET_KEY = os.environ['SECRET_KEY']
 NOCAPTCHA = True
 
@@ -36,6 +37,9 @@ else:
 RECAPTCHA_PUBLIC_KEY = os.environ['RECAPTCHA_PUBLIC_KEY']
 RECAPTCHA_PRIVATE_KEY = os.environ['RECAPTCHA_PRIVATE_KEY']
 
+if DEBUG:
+    INTERNAL_IPS = ['0.0.0.0', '127.0.0.1', '10.6.6.6']
+
 
 ALLOWED_HOSTS = ['*', ]
 
@@ -50,10 +54,16 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'debug_toolbar',
+    'watson',
+    'tv',
+    'search',
     'tmdbcall',
+    'captcha',
     'user',
     'main',
-    'captcha',
+    'watchlog',
+    'watchlist',
+
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -167,6 +177,13 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+# Media ROOT
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+
+# Media URL
+
+MEDIA_URL = '/media/'
+
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
@@ -213,8 +230,18 @@ LOGGING = {
 
 # Celery
 
-BROKER_URL = 'redis://localhost:6379/0'
-CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
-CELERY_ACCEPT_CONTENT = ['json']
-CELERY_TASK_SERIALIZER = 'json'
-CELERY_RESULT_SERIALIZER = 'json'
+BROKER_URL = 'redis://127.0.0.1:6379/0'
+CELERY_RESULT_BACKEND = 'redis://127.0.0.1:6379/0'
+CELERY_ACCEPT_CONTENT = ['pickle']
+CELERY_TASK_SERIALIZER = 'pickle'
+CELERY_RESULT_SERIALIZER = 'pickle'
+CELERY_TIMEZONE = 'Europe/Vienna'
+CELERY_ENABLE_UTC = True
+
+# Redis
+
+REDIS = {
+    'HOST': '127.0.0.0.1',
+    'PORT': 6379,
+    'DB': 0,
+}

@@ -6,10 +6,10 @@
 # backwards compatibility). Please don't change it unless you know what
 # you're doing.
 
-$celery_script = <<SCRIPT
-echo Starting celery nomnomnom
-cd /vagrant && celery -A tellylog worker -l info -D
-SCRIPT
+#$celery_script = <<SCRIPT
+#echo Starting celery nomnomnom
+#cd /vagrant && celery -A tellylog worker -l info -D
+#SCRIPT
 
 Vagrant.configure(2) do |config|
   # The most common configuration options are documented and commented below.
@@ -78,7 +78,7 @@ Vagrant.configure(2) do |config|
     ansible.playbook = "playbook.yml"
   end
 
-  config.vm.provision "shell", inline:
-  $celery_script,
-  run: "always"
+  #config.vm.provision "shell", inline:
+  #$celery_script,
+  #run: "always"
 end

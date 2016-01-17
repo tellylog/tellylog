@@ -1,55 +1,54 @@
 <div class="wrapper">
-    <header class="header">
-        <div class="row">
-            <div id="logo" class="header__logo">
+    <div class="page">
+        <header class="header">
+            <div class="row">
+                <div id="logo" class="header__logo">
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'main:overview' %}">tellylog</a>
+                    {% else %}
+                        <a href="{% url 'main:index' %}">tellylog</a>
+                    {% endif %}
+                </div>
                 {% if user.is_authenticated %}
-                    <a href="{% url 'main:overview' %}">tellylog</a>
-                {% else %}
-                    <a href="{% url 'main:index' %}">tellylog</a>
-                {% endif %}
+                <div id="nav-toggle" class="header__navtoggle">
+                    <a class="js-menu-trigger sliding-panel-button">
+                        <i class="fa fa-bars fa-lg"></i>
+                    </a>
+                </div>
+                <div class="header__searchbar">
+                    <form method="get" action="{% url 'search:search' %}" class="searchbar" role="search">
+                        <div class="searchbar__field">
+                            <input type="search" name="q" placeholder="Enter Search" />
+                        </div>
+                        <div class="searchbar__submit">
+                            <button type="submit" class="searchbar__submit">
+                                <i class="fa fa-search fa-lg"></i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
-            {% if user.is_authenticated %}
-            <div id="nav-toggle" class="header__navtoggle">
-                <a class="js-menu-trigger sliding-panel-button">
-                    <i class="fa fa-bars fa-lg"></i>
+
+            <nav class="js-menu sliding-panel-content">
+                <ul>
+                    <li><a href="{% url 'main:overview' %}">Overview</a></li>
+                    <li><a href="{% url 'wlog:index' %}">Watchlog</a></li>
+                    <li><a href="{% url 'wlist:index' %}">Watchlist</a></li>
+                    <li><a href="{% url 'main:dummy' %}">Achivements</a></li>
+                    <li><a href="{% url 'main:dummy' %}">Profile</a></li>
+                    <li><a href="{% url 'user:logout' %}">Logout</a></li>
+
+                </ul>
+            </nav>
+            {% else %}
+            <div class="header__signup">
+                <a href="{% url 'user:sign_up' %}">
+                    <button>
+                        Sign Up
+                    </button>
                 </a>
             </div>
-            <div class="header__searchbar">
-                <form method="get" action="search.html" class="searchbar" role="search">
-                    <div class="searchbar__field">
-                        <input type="search" placeholder="Enter Search" />
-                    </div>
-                    <div class="searchbar__submit">
-                        <button type="submit" class="searchbar__submit">
-                            <i class="fa fa-search fa-lg"></i>
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
+            {% endif %}
 
-        <nav class="js-menu sliding-panel-content">
-            <ul>
-                <li><a href="{% url 'main:overview' %}">Overview</a></li>
-                <li><a href="{% url 'main:dummy' %}">Watchlog</a></li>
-                <li><a href="{% url 'main:dummy' %}">Watchlist</a></li>
-                <li><a href="{% url 'main:dummy' %}">Achivements</a></li>
-                <li><a href="{% url 'user:profile' %}">Profile</a></li>
-                <li><a href="{% url 'user:logout' %}">Logout</a></li>
-
-
-
-            </ul>
-        </nav>
-        {% else %}
-        <div class="header__signup">
-            <a href="{% url 'user:sign_up' %}">
-                <button>
-                    Sign Up
-                </button>
-            </a>
-        </div>
-        {% endif %}
-
-        <div class="js-menu-screen sliding-panel-fade-screen"></div>
-    </header>
+            <div class="js-menu-screen sliding-panel-fade-screen"></div>
+        </header>

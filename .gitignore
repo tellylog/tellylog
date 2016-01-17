@@ -8,7 +8,7 @@ tellylog/local_settings.py
 .env
 media/
 dump.rdb
+celeryd.pid
 .vagrant/
 static/*
-celeryd.pid
 

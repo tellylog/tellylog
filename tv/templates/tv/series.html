@@ -1,0 +1,88 @@
+{% load staticfiles %}
+{% load dictionary_extras %}
+{% include "main/partials/head.html" %}
+{% include "main/partials/header.html" %}
+<body>
+    <div class="single-page">
+        <div class="row header">
+            <div class="single-page__meta">
+                <h1 class="single-page__heading">
+                {{ series.name }}
+                {% if series.first_air_date %}
+                    ({{ series.first_air_date.year }})
+                {% endif %}
+                </h1>
+                <h2 class="single-page__subheading">
+                    {% for genre in genre_list %}
+                        {{ genre.name }}
+                    {% endfor %}
+                </h2>
+                <div class="single-page__controls">
+                    {% if wlog and wlog == series.number_of_episodes %}
+                        <span class=" log-btn log-btn--series log-btn--logged" title="Unlog the whole series" data-id="{{ series.id }}" data-kind="series">
+                            <i class="fa fa-eye" ></i>
+                        </span>
+                    {% else %}
+                        <span class=" log-btn log-btn--series log-btn--unlogged" title="Log the whole series" data-id="{{ series.id }}" data-kind="series">
+                            <i class="fa fa-eye-slash" ></i>
+                        </span>
+                    {% endif %}
+                    {% if wlog == 0 %}
+                        {% if wlist %}
+                            <span class="list-btn list-btn--listed" title="Remove from list" data-id="{{ series.id }}">
+                                <i class="fa fa-bookmark" ></i>
+                            </span>
+                        {% else %}
+                            <span class="list-btn list-btn--unlisted" title="Add to list" data-id="{{ series.id }}">
+                                <i class="fa fa-bookmark-o" ></i>
+                            </span>
+                        {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+            <div class="single-page__poster">
+            {% if series.poster_small %}
+                <img src="{{ series.poster_small.url }}" srcset="{{ series.poster_large.url }} 600w" alt="{{ series.name }} Poster" class="single-page__img">
+            {% else %}
+                <img src="{% static "img/placeholder-small.jpg" %}" srcset="{% static "img/placeholder.jpg" %} 600w" alt="{{ series.name }} Poster Placeholder" class="single-page__img">
+            {% endif %}
+            </div>
+            <p class="single-page__overview">
+                {{ series.overview }}
+            </p>
+
+        </div>
+        <div class="row">
+            <ul class="single-page__list">
+            {% for season in seasons %}
+                <li class="single-page__entry">
+                    <a href="{{ season.get_absolute_url }}" class="single-page__entry__link">Season {{ season.number }}
+                    {% if season.air_date %}
+                        ({{ season.air_date.year }})
+                    {% endif %}
+                    </a>
+                    <div  class="single-page__entry__btn">
+
+                    {% if wlog_seasons and wlog_seasons|access:season.id == season.episode_count %}
+                        <span class="log-btn log-btn--season log-btn--logged" title="Unlog the whole season" data-kind="season" data-id="{{ season.id }}">
+                            <i class="fa fa-eye" ></i>
+                        </span>
+                    {% else %}
+                        <span class="log-btn log-btn--season log-btn--unlogged" title="Log the whole season" data-kind="season" data-id="{{ season.id }}">
+                            <i class="fa fa-eye-slash" ></i>
+                    {% endif %}
+                    </div>
+                </li>
+            {% endfor %}
+            </ul>
+        </div>
+    </div>
+<script type="text/javascript">
+    window.Telly = {};
+    window.Telly.wlog_log_url = "{{ wlog_log_url }}"
+    window.Telly.wlog_unlog_url = "{{ wlog_unlog_url }}"
+    window.Telly.wlist_list_url = "{{ wlist_list_url }}"
+    window.Telly.wlist_unlist_url = "{{ wlist_unlist_url }}"
+</script>
+<script type="text/javascript" src="{% static 'javascript/main.js' %}"></script>
+{% include "main/partials/footer.html" %}

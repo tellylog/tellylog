@@ -1,0 +1,15 @@
+.log-btn{
+    color: $greyish;
+    cursor: pointer;
+    @include transition(color 0.5s);
+    &--unlogged:hover{
+        color: $green;
+        @include pulse();
+    }
+    &--logged{
+        color: $green;
+    }
+    &--logged:hover{
+        color: $light-chery;
+    }
+}

@@ -27,6 +27,7 @@
     background-color: $third-background-color;
     &__image{
         @include span-columns(4 of 12);
+        @include pad(0 2% 0 0);
         @include media($medium-screen-up){
             @include span-columns(2 of 12);
         }

@@ -1,23 +1,26 @@
-<!--=include partials/head.html -->
+{% load staticfiles %}
 {% include "main/partials/head.html" %}
-<!--=include partials/header.html -->
 {% include "main/partials/header.html" %}
 <div class="row">
 
     <div class="about">
         <div class="about__panel">
-            <i class="about__icon fa fa-calendar-check-o"></i>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-            tempor incididunt ut labore et dolore magna aliqua.
+            <i class="about__icon fa fa-eye"></i>
+            <h3 class="about__heading">Log</h3>
+            Ever forget where you left off?<br>
+            You can keep track and rate every episode of a series you watched by adding it to your Watchlog.
         </div>
         <div class="about__panel about__panel--light">
-            <i class="about__icon fa fa-list-alt"></i>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-            tempor incididunt ut labore et dolore magna aliqua.
+            <i class="about__icon fa fa-bookmark"></i>
+            <h3 class="about__heading">List</h3>
+            Found a series you would like to remember?<br>
+            Simply add it to your Watchlist where it stays at your disposal.
         </div>
         <div class="about__panel">
-            <i class="about__icon fa fa-trophy"></i>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            <i class="about__icon fa fa-search"></i>
+            <h3 class="about__heading">Search</h3>
+            Are you searching for a series?<br>
+            Our search is getting it's data from TMDb which has entries of countless series and their seasons and episodes.
         </div>
     </div>
 </div>
@@ -40,63 +43,27 @@
     </form>
 </div>
 {% endif %}
-{% load staticfiles %}
+{% if wlog_list %}
 <div class="row semilight">
     <div class="gallery">
         <h2 class="gallery__heading">Trending</h2>
 
         <div class="gallery__wrapper">
-            <div class="gallery__poster">
-                <img class="gallery__image" src="{% static 'img/placeholder.jpg' %}" alt="">
-            </div>
-
-            <div class="gallery__poster">
-                <img class="gallery__image" src="{% static 'img/placeholder.jpg' %}" alt="">
-            </div>
-
-            <div class="gallery__poster">
-                <img class="gallery__image" src="{% static 'img/placeholder.jpg' %}" alt="">
-            </div>
-
-            <div class="gallery__poster">
-                <img class="gallery__image" src="{% static 'img/placeholder.jpg' %}" alt="">
-            </div>
-
-            <div class="gallery__poster">
-                <img class="gallery__image" src="{% static 'img/placeholder.jpg' %}" alt="">
-            </div>
-
-            <div class="gallery__poster">
-                <img class="gallery__image" src="{% static 'img/placeholder.jpg' %}" alt="">
-            </div>
-
-            <div class="gallery__poster">
-                <img class="gallery__image" src="{% static 'img/placeholder.jpg' %}" alt="">
-            </div>
-
-            <div class="gallery__poster">
-                <img class="gallery__image" src="{% static 'img/placeholder.jpg' %}" alt="">
-            </div>
-
-            <div class="gallery__poster">
-                <img class="gallery__image" src="{% static 'img/placeholder.jpg' %}" alt="">
-            </div>
-
-            <div class="gallery__poster">
-                <img class="gallery__image" src="{% static 'img/placeholder.jpg' %}" alt="">
-            </div>
-
-            <div class="gallery__poster">
-                <img class="gallery__image" src="{% static 'img/placeholder.jpg' %}" alt="">
-            </div>
-
-            <div class="gallery__poster">
-                <img class="gallery__image" src="{% static 'img/placeholder.jpg' %}" alt="">
-            </div>
+                {% for wlog_entry in wlog_list %}
+                    <div class="gallery__poster">
+                    {% if wlog_entry.episode.series.poster_small %}
+                            <img src="{{ wlog_entry.episode.series.poster_small.url }}" srcset="{{ wlog_entry.episode.series.poster_large.url }} 600w" alt="{{ wlog_entry.episode.series.name }} Poster" class="gallery__image">
+                        {% else %}
+                            <img src="{% static "img/placeholder-small.jpg" %}" srcset="{% static "img/placeholder.jpg" %} 600w" alt="{{ series.name }} Poster Placeholder" class="gallery__image">
+                        {% endif %}
+                    </div>
+                {% endfor %}
         </div>
-
     </div>
 </div>
+{% endif %}
 
-<!--=include partials/footer.html -->
+
+
+<script type="text/javascript" src="{% static 'javascript/main.js' %}"></script>
 {% include "main/partials/footer.html" %}

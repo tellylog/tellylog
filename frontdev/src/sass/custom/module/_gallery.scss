@@ -41,22 +41,18 @@
                 @include omega(6n);
             }
         }
+        &--small:nth-child(n+5){
+            display: none;
+            @include media($medium-screen-up){
+                display: block;
+            }
+
+        }
     }
     &__image {
         width: 100%;
-        &--small {
-            display: none;
-            @include media($medium-screen-up) {
-                display: block;
-                width: 100%;
 
-            }
-            @include media($large-screen-up) {
-                display: block;
-                width: 100%;
-                }
-            }
-        }
+    }
 
 }
 .id_captcha{

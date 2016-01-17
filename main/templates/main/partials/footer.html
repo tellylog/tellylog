@@ -1,4 +1,4 @@
-            <div class="row">
+            </div>
                 <footer class="footer">
                     <ul class="footer__linklist">
                         <li class="footer__linkitem"><a class="footer__link" href="{% url 'main:about' %}">About</a></li>
@@ -6,13 +6,12 @@
                         <li class="footer__linkitem"><a class="footer__link" href="{% url 'main:contact' %}">Contact</a></li>
                     </ul>
 
-                    <div class="footer__info">
-                            Tellylog uses the TMDb API but is not endorsed or certified by TMDb.
+                        <div class="footer__info">
+                                Tellylog uses the TMDb API but is not endorsed or certified by TMDb.
+                        </div>
                     </div>
                 </footer>
-            </div>
             {% load staticfiles %}
-            <script type="text/javascript" src="{% static 'javascript/main.js' %}"></script>
         </div>
     </body>
 </html>

@@ -7,6 +7,8 @@
 @import 'global/footer';
 
 //Components
+@import 'module/log-btn';
+@import 'module/list-btn';
 @import 'module/searchbar';
 @import 'module/navigation';
 @import 'module/gallery';
@@ -16,3 +18,4 @@
 @import 'page/index';
 @import 'page/overview';
 @import 'page/about';
+@import 'page/single-view';
