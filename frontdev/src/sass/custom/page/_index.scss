@@ -38,15 +38,10 @@
         @include shift(2 of 12);
     }
     &__fields{
-        text-align: center;
+        text-align: left;
     }
     &__captcha{
-        @include span-columns(10 of 12);
-        .g-recaptcha{
-            width: 50%;
-            display: block;
-            margin: 0 auto;
-        }
+        margin-bottom: 0.5em;
     }
     &__submit{
         text-align: center;
