@@ -2,24 +2,37 @@
 {% include "main/partials/header.html" %}
 <div class="row">
 {% if user.is_authenticated %}
-    You are already signed in!
+    <strong>You are already signed in!</strong>
     <a href="{% url 'user:logout' %}">Logout</a>
 {% else %}
-
-    <form id="user_form" method="post" action="{% url 'user:sign_up' %}"
+    <form class="sign-up" method="post" action="{% url 'user:sign_up' %}"
         enctype="multipart/form-data">
         {% csrf_token %}
-        <div class="sign-in__input--signup">
-
-            {{ user_form }}
-
-
-        <div class="sign-in__submit--signup">
+        <div class="sign-up__fields">
+            <label for="{{ user_form.username.id_for_label }}">
+            {{ user_form.username.label }}
+            </label>
+            {{ user_form.username }}
+            <label for="{{ user_form.email.id_for_label }}">
+            {{ user_form.email.label }}
+            </label>
+            {{ user_form.email }}
+            <label for="{{ user_form.password.id_for_label }}">
+            {{ user_form.password.label }}
+            </label>
+            {{ user_form.password }}
+            <label for="{{ user_form.repassword.id_for_label }}">
+            {{ user_form.repassword.label }}
+            </label>
+            {{ user_form.repassword }}
+        </div>
+        <div class="sign-up__captcha">
+            {{ user_form.captcha }}
+        </div>
+        <div class="sign-up__submit">
             <button type="submit">Sign up</button>
         </div>
-</div>
     </form>
-</div>
 {% endif %}
-
+</div>
 {% include "main/partials/footer.html" %}
