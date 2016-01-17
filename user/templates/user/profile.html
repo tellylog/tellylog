@@ -2,9 +2,10 @@
 {% include "main/partials/head.html" %}
 <!--=include partials/header.html -->
 {% include "main/partials/header.html" %}
+<div class="about-text">
 <p>
-    Welcome to your profilepage {{ user.username }}!<br>
-    Your email adress is : {{ user.email }}<br>
+    Welcome to your profilepage <Strong>{{ user.username }}</strong>!<br>
+    Your email adress is : <Strong>{{ user.email }}</strong><br>
     If you wish to change your password please use this form:
 </p>
     <form action="{% url 'user:profile' %}" method="post" class="sign-in" id="sign-in">
@@ -16,6 +17,6 @@
             <button type="submit">Change PW</button>
         </div>
     </form>
-
+</div>
 <!--=include partials/footer.html -->
 {% include "main/partials/footer.html" %}
