@@ -7,6 +7,7 @@
           csrftoken: window.Cookies.get('csrftoken'),
           wlist_list_url: window.Telly.wlist_list_url,
           wlist_unlist_url: window.Telly.wlist_unlist_url,
+          on_wlist: window.Telly.on_wlist,
           list_btn: '.list-btn',
           list_btn_unlisted: '.list-btn--unlisted',
           list_btn_listed: '.list-btn--listed',
@@ -78,6 +79,7 @@
       button.children('i').removeClass(s.unlisted_icon).addClass(s.listed_icon)
       button.removeClass('list-btn--unlisted').addClass('list-btn--listed')
       button.prop('title', s.unlist_str)
+      window.Telly.on_wlist = true
       Watchlist.bindUIActions()
     },
 
@@ -85,6 +87,7 @@
       button.children('i').removeClass(s.listed_icon).addClass(s.unlisted_icon)
       button.removeClass('list-btn--listed').addClass('list-btn--unlisted')
       button.prop('title', s.list_str)
+      window.Telly.on_wlist = false
       Watchlist.bindUIActions()
     },
 
@@ -94,6 +97,9 @@
     if ((window.Telly !== undefined) && window.Telly.wlist_list_url && window.Telly.wlist_unlist_url) {
       Watchlist.init()
       Watchlist.bindUIActions()
+      $(document).on('list:bindUI', function () {
+        Watchlist.bindUIActions()
+      })
     }
   })
 })()
