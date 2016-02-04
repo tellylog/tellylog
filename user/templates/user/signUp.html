@@ -10,25 +10,8 @@
         enctype="multipart/form-data">
         {% csrf_token %}
         <div class="sign-up__fields">
-            <label for="{{ user_form.username.id_for_label }}">
-            {{ user_form.username.label }}
-            </label>
-            {{ user_form.username }}
-            <label for="{{ user_form.email.id_for_label }}">
-            {{ user_form.email.label }}
-            </label>
-            {{ user_form.email }}
-            <label for="{{ user_form.password.id_for_label }}">
-            {{ user_form.password.label }}
-            </label>
-            {{ user_form.password }}
-            <label for="{{ user_form.repassword.id_for_label }}">
-            {{ user_form.repassword.label }}
-            </label>
-            {{ user_form.repassword }}
-        </div>
-        <div class="sign-up__captcha">
-            {{ user_form.captcha }}
+
+            {{ form }}
         </div>
         <div class="sign-up__submit">
             <button type="submit">Sign up</button>
