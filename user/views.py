@@ -14,7 +14,7 @@ from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
 from django.core.urlresolvers import reverse_lazy
 
-from user.forms import UserCreateForm, CaptchaForm, PWForm
+from user.forms import UserCreateForm
 
 
 class SignUp(FormView):

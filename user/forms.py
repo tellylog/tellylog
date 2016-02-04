@@ -7,6 +7,7 @@ from django.contrib.auth.forms import UserCreationForm
 
 
 class UserCreateForm(UserCreationForm):
+    captcha = ReCaptchaField()
     email = forms.EmailField(required=True)
 
     class Meta:
@@ -30,18 +31,3 @@ class UserCreateForm(UserCreationForm):
                 email=email).exclude(username=username).count():
             raise forms.ValidationError(u'Email addresses must be unique.')
         return email
-
-
-
-class CaptchaForm(forms.Form):
-    captcha = ReCaptchaField()
-
-
-class PWForm(PasswordChangeForm):
-    class Meta:
-
-        form = PasswordChangeForm
-        fields = ('old_password', 'new_password1', 'new_password2')
-        labels = {
-            'old_password': ('FUT'),
-        }
