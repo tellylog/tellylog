@@ -51,6 +51,7 @@
         <div class="gallery__wrapper">
                 {% for wlog_entry in wlog_list %}
                     <div class="gallery__poster">
+                        
                     {% if wlog_entry.episode.series.poster_small %}
                             <img src="{{ wlog_entry.episode.series.poster_small.url }}" srcset="{{ wlog_entry.episode.series.poster_large.url }} 600w" alt="{{ wlog_entry.episode.series.name }} Poster" class="gallery__image">
                         {% else %}
