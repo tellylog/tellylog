@@ -93,7 +93,4 @@ class Profile(LoginRequiredMixin, FormView):
     form_class = PasswordChangeForm
     success_url = reverse_lazy('main:overview')
 
-    def get_form_kwargs(self):
-        kwargs = super(Profile, self).get_form_kwargs()
-        kwargs['user'] = self.request.user
-        return kwargs
+    

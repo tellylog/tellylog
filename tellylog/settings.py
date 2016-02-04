@@ -188,9 +188,6 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
 
-# shit Thomas included
-
-AUTH_USER_MODEL = 'accounts.User'
 
 LOGIN_URL = '/sign-in/'
 # if user is not logged in, this is the URL to which they are redirected
