@@ -20,6 +20,17 @@ class UserCreateForm(UserCreationForm):
             user.save()
         return user
 
+    def clean_email(self):
+        """
+        Additional function to check if the given email adress is unique.
+        """
+        email = self.cleaned_data.get('email')
+        username = self.cleaned_data.get('username')
+        if email and User.objects.filter(
+                email=email).exclude(username=username).count():
+            raise forms.ValidationError(u'Email addresses must be unique.')
+        return email
+
 
 
 class CaptchaForm(forms.Form):

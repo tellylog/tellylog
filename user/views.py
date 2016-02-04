@@ -53,14 +53,14 @@ def SignUp(request):
     return render_to_response(
         'user/signUp.html',
         {'user_form': user_form, 'registered': registered}, context)
-
+"""
 
 
 def SignIn(request):
-
+    """
     Function that checks given info with the user database and if info exists
     in the database it signs the user in
-
+    """
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
@@ -74,7 +74,7 @@ def SignIn(request):
             print("Invalid login details.")
     else:
         return render(request, 'user:sign_in', {})
-"""
+
 
 @login_required
 def Logout(request):
@@ -93,9 +93,7 @@ class Profile(LoginRequiredMixin, FormView):
     form_class = PasswordChangeForm
     success_url = reverse_lazy('main:overview')
 
-"""
     def get_form_kwargs(self):
         kwargs = super(Profile, self).get_form_kwargs()
         kwargs['user'] = self.request.user
         return kwargs
-"""
