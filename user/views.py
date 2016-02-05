@@ -28,35 +28,6 @@ class SignUp(FormView):
         return super(SignUp, self).form_valid(form)
 
 
-"""
-def SignUp(request):
-    # Function that saves the given userinfo to the user database.
-    context = RequestContext(request)
-    context['recaptcha'] = settings.RECAPTCHA_PUBLIC_KEY
-    registered = False
-    captcha = CaptchaForm()
-
-    if request.method == 'POST':
-        user_form = UserForm(data=request.POST)
-        password = request.POST.get('password')
-        repassword = request.POST.get('repassword')
-
-        if user_form.is_valid() and password == repassword:
-            user = user_form.save()
-            user.set_password(user.password)
-            user.save()
-            return HttpResponseRedirect('/overview/')
-        else:
-            print(user_form.errors)
-    else:
-        user_form = UserForm()
-
-    return render_to_response(
-        'user/signUp.html',
-        {'user_form': user_form, 'registered': registered}, context)
-"""
-
-
 def SignIn(request):
     """
     Function that checks given info with the user database and if info exists
@@ -101,4 +72,14 @@ class Profile(LoginRequiredMixin, FormView):
 
     def form_valid(self, form):
         form.save()
-        return super(Profile, self).form_valid(form)       
+        return super(Profile, self).form_valid(form)
+
+
+class PWForget(FormView):
+    template_name = 'user/pwForget.html'
+    form_class = PasswordResetForm
+    success_url = reverse_lazy('main:index')
+
+    def form_valid(self, form):
+        form.save()
+        return super(PWForget, self).form_valid(form)
