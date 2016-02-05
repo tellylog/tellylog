@@ -10,9 +10,10 @@ from django.shortcuts import get_object_or_404, get_list_or_404
 from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.edit import FormView
-from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth.forms import PasswordChangeForm, PasswordResetForm
 from django.contrib.auth import update_session_auth_hash
 from django.core.urlresolvers import reverse_lazy
+from django.contrib.auth.views import password_reset
 
 from user.forms import UserCreateForm
 
@@ -100,4 +101,4 @@ class Profile(LoginRequiredMixin, FormView):
 
     def form_valid(self, form):
         form.save()
-        return super(Profile, self).form_valid(form)
+        return super(Profile, self).form_valid(form)       
