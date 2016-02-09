@@ -40,11 +40,12 @@
         <div class="sign-in__submit">
             <button type="submit">Sign in</button>
         </div>
-        <div class="sign-in__submit">
+        <div class="sign-in__forgot">
             <a href="{% url 'user:password_reset' %}">Forgot Password?</a>
         </div>
 
     </form>
+
 </div>
 {% endif %}
 {% if wlog_list %}
