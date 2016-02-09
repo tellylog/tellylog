@@ -40,6 +40,10 @@
         <div class="sign-in__submit">
             <button type="submit">Sign in</button>
         </div>
+        <div class="sign-in__submit">
+            <a href="{% url 'user:password_reset' %}">Forgot Password?</a>
+        </div>
+
     </form>
 </div>
 {% endif %}
@@ -51,7 +55,7 @@
         <div class="gallery__wrapper">
                 {% for wlog_entry in wlog_list %}
                     <div class="gallery__poster">
-                        
+
                     {% if wlog_entry.episode.series.poster_small %}
                             <img src="{{ wlog_entry.episode.series.poster_small.url }}" srcset="{{ wlog_entry.episode.series.poster_large.url }} 600w" alt="{{ wlog_entry.episode.series.name }} Poster" class="gallery__image">
                         {% else %}

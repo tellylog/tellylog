@@ -27,6 +27,7 @@ urlpatterns = [
     url(r'^search/', include('search.urls', namespace='search')),
     url(r'^', include('main.urls', namespace='main')),
     url(r'^user/', include('user.urls', namespace='user')),
+    url(r'^user/password/', include('django.contrib.auth.urls', namespace='user_password')),
     url(r'^watchlog/', include('watchlog.urls', namespace='wlog')),
     url(r'^watchlist/', include('watchlist.urls', namespace='wlist')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
