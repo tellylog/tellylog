@@ -1,19 +1,15 @@
-from django.shortcuts import render_to_response, render
-from django.template import RequestContext
+from django.shortcuts import render
 from django.contrib.auth import authenticate, login, logout
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.views.generic import TemplateView
 import tellylog.settings as settings
 from django.shortcuts import get_object_or_404, get_list_or_404
-from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.edit import FormView
 from django.contrib.auth.forms import PasswordChangeForm, PasswordResetForm
-from django.contrib.auth import update_session_auth_hash
 from django.core.urlresolvers import reverse_lazy
-from django.contrib.auth.views import password_reset
 
 from user.forms import UserCreateForm
 
@@ -43,7 +39,6 @@ def SignIn(request):
             return HttpResponseRedirect('/overview/')
         else:
             return HttpResponseRedirect('/sign-in/')
-            print("Invalid login details.")
     else:
         return render(request, 'user:sign_in', {})
 
