@@ -33,14 +33,16 @@
         <div class="sign-in__input">
             <input type="text" name="username" id="username">
         </div>
-        <label class="sign-in__label" for="password">Password</label>
+        <label class="sign-in__label" for="password">Password  <a href="{% url 'user:password_reset' %}">(forgot Password?)</a></label>
         <div class="sign-in__input">
             <input type="password" name="password" id="password">
         </div>
         <div class="sign-in__submit">
             <button type="submit">Sign in</button>
         </div>
+
     </form>
+
 </div>
 {% endif %}
 {% if wlog_list %}
@@ -51,6 +53,7 @@
         <div class="gallery__wrapper">
                 {% for wlog_entry in wlog_list %}
                     <div class="gallery__poster">
+
                     {% if wlog_entry.episode.series.poster_small %}
                             <img src="{{ wlog_entry.episode.series.poster_small.url }}" srcset="{{ wlog_entry.episode.series.poster_large.url }} 600w" alt="{{ wlog_entry.episode.series.name }} Poster" class="gallery__image">
                         {% else %}

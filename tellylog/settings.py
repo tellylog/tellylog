@@ -82,7 +82,9 @@ ROOT_URLCONF = 'tellylog.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            'override_templates/',
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -174,6 +176,19 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
+"""
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = os.environ['GMAIL_ADDRESS']
+EMAIL_HOST_PASSWORD = os.environ['GMAIL_PW']
+DEFAULT_FROM_EMAIL = os.environ['GMAIL_ADDRESS']
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+"""
+EMAIL_HOST = 'localhost'
+EMAIL_PORT = 1025
+
+
 
 STATIC_URL = '/static/'
 
@@ -187,6 +202,7 @@ MEDIA_URL = '/media/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
+
 
 
 LOGIN_URL = '/sign-in/'

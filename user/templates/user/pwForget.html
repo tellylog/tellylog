@@ -6,7 +6,10 @@
     <strong>You are already signed in!</strong>
     <a href="{% url 'user:logout' %}">Logout</a>
 {% else %}
-    <form class="sign-up" method="post" action="{% url 'user:sign_up' %}"
+    <p>
+        Please enter your email here:
+    </p>
+    <form class="sign-up" method="post" action="{% url 'user:pwforget' %}"
         enctype="multipart/form-data">
         {% csrf_token %}
         <div class="sign-up__fields">
@@ -14,7 +17,7 @@
             {{ form }}
         </div>
         <div class="sign-up__submit">
-            <button type="submit">Sign up</button>
+            <button type="submit">Send</button>
         </div>
     </form>
 {% endif %}
