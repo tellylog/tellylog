@@ -1,4 +1,5 @@
 ;(function () {
+  /** Variable to store the settings */
   var s
   var Search = {
     settings: function () {

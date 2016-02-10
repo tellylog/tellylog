@@ -1,4 +1,5 @@
 ;(function () {
+  /** Variable to store the settings */
   var s
   /**
    * Module used to log or unlog episodes
@@ -39,7 +40,7 @@
     },
     /**
      * Function to initialise the Module.
-     * Sets s to the settings
+     * Sets s to the settings and calls the function to bind UI actions
      * @return {void} Does not return anything
      */
     init: function () {
@@ -47,7 +48,7 @@
       this.bindUIActions()
     },
 
-    /** Binds all handlers to the DOM */
+    /** Sets up all element listeners for the module */
     bindUIActions: function () {
       $(s.log_btn_logged).off('click').click(function (event) {
         var kind = $(this).data('kind')
