@@ -34,9 +34,9 @@ def search_online(query, task_id=None):
                         to_convert.append(dummy.s())
                 except (Series.DoesNotExist, Series.UpdateMe):
                     to_convert.append(chain(convert.get_full_series.s(series),
-                                            convert._check_genres.s(),
-                                            convert._check_countrys.s(),
-                                            convert._process_full_series.s()))
+                                            convert.check_genres.s(),
+                                            convert.check_countrys.s(),
+                                            convert.process_full_series.s()))
             if len(to_convert) > 0:
                 converter = chord(to_convert)(search_ready.s())
                 return converter
