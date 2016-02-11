@@ -1,9 +1,12 @@
 """This file holds the tests for the Genre class."""
-from django.test import TestCase
+import time
+import unittest
 
+from django.test import TestCase
 from tmdbcall.genre import Genre
 
 
+@unittest.skip("Needs new implementation.")
 class TestGenre(TestCase):
 
     """
@@ -20,9 +23,11 @@ class TestGenre(TestCase):
         dictionary with the genres key.
         """
         result = self.test.get_genres()
-        if result:
+        while result.status in result.UNREADY_STATES:
+            time.sleep(0.1)
+        if result.result:
             # Check if the genres key exists in the dict
-            if 'genres' in result:
+            if 'genres' in result.result:
                 got_genres = True
             else:
                 got_genres = False

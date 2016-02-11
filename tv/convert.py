@@ -8,8 +8,7 @@ from tmdbcall.poster import Poster
 from tv import models
 from django.db import transaction
 from django.core.files.base import ContentFile
-from celery import shared_task
-from celery import states
+from celery import shared_task, states
 
 
 @shared_task()
