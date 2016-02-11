@@ -298,6 +298,7 @@ class Series(models.Model):
         verbose_name_plural = "Series"
 
     class UpdateMe(Exception):
+        """Summary"""
         pass
 
     def __str__(self):
@@ -309,9 +310,19 @@ class Series(models.Model):
         return self.name
 
     def get_absolute_url(self):
+        """Summary
+
+        Returns:
+            TYPE: Description
+        """
         return reverse('tv:series', kwargs={'series_id': str(self.id)})
 
     def get_genre_list(self):
+        """Summary
+
+        Returns:
+            TYPE: Description
+        """
         genre_res = self.genres.all()
         genre_list = []
         if not genre_res:
@@ -321,6 +332,11 @@ class Series(models.Model):
         return genre_list
 
     def update_needed(self):
+        """Summary
+
+        Returns:
+            TYPE: Description
+        """
         if (self.last_update < timezone.now() -
                 datetime.timedelta(weeks=1)):
             return True
@@ -338,6 +354,7 @@ class Season(models.Model):
         air_date (models.DateField): When did the Season first air
         episode_count (models.IntegerField): How many Episodes
         last_update (models.DateTimeField): When was the Season updated
+        name (TYPE): Description
         number (models.IntegerField): Number of the Season
         poster_large (models.ImageField): Large poster image of Season,
                                            can be blank or null
@@ -371,6 +388,7 @@ class Season(models.Model):
         Meta information of the Season.
 
         Attributes:
+            ordering (list): Description
             verbose_name (str): Human readable name
             verbose_name_plural (str): Human readable name plural
         """
@@ -389,6 +407,11 @@ class Season(models.Model):
         return '%s %d' % (self.series.name, self.number)
 
     def get_absolute_url(self):
+        """Summary
+
+        Returns:
+            TYPE: Description
+        """
         kwargs = {
             'series_id': self.series.id,
             'season_number': self.number
@@ -434,6 +457,7 @@ class Episode(models.Model):
         Meta information of the Episode.
 
         Attributes:
+            ordering (list): Description
             verbose_name (str): Human readable name
             verbose_name_plural (str): Human readable name plural
         """
@@ -462,12 +486,15 @@ class Credit(models.Model):
     Attributes:
         added (models.DateTimeField): When was the Credit added
         character (models.CharField): Optional Character Name. max 254
-        department_id (models.ForeignKey): Department key
+        department (TYPE): Description
         job (models.ForeignKey): Job key
         last_update (models.DateTimeField): When was the Credit updated
         order (models.IntegerField): Optional order of cast importance
         person (models.ForeignKey): Person key
         series (models.ForeignKey): Series key
+
+    Deleted Attributes:
+        department_id (models.ForeignKey): Department key
     """
 
     department = models.ForeignKey(Department, on_delete=models.CASCADE,

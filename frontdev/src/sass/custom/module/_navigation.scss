@@ -3,6 +3,7 @@
   $sliding-panel-background: $base-background-color;
   $sliding-panel-color: #fff;
   $sliding-panel-border: 2px solid $sliding-panel-border-color;
+  $sliding-panel-background-active: $action-color;
   $sliding-panel-background-hover: $action-color;
   $sliding-panel-color-hover: #fff;
   $sliding-panel-background-focus: lighten($sliding-panel-background, 5%);
@@ -41,7 +42,9 @@
       color: $sliding-panel-color-hover;
     }
   }
-
+  li.active{
+    background-color: $sliding-panel-border-color;
+  }
   &.is-visible {
     @include transform(translateX(0));
   }

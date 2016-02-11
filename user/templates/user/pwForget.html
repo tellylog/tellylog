@@ -1,26 +1,27 @@
+{% extends "layout/base.html" %}
 {% load staticfiles %}
-{% include "main/partials/head.html" %}
-{% include "main/partials/header.html" %}
-<div class="row">
-{% if user.is_authenticated %}
-    <strong>You are already signed in!</strong>
-    <a href="{% url 'user:logout' %}">Logout</a>
-{% else %}
-    <p>
-        Please enter your email here:
-    </p>
-    <form class="sign-up" method="post" action="{% url 'user:pwforget' %}"
-        enctype="multipart/form-data">
-        {% csrf_token %}
-        <div class="sign-up__fields">
-
-            {{ form }}
-        </div>
-        <div class="sign-up__submit">
-            <button type="submit">Send</button>
-        </div>
-    </form>
-{% endif %}
-</div>
-<script type="text/javascript" src="{% static 'javascript/main.js' %}"></script>
-{% include "main/partials/footer.html" %}
+{% block title %}
+    {{ block.super }} - Password Reset
+{% endblock title %}
+{% block content %}
+    <div class="row">
+        {% if user.is_authenticated %}
+            <strong>You are already signed in!</strong>
+            <a href="{% url 'user:logout' %}">Logout</a>
+        {% else %}
+            <p>
+                Please enter your email here:
+            </p>
+            <form class="sign-up" method="post" action="{% url 'user:pwforget' %}"
+                enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="sign-up__fields">
+                    {{ form }}
+                </div>
+                <div class="sign-up__submit">
+                    <button type="submit">Send</button>
+                </div>
+            </form>
+        {% endif %}
+    </div>
+{% endblock content %}

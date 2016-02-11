@@ -1,21 +1,23 @@
+{% extends "layout/base.html" %}
 {% load staticfiles %}
-{% include "main/partials/head.html" %}
-{% include "main/partials/header.html" %}
-<div class="about-text">
-<p>
-    Welcome to your profilepage <Strong>{{ user.username }}</strong>!<br>
-    Your email adress is : <Strong>{{ user.email }}</strong><br>
-    If you wish to change your password please use this form:
-</p>
-    <form action="{% url 'user:profile' %}" method="post" class="sign-in" id="sign-in">
-        {% csrf_token %}
-        <div class="sign-in__input">
-            {{ form }}
-        </div>
-        <div class="sign-in__submit">
-            <button type="submit">Change Password</button>
-        </div>
-    </form>
-</div>
-<script type="text/javascript" src="{% static 'javascript/main.js' %}"></script>
-{% include "main/partials/footer.html" %}
+{% block title %}
+    {{ block.super }} - Profile
+{% endblock title %}
+{% block content %}
+    <div class="about-text">
+        <p>
+            Welcome to your profilepage <Strong>{{ user.username }}</strong>!<br>
+            Your email adress is : <Strong>{{ user.email }}</strong><br>
+            If you wish to change your password please use this form:
+        </p>
+        <form action="{% url 'user:profile' %}" method="post" class="sign-in" id="sign-in">
+            {% csrf_token %}
+            <div class="sign-in__input">
+                {{ form }}
+            </div>
+            <div class="sign-in__submit">
+                <button type="submit">Change Password</button>
+            </div>
+        </form>
+    </div>
+{% endblock content %}

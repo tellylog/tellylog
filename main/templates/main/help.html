@@ -1,7 +1,10 @@
+{% extends "layout/base.html" %}
 {% load staticfiles %}
-{% include "main/partials/head.html" %}
-{% include "main/partials/header.html" %}
-<div class="about-text">
+{% block title %}
+    {{ block.super }} - Help
+{% endblock title %}
+{% block content %}
+    <div class="about-text">
     Were does "tellylog" come from, you ask? Well, its a combiniation of the british
     slang for television "telly" and "log", for logging in the sense of keeping
     track of something.<br><br>
@@ -13,7 +16,5 @@
         <li class="about-text__list__point">get info on which episodes of a series you have already seen on your <a href="{% url 'wlog:index' %}">Watchlog</a></li>
         <li class="about-text__list__point">add the series you wish to see in the future to your <a href="{% url 'wlist:index' %}">Watchlist</a></li>
     </ul>
-
 </div>
-<script type="text/javascript" src="{% static 'javascript/main.js' %}"></script>
-{% include "main/partials/footer.html" %}
+{% endblock content %}

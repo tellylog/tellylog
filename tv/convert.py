@@ -1,3 +1,4 @@
+"""Retrieving, converting and stroring TMDB series."""
 import hashlib
 import time
 from io import BytesIO
@@ -12,7 +13,16 @@ from celery import states
 
 
 @shared_task()
-def _check_genres(full_series):
+def check_genres(full_series):
+    """Stores new genres or gets the stored genres of the series
+
+    Args:
+        full_series (dict): Holds the full series.
+
+    Returns:
+        False: On failure
+        dict: Full series with a list of the genres appended.
+    """
     genre_list = []
     if not full_series:
         return False
@@ -35,7 +45,16 @@ def _check_genres(full_series):
 
 
 @shared_task()
-def _check_countrys(full_series):
+def check_countrys(full_series):
+    """Stores new countrys or gets the stored countrys of the series
+
+    Args:
+        full_series (dict): Holds the full series.
+
+    Returns:
+        False: On failure
+        dict: Full series with a list of countrys appended
+    """
     country_list = []
     if not full_series:
         return False
@@ -56,6 +75,15 @@ def _check_countrys(full_series):
 
 
 def _calc_av_episode_runtime(runtimes):
+    """Calculate the average episode runtime.
+
+    Args:
+        runtimes (list): List with all runtimes
+
+    Returns:
+        None: On failure
+        Integer: Average runtime.
+    """
     if len(runtimes) > 0:
         return sum(runtimes) // len(runtimes)
     else:
@@ -63,6 +91,15 @@ def _calc_av_episode_runtime(runtimes):
 
 
 def _get_posters(poster_path):
+    """Retrieves the posters using the given poster_path
+
+    Args:
+        poster_path (str): Path to the poster
+
+    Returns:
+        False: On Failure
+        dict: Large and small version of the poster.
+    """
     if type(poster_path) is str:
         poster_path = poster_path[1:]
         tmdb_poster = Poster()
@@ -89,6 +126,17 @@ def _get_posters(poster_path):
 
 @transaction.atomic
 def _convert_season(tmdb_series_id, series_id, season_number, new_series):
+    """Summary
+
+    Args:
+        tmdb_series_id (TYPE): Description
+        series_id (TYPE): Description
+        season_number (TYPE): Description
+        new_series (TYPE): Description
+
+    Returns:
+        TYPE: Description
+    """
     tmdb_tv = TV()
     full_season = tmdb_tv.get_season_info_by_number(tmdb_series_id,
                                                     season_number)
@@ -151,7 +199,15 @@ def _convert_season(tmdb_series_id, series_id, season_number, new_series):
 
 @shared_task
 @transaction.atomic
-def _process_full_series(full_series):
+def process_full_series(full_series):
+    """Summary
+
+    Args:
+        full_series (TYPE): Description
+
+    Returns:
+        TYPE: Description
+    """
     if not full_series:
         return False
     runtime = _calc_av_episode_runtime(
@@ -210,12 +266,20 @@ def _process_full_series(full_series):
 
 @shared_task(ignore_result=True)
 def get_full_series(result):
+    """ Retrieves the full series via id from tmdb.
+
+    Args:
+        result (dict): Search result from tmdb.
+
+    Returns:
+        False: On Fail
+        dict: Full series if successfull
+    """
     tmdb_tv = TV()
     full_series = tmdb_tv.get_series_info_by_id(result['id'])
     while full_series.status in states.UNREADY_STATES:
         time.sleep(1)
     if full_series.status == states.SUCCESS:
-        print('It was successfull')
         if (full_series.result and
             full_series.result['number_of_seasons'] and
             (full_series.result['number_of_seasons'] != 0) and
