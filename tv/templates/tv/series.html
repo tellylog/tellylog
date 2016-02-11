@@ -79,10 +79,16 @@
     </div>
 <script type="text/javascript">
     window.Telly = {};
+    window.Telly.series_id = {{ series_id }}
     window.Telly.wlog_log_url = "{{ wlog_log_url }}"
     window.Telly.wlog_unlog_url = "{{ wlog_unlog_url }}"
     window.Telly.wlist_list_url = "{{ wlist_list_url }}"
     window.Telly.wlist_unlist_url = "{{ wlist_unlist_url }}"
+    {% if wlist %}
+        window.Telly.on_wlist = true
+    {% else %}
+        window.Telly.on_wlist = false
+    {% endif %}
 </script>
 <script type="text/javascript" src="{% static 'javascript/main.js' %}"></script>
 {% include "main/partials/footer.html" %}
