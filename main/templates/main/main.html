@@ -1,72 +1,63 @@
+{% extends "layout/base.html" %}
 {% load staticfiles %}
-{% include "main/partials/head.html" %}
-{% include "main/partials/header.html" %}
-<div class="row">
-
-    <div class="about">
-        <div class="about__panel">
-            <i class="about__icon fa fa-eye"></i>
-            <h3 class="about__heading">Log</h3>
-            Ever forget where you left off?<br>
-            You can keep track and rate every episode of a series you watched by adding it to your Watchlog.
-        </div>
-        <div class="about__panel about__panel--light">
-            <i class="about__icon fa fa-bookmark"></i>
-            <h3 class="about__heading">List</h3>
-            Found a series you would like to remember?<br>
-            Simply add it to your Watchlist where it stays at your disposal.
-        </div>
-        <div class="about__panel">
-            <i class="about__icon fa fa-search"></i>
-            <h3 class="about__heading">Search</h3>
-            Are you searching for a series?<br>
-            Our search is getting it's data from TMDb which has entries of countless series and their seasons and episodes.
-        </div>
-    </div>
-</div>
-{% if not user.is_authenticated %}
-<div class="row">
-    <form action="{% url 'user:sign_in' %}" method="post" class="sign-in" id="sign-in">
-        {% csrf_token %}
-        <h2 class="text-center">Sign in</h2>
-        <label class="sign-in__label" for="username">Username</label>
-        <div class="sign-in__input">
-            <input type="text" name="username" id="username">
-        </div>
-        <label class="sign-in__label" for="password">Password  <a href="{% url 'user:password_reset' %}">(forgot Password?)</a></label>
-        <div class="sign-in__input">
-            <input type="password" name="password" id="password">
-        </div>
-        <div class="sign-in__submit">
-            <button type="submit">Sign in</button>
-        </div>
-
-    </form>
-
-</div>
-{% endif %}
-{% if wlog_list %}
-<div class="row semilight">
-    <div class="gallery">
-        <h2 class="gallery__heading">Trending</h2>
-
-        <div class="gallery__wrapper">
-                {% for wlog_entry in wlog_list %}
-                    <div class="gallery__poster">
-
-                    {% if wlog_entry.episode.series.poster_small %}
-                            <img src="{{ wlog_entry.episode.series.poster_small.url }}" srcset="{{ wlog_entry.episode.series.poster_large.url }} 600w" alt="{{ wlog_entry.episode.series.name }} Poster" class="gallery__image">
-                        {% else %}
-                            <img src="{% static "img/placeholder-small.jpg" %}" srcset="{% static "img/placeholder.jpg" %} 600w" alt="{{ series.name }} Poster Placeholder" class="gallery__image">
-                        {% endif %}
-                    </div>
-                {% endfor %}
+{% block content %}
+    <div class="row">
+        <div class="about">
+            <div class="about__panel">
+                <i class="about__icon fa fa-eye"></i>
+                <h3 class="about__heading">Log</h3>
+                Ever forget where you left off?<br>
+                You can keep track and rate every episode of a series you watched by adding it to your Watchlog.
+            </div>
+            <div class="about__panel about__panel--light">
+                <i class="about__icon fa fa-bookmark"></i>
+                <h3 class="about__heading">List</h3>
+                Found a series you would like to remember?<br>
+                Simply add it to your Watchlist where it stays at your disposal.
+            </div>
+            <div class="about__panel">
+                <i class="about__icon fa fa-search"></i>
+                <h3 class="about__heading">Search</h3>
+                Are you searching for a series?<br>
+                Our search is getting it's data from TMDb which has entries of countless series and their seasons and episodes.
+            </div>
         </div>
     </div>
-</div>
-{% endif %}
-
-
-
-<script type="text/javascript" src="{% static 'javascript/main.js' %}"></script>
-{% include "main/partials/footer.html" %}
+    {% if not user.is_authenticated %}
+        <div class="row">
+            <form action="{% url 'user:sign_in' %}" method="post" class="sign-in" id="sign-in">
+                {% csrf_token %}
+                <h2 class="text-center">Sign in</h2>
+                <label class="sign-in__label" for="username">Username</label>
+                <div class="sign-in__input">
+                    <input type="text" name="username" id="username">
+                </div>
+                <label class="sign-in__label" for="password">Password  <a href="{% url 'user:password_reset' %}">(forgot Password?)</a></label>
+                <div class="sign-in__input">
+                    <input type="password" name="password" id="password">
+                </div>
+                <div class="sign-in__submit">
+                    <button type="submit">Sign in</button>
+                </div>
+            </form>
+        </div>
+    {% endif %}
+    {% if wlog_list %}
+        <div class="row semilight">
+            <div class="gallery">
+                <h2 class="gallery__heading">Trending</h2>
+                <div class="gallery__wrapper">
+                    {% for wlog_entry in wlog_list %}
+                        <div class="gallery__poster">
+                            {% if wlog_entry.episode.series.poster_small %}
+                                <img src="{{ wlog_entry.episode.series.poster_small.url }}" srcset="{{ wlog_entry.episode.series.poster_large.url }} 600w" alt="{{ wlog_entry.episode.series.name }} Poster" class="gallery__image">
+                            {% else %}
+                                <img src="{% static "img/placeholder-small.jpg" %}" srcset="{% static "img/placeholder.jpg" %} 600w" alt="{{ series.name }} Poster Placeholder" class="gallery__image">
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    {% endif %}
+{% endblock content %}

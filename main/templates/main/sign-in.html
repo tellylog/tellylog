@@ -1,17 +1,18 @@
+{% extends "layout/base.html" %}
 {% load staticfiles %}
-{% include "main/partials/head.html" %}
-{% include "main/partials/header.html" %}
-        <h1>Login to tellylog</h1>
-
-        <div class="row">
-            {% if user.is_authenticated %}
-                You are already signed in.
-                Back to <a href="{% url 'main:overview' %}">Overview</a>.
-            {% else %}
+{% block title %}
+    {{ block.super }} -
+{% endblock title %}
+{% block content %}
+    <div class="row">
+        <h1 class="text-center">Sign In</h1>
+        {% if user.is_authenticated %}
+            You are already signed in.
+            Back to <a href="{% url 'main:overview' %}">Overview</a>.
+        {% else %}
             <div class="row">
                 <form action="{% url 'user:sign_in' %}" method="post" class="sign-in" id="sign-in">
                     {% csrf_token %}
-                    <h2 class="text-center">Sign in</h2>
                     <label class="sign-in__label" for="username">Username</label>
                     <div class="sign-in__input">
                         <input type="text" name="username" id="username">
@@ -25,8 +26,6 @@
                     </div>
                 </form>
             </div>
-            {% endif %}
-        </div>
-
-<script type="text/javascript" src="{% static 'javascript/main.js' %}"></script>
-{% include "main/partials/footer.html" %}
+        {% endif %}
+    </div>
+{% endblock content %}
