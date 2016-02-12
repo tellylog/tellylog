@@ -21,4 +21,5 @@ urlpatterns = [
     url(r'^$', views.WatchlogListView.as_view(), name='index'),
     url(r'^log/$', views.Log.as_view(), name='log'),
     url(r'^unlog/$', views.Unlog.as_view(), name='unlog'),
+    url(r'^stats/$', views.Stats.as_view(), name='stats'),
 ]

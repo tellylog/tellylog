@@ -65,13 +65,3 @@ class Profile(LoginRequiredMixin, FormView):
     def form_valid(self, form):
         form.save()
         return super(Profile, self).form_valid(form)
-
-
-class PWForget(FormView):
-    template_name = 'user/pwForget.html'
-    form_class = PasswordResetForm
-    success_url = reverse_lazy('main:index')
-
-    def form_valid(self, form):
-        form.save()
-        return super(PWForget, self).form_valid(form)

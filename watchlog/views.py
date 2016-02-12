@@ -1,10 +1,10 @@
 """This file holds the views of the watchlog app."""
 from django.http import JsonResponse
 from django.db.utils import IntegrityError
-from django.views.generic import View, ListView
+from django.views.generic import View, ListView, TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from watchlog.models import Watchlog
-from tv.models import Episode
+from tv.models import Episode, Series
 
 
 class WatchlogListView(LoginRequiredMixin, ListView):
@@ -20,6 +20,24 @@ class WatchlogListView(LoginRequiredMixin, ListView):
             'episode__series', '-added').distinct('episode__series'))
         watchlog.sort(key=lambda x: x.added, reverse=True)
         return watchlog
+
+
+class Stats(LoginRequiredMixin, TemplateView):
+    model = Watchlog
+    template_name = 'watchlog/stats.html'
+    context_object_name = 'stats'
+
+    def get_context_data(self, **kwargs):
+        user = user = self.request.user
+        all_episodes = Watchlog.objects.filter(user=user)
+        context = super(Stats, self).get_context_data(**kwargs)
+        context['number_of_episodes'] = Watchlog.objects.filter(
+            user=user).count()
+        time_spent = 0
+        for ep in all_episodes:
+            time_spent += all_episodes[ep].episode.series.episode_runtime
+        context['time_spent'] = time_spent
+        return context
 
 
 class Log(LoginRequiredMixin, View):

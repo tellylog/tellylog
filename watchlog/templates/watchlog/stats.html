@@ -1,0 +1,11 @@
+{% extends "layout/base.html" %}
+{% load staticfiles %}
+{% block title %}
+    {{ block.super }} - Statistics
+{% endblock title %}
+{% block content %}
+    <p>Number of episodes watched: {{ number_of_episodes }}</p>
+    <p>Time spent watching episodes: {{ time_spent }}</p>
+
+
+{% endblock content %}
