@@ -1,6 +1,6 @@
 """Models of the Watchlog app"""
 from django.db import models
-from django.contrib.auth import models as user
+from django.contrib.auth import models as auth_user
 from tv import models as tv
 
 
@@ -13,7 +13,7 @@ class Watchlog(models.Model):
         rating (models.PositiveSmallIntegerField): Rating of the episode
         user (models.ForeignKey): User
     """
-    user = models.ForeignKey(user.User, on_delete=models.CASCADE)
+    user = models.ForeignKey(auth_user.User, on_delete=models.CASCADE)
     episode = models.ForeignKey(tv.Episode, on_delete=models.CASCADE)
     rating = models.PositiveSmallIntegerField(null=True, blank=True)
     added = models.DateTimeField(auto_now_add=True)

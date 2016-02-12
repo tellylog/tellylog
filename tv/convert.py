@@ -133,12 +133,11 @@ def _get_posters(poster_path):
 
 
 @transaction.atomic
-def _convert_season(tmdb_series_id, series_id, season_number, new_series):
+def _convert_season(tmdb_series_id, season_number, new_series):
     """Retrieve, convert and store a season of the series with it's episodes
 
     Args:
         tmdb_series_id (int): TMDB ID of the series
-        series_id (int): Tellylog ID of the series
         season_number (int): Number of the season to be converted
         new_series (Series): Tellylog series the season belongs to
 
@@ -308,8 +307,7 @@ def process_full_series(full_series):
     # convert all seasons of the series
     for number in range(1, new_series.number_of_seasons + 1):
         _convert_season(
-            new_series.tmdb_id,
-            new_series.id, number, new_series)
+            new_series.tmdb_id, number, new_series)
     return True
 
 
