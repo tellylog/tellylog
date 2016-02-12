@@ -10,9 +10,6 @@ from django.core.urlresolvers import reverse
 TV_IMAGE_PATH = 'tv/{type}/{category}/{size}'
 
 
-
-
-
 class Genre(models.Model):
 
     """
