@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.edit import FormView
+from django.views.generic import TemplateView
 from django.contrib.auth.forms import PasswordChangeForm, PasswordResetForm
 from django.core.urlresolvers import reverse_lazy
 
@@ -38,6 +39,14 @@ def SignIn(request):
             return HttpResponseRedirect('/sign-in/')
     else:
         return render(request, 'user:sign_in', {})
+
+
+class SignInView(TemplateView):
+    """
+    SignInView. redirects incoming requests
+    template_name : takes the given template and rendes it to the view.
+    """
+    template_name = "user/sign-in.html"
 
 
 @login_required

@@ -206,7 +206,7 @@ STATICFILES_DIRS = [
 
 
 
-LOGIN_URL = '/sign-in/'
+LOGIN_URL = '/user/sign-in/'
 # if user is not logged in, this is the URL to which they are redirected
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True

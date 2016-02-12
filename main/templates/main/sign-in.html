@@ -17,7 +17,7 @@
                     <div class="sign-in__input">
                         <input type="text" name="username" id="username">
                     </div>
-                    <label class="sign-in__label" for="password">Password</label>
+                    <label class="sign-in__label" for="password">Password <a href="{% url 'user:password_reset' %}">(forgot Password?)</a></label>
                     <div class="sign-in__input">
                         <input type="password" name="password" id="password">
                     </div>

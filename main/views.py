@@ -44,14 +44,6 @@ class Dummy(TemplateView):
     template_name = "main/dummy.html"
 
 
-class SignIn(TemplateView):
-    """
-    Index View.
-    template_name : takes the given template and rendes it to the view.
-    """
-    template_name = "main/sign-in.html"
-
-
 class Contact(TemplateView):
     """
     Contact View.
