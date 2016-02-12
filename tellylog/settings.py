@@ -83,6 +83,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
+            'templates/',
             'override_templates/',
         ],
         'APP_DIRS': True,

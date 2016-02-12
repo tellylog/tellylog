@@ -1,0 +1,88 @@
+{% load staticfiles %}
+{% load tellytags %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf8">
+        <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <title>{% block title %}tellylog{% endblock title %}</title>
+    <link rel="shortcut icon" type="image/png" href="{% static 'img/favicon.png' %}"/>
+    <link href='https://fonts.googleapis.com/css?family=Raleway|Roboto' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}"/>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="page">
+            <header class="header">
+                <div class="row">
+                    <div id="logo" class="header__logo">
+                        {% if user.is_authenticated %}
+                            <a href="{% url 'main:overview' %}">tellylog</a>
+                        {% else %}
+                            <a href="{% url 'main:index' %}">tellylog</a>
+                        {% endif %}
+                    </div>
+                    {% if user.is_authenticated %}
+                        <div id="nav-toggle" class="header__navtoggle">
+                            <a class="js-menu-trigger sliding-panel-button">
+                                <i class="fa fa-bars fa-lg"></i>
+                            </a>
+                        </div>
+                        <div class="header__searchbar">
+                            <form method="get" action="{% url 'search:search' %}" class="searchbar" role="search">
+                                <div class="searchbar__field">
+                                    <input type="search" name="q" placeholder="Enter Search" />
+                                </div>
+                                <div class="searchbar__submit">
+                                    <button type="submit" class="searchbar__submit">
+                                    <i class="fa fa-search fa-lg"></i>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                        <nav class="js-menu sliding-panel-content">
+                            {% block navpanel %}
+                                <ul>
+                                    <li class="sliding-panel__entry {% active 'main:overview' %}"><a href="{% url 'main:overview' %}">Overview</a></li>
+                                    <li class="sliding-panel__entry {% active 'wlog:index' %}"><a href="{% url 'wlog:index' %}">Watchlog</a></li>
+                                    <li class="sliding-panel__entry {% active 'wlist:index' %}"><a href="{% url 'wlist:index' %}">Watchlist</a></li>
+                                    <li class="sliding-panel__entry {% active 'main:dummy' %}"><a href="{% url 'main:dummy' %}">Achievements</a></li>
+                                    <li class="sliding-panel__entry {% active 'user:profile' %}"><a href="{% url 'user:profile' %}">Profile</a></li>
+                                    <li class="sliding-panel__entry {% active 'user:logout' %}"><a href="{% url 'user:logout' %}">Logout</a></li>
+                                </ul>
+                            {% endblock navpanel %}
+                        </nav>
+                    {% else %}
+                        <div class="header__signup">
+                            <a href="{% url 'user:sign_up' %}">
+                                <button>
+                                Sign Up
+                                </button>
+                            </a>
+                        </div>
+                    {% endif %}
+                    <div class="js-menu-screen sliding-panel-fade-screen"></div>
+                </div>
+            </header>
+            {% block content %}
+            {% endblock content %}
+        </div>
+        <footer class="footer">
+            <ul class="footer__linklist">
+                <li class="footer__linkitem"><a class="footer__link" href="{% url 'main:about' %}">About</a></li>
+                <li class="footer__linkitem"><a class="footer__link" href="{% url 'main:help' %}">Help</a></li>
+                <li class="footer__linkitem"><a class="footer__link" href="{% url 'main:contact' %}">Contact</a></li>
+            </ul>
+            <div class="footer__info">
+                Tellylog uses the TMDb API but is not endorsed or certified by TMDb.
+            </div>
+        </footer>
+    </div>
+    {% block customjs %}
+        {% comment %}
+        Used for custom scripts before the main script is included.
+        {% endcomment %}
+    {% endblock customjs %}
+    <script type="text/javascript" src="{% static 'javascript/main.js' %}"></script>
+</body>
+</html>

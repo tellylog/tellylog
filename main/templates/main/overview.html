@@ -1,52 +1,53 @@
-{% include "main/partials/head.html" %}
-{% include "main/partials/header.html" %}
+{% extends "layout/base.html" %}
 {% load staticfiles %}
-<div class="row">
-    <div class="gallery">
-        <h2 class="gallery__heading"><a href="{% url 'wlog:index' %}">Watchlog</a></h2>
-        {% if wlog_list %}
-            <p class="gallery__info">Your latest Watchlog entries:</p>
-            <div class="gallery__wrapper">
-                {% for wlog_entry in wlog_list %}
-                    <div class="gallery__poster--small">
-                        <a href="{{ wlog_entry.episode.series.get_absolute_url }}" title="{{ wlog_entry.episode.series.name }}">
-                    {% if wlog_entry.episode.series.poster_small %}
-                            <img src="{{ wlog_entry.episode.series.poster_small.url }}" srcset="{{ wlog_entry.episode.series.poster_large.url }} 600w" alt="{{ wlog_entry.episode.series.name }} Poster" class="gallery__image">
-                        {% else %}
-                            <img src="{% static "img/placeholder-small.jpg" %}" srcset="{% static "img/placeholder.jpg" %} 600w" alt="{{ wlog_entry.episode.series.name }} Poster Placeholder" class="gallery__image">
-                        {% endif %}
-                        </a>
-                    </div>
-                {% endfor %}
-            </div>
-        {% else %}
-            <h2>There are no entries in your watchlog.</h2>
-        {% endif %}
+{% block title %}
+    {{ block.super }} - Overview
+{% endblock title %}
+{% block content %}
+    <div class="row">
+        <div class="gallery">
+            <h2 class="gallery__heading"><a href="{% url 'wlog:index' %}">Watchlog</a></h2>
+            {% if wlog_list %}
+                <p class="gallery__info">Your latest Watchlog entries:</p>
+                <div class="gallery__wrapper">
+                    {% for wlog_entry in wlog_list %}
+                        <div class="gallery__poster--small">
+                            <a href="{{ wlog_entry.episode.series.get_absolute_url }}" title="{{ wlog_entry.episode.series.name }}">
+                                {% if wlog_entry.episode.series.poster_small %}
+                                    <img src="{{ wlog_entry.episode.series.poster_small.url }}" srcset="{{ wlog_entry.episode.series.poster_large.url }} 600w" alt="{{ wlog_entry.episode.series.name }} Poster" class="gallery__image">
+                                {% else %}
+                                    <img src="{% static "img/placeholder-small.jpg" %}" srcset="{% static "img/placeholder.jpg" %} 600w" alt="{{ wlog_entry.episode.series.name }} Poster Placeholder" class="gallery__image">
+                                {% endif %}
+                            </a>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <h2>There are no entries in your watchlog.</h2>
+            {% endif %}
+        </div>
     </div>
-</div>
-<div class="row semilight">
-    <div class="gallery">
-        <h2 class="gallery__heading"><a href="{% url 'wlist:index' %}">Watchlist</a></h2>
-        {% if wlist_list %}
-            <p class="gallery__info">Your latest Watchlist entries:</p>
-            <div class="gallery__wrapper">
-                {% for wlist_entry in wlist_list %}
-                    <div class="gallery__poster--small">
-                        <a href="{{ wlist_entry.series.get_absolute_url }}" title="{{ wlist_entry.series.name }}">
-                    {% if wlist_entry.series.poster_small %}
-                            <img src="{{ wlist_entry.series.poster_small.url }}" srcset="{{ wlist_entry.series.poster_large.url }} 600w" alt="{{ wlist_entry.series.name }} Poster" class="gallery__image">
-                        {% else %}
-                            <img src="{% static "img/placeholder-small.jpg" %}" srcset="{% static "img/placeholder.jpg" %} 600w" alt="{{ wlist_entry.series.name }} Poster Placeholder" class="gallery__image">
-                        {% endif %}
-                        </a>
-                    </div>
-                {% endfor %}
-            </div>
-        {% else %}
-            <h2>There are no entries in your watchlist.</h2>
-        {% endif %}
+    <div class="row semilight">
+        <div class="gallery">
+            <h2 class="gallery__heading"><a href="{% url 'wlist:index' %}">Watchlist</a></h2>
+            {% if wlist_list %}
+                <p class="gallery__info">Your latest Watchlist entries:</p>
+                <div class="gallery__wrapper">
+                    {% for wlist_entry in wlist_list %}
+                        <div class="gallery__poster--small">
+                            <a href="{{ wlist_entry.series.get_absolute_url }}" title="{{ wlist_entry.series.name }}">
+                                {% if wlist_entry.series.poster_small %}
+                                    <img src="{{ wlist_entry.series.poster_small.url }}" srcset="{{ wlist_entry.series.poster_large.url }} 600w" alt="{{ wlist_entry.series.name }} Poster" class="gallery__image">
+                                {% else %}
+                                    <img src="{% static "img/placeholder-small.jpg" %}" srcset="{% static "img/placeholder.jpg" %} 600w" alt="{{ wlist_entry.series.name }} Poster Placeholder" class="gallery__image">
+                                {% endif %}
+                            </a>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <h2>There are no entries in your watchlist.</h2>
+            {% endif %}
+        </div>
     </div>
-</div>
-
-<script type="text/javascript" src="{% static 'javascript/main.js' %}"></script>
-{% include "main/partials/footer.html" %}
+{% endblock content %}

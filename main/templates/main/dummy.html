@@ -1,10 +1,7 @@
+{% extends "layout/base.html" %}
 {% load staticfiles %}
-{% include "main/partials/head.html" %}
-{% include "main/partials/header.html" %}
-<div class="row">
-    <h1>Sorry, this page is still in progress!<br>Back to <a href="{% url 'main:index' %}"> main</a>.</h1>
-
-</div>
-
-<script type="text/javascript" src="{% static 'javascript/main.js' %}"></script>
-{% include "main/partials/footer.html" %}
+{% block content %}
+    <div class="row">
+        <h1>Sorry, this page is still in progress!<br>Back to <a href="{% url 'main:index' %}"> main</a>.</h1>
+    </div>
+{% endblock content %}
