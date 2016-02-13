@@ -29,11 +29,21 @@
                 <div class="gallery__wrapper">
                     {% for wlist_entry in wlist_list %}
                         <div class="gallery__poster">
-                            <a href="{{ wlist_entry.series.get_absolute_url }}" title="{{ wlist_entry.series.name }}">
+                            <a href="{{ wlist_entry.series.get_absolute_url }}">
                                 {% if wlist_entry.series.poster_small %}
                                     <img src="{{ wlist_entry.series.poster_small.url }}" srcset="{{ wlist_entry.series.poster_large.url }} 600w" alt="{{ wlist_entry.series.name }} Poster" class="gallery__image">
+                                    <div class="gallery__overlay">
+                                        <h3>
+                                        {{ wlist_entry.series.name }}
+                                        </h3>
+                                    </div>
                                 {% else %}
                                     <img src="{% static "img/placeholder-small.jpg" %}" srcset="{% static "img/placeholder.jpg" %} 600w" alt="{{ series.name }} Poster Placeholder" class="gallery__image">
+                                    <div class="gallery__overlay gallery__overlay--fix">
+                                        <h3>
+                                        {{ wlist_entry.series.name }}
+                                        </h3>
+                                    </div>
                                 {% endif %}
                             </a>
                         </div>

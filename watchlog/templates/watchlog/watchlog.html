@@ -29,12 +29,23 @@
                 <div class="gallery__wrapper">
                     {% for wlog_entry in wlog_list %}
                         <div class="gallery__poster">
-                            <a href="{{ wlog_entry.episode.series.get_absolute_url }}" title="{{ wlog_entry.episode.series.name }}">
-                                {% if wlog_entry.episode.series.poster_small %}
-                                    <img src="{{ wlog_entry.episode.series.poster_small.url }}" srcset="{{ wlog_entry.episode.series.poster_large.url }} 600w" alt="{{ wlog_entry.episode.series.name }} Poster" class="gallery__image">
-                                {% else %}
-                                    <img src="{% static "img/placeholder-small.jpg" %}" srcset="{% static "img/placeholder.jpg" %} 600w" alt="{{ series.name }} Poster Placeholder" class="gallery__image">
-                                {% endif %}
+                            <a href="{{ wlog_entry.episode.series.get_absolute_url }}">
+                                    {% if wlog_entry.episode.series.poster_small %}
+                                        <img src="{{ wlog_entry.episode.series.poster_small.url }}" srcset="{{ wlog_entry.episode.series.poster_large.url }} 600w" alt="{{ wlog_entry.episode.series.name }} Poster" class="gallery__image">
+                                        <div class="gallery__overlay">
+                                            <h3>
+                                            {{ wlog_entry.episode.series.name }}
+                                            </h3>
+                                        </div>
+                                    {% else %}
+                                        <img src="{% static "img/placeholder-small.jpg" %}" srcset="{% static "img/placeholder.jpg" %} 600w" alt="{{ series.name }} Poster Placeholder" class="gallery__image">
+                                        <div class="gallery__overlay gallery__overlay--fix">
+                                            <h3>
+                                            {{ wlog_entry.episode.series.name }}
+                                            </h3>
+                                        </div>
+                                    {% endif %}
+
                             </a>
                         </div>
                     {% endfor %}

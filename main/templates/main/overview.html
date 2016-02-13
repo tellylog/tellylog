@@ -11,12 +11,22 @@
                 <p class="gallery__info">Your latest Watchlog entries:</p>
                 <div class="gallery__wrapper">
                     {% for wlog_entry in wlog_list %}
-                        <div class="gallery__poster--small">
+                        <div class="gallery__poster gallery__poster--small">
                             <a href="{{ wlog_entry.episode.series.get_absolute_url }}" title="{{ wlog_entry.episode.series.name }}">
                                 {% if wlog_entry.episode.series.poster_small %}
                                     <img src="{{ wlog_entry.episode.series.poster_small.url }}" srcset="{{ wlog_entry.episode.series.poster_large.url }} 600w" alt="{{ wlog_entry.episode.series.name }} Poster" class="gallery__image">
+                                    <div class="gallery__overlay">
+                                        <h3>
+                                        {{ wlog_entry.episode.series.name }}
+                                        </h3>
+                                    </div>
                                 {% else %}
                                     <img src="{% static "img/placeholder-small.jpg" %}" srcset="{% static "img/placeholder.jpg" %} 600w" alt="{{ wlog_entry.episode.series.name }} Poster Placeholder" class="gallery__image">
+                                    <div class="gallery__overlay gallery__overlay--fix">
+                                        <h3>
+                                        {{ wlog_entry.episode.series.name }}
+                                        </h3>
+                                    </div>
                                 {% endif %}
                             </a>
                         </div>
@@ -34,12 +44,22 @@
                 <p class="gallery__info">Your latest Watchlist entries:</p>
                 <div class="gallery__wrapper">
                     {% for wlist_entry in wlist_list %}
-                        <div class="gallery__poster--small">
+                        <div class="gallery__poster gallery__poster--small">
                             <a href="{{ wlist_entry.series.get_absolute_url }}" title="{{ wlist_entry.series.name }}">
                                 {% if wlist_entry.series.poster_small %}
                                     <img src="{{ wlist_entry.series.poster_small.url }}" srcset="{{ wlist_entry.series.poster_large.url }} 600w" alt="{{ wlist_entry.series.name }} Poster" class="gallery__image">
+                                    <div class="gallery__overlay">
+                                        <h3>
+                                        {{ wlist_entry.series.name }}
+                                        </h3>
+                                    </div>
                                 {% else %}
                                     <img src="{% static "img/placeholder-small.jpg" %}" srcset="{% static "img/placeholder.jpg" %} 600w" alt="{{ wlist_entry.series.name }} Poster Placeholder" class="gallery__image">
+                                    <div class="gallery__overlay gallery__overlay--fix">
+                                        <h3>
+                                        {{ wlist_entry.series.name }}
+                                        </h3>
+                                    </div>
                                 {% endif %}
                             </a>
                         </div>

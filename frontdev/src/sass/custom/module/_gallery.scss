@@ -1,60 +1,105 @@
 .gallery {
-    @include pad();
+    @include pad;
+
     &__heading {
         text-align: center;
     }
+
     &__info {
         text-align: center;
+
         @include media($medium-screen-up) {
             text-align: left;
         }
+
+
         @include media($large-screen-up) {
             text-align: left;
         }
     }
+
     &__poster {
         @include span-columns(6 of 12);
+
         @include omega(2n);
+
         margin-bottom: 0.5em;
+        position: relative;
+
         @include media($medium-screen-up) {
             @include omega-reset(2n);
+
             @include span-columns(3 of 12);
+
             @include omega(4n);
         }
+
+
         @include media($large-screen-up) {
             @include omega-reset(4n);
+
             @include span-columns(2 of 12);
+
             @include omega(6n);
         }
+
+
         &--small {
-            @include span-columns(6 of 12);
-            @include omega(2n);
-            margin-bottom: 0.5em;
             @include media($medium-screen-up) {
                 @include omega-reset(2n);
+
                 @include span-columns(4 of 12);
+
                 @include omega(3n);
             }
+
+
             @include media($large-screen-up) {
                 @include omega-reset(3n);
+
                 @include span-columns(2 of 12);
+
                 @include omega(6n);
             }
         }
-        &--small:nth-child(n+5){
+
+        &--small:nth-child(n+5) {
             display: none;
-            @include media($medium-screen-up){
+
+            @include media($medium-screen-up) {
                 display: block;
             }
+        }
 
+        &:hover .gallery__overlay {
+            display: block;
         }
     }
+
     &__image {
         width: 100%;
-
     }
 
-}
-.id_captcha{
-    display: none;
+    &__overlay {
+        display: none;
+        text-align: center;
+        color: #fff;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+
+        h3 {
+            background: rgba(0, 0, 0, 0.75);
+            padding: 0.1em;
+            font-size: 1em;
+            @include media($medium-screen-up){
+                font-size: 1.2em;
+            }
+        }
+
+        &--fix {
+            display: block;
+        }
+    }
 }
