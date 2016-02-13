@@ -28,15 +28,12 @@ class Stats(LoginRequiredMixin, TemplateView):
     context_object_name = 'stats'
 
     def get_context_data(self, **kwargs):
-        user = user = self.request.user
+        user = self.request.user
         all_episodes = Watchlog.objects.filter(user=user)
         context = super(Stats, self).get_context_data(**kwargs)
         context['number_of_episodes'] = Watchlog.objects.filter(
             user=user).count()
-        time_spent = 0
-        for ep in all_episodes:
-            time_spent += all_episodes[ep].episode.series.episode_runtime
-        context['time_spent'] = time_spent
+        context['time_spent'] = Watchlog.objects.all().count()
         return context
 
 

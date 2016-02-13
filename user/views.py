@@ -36,7 +36,7 @@ def SignIn(request):
             login(request, user)
             return HttpResponseRedirect('/overview/')
         else:
-            return HttpResponseRedirect('/sign-in/')
+            return HttpResponseRedirect('/user/sign-in/')
     else:
         return render(request, 'user:sign_in', {})
 
