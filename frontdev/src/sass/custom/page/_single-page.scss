@@ -94,28 +94,37 @@
             text-align: left;
             font-weight: bold;
             color: $base-font-color;
+            &:hover{
+                color: $light-chery;
+            }
             &--small{
-                @include span-columns(9 of 12);
+                @include span-columns(6 of 12);
                 font-weight: bold;
                 @include media($medium-screen-up){
-                    @include span-columns(7 of 10);
+                    @include span-columns(5 of 10);
+                }
+                &:hover{
+                    color: $base-font-color;
                 }
             }
         }
-        &__link:hover{
-            color: $light-chery;
+        &__rating{
+            @include span-columns(4 of 12);
+            text-align: center;
+            @include media($medium-screen-up){
+                @include span-columns(3 of 10)
+            }
         }
         &__btn{
             @include span-columns(6 of 12);
-            text-align: right;
+            text-align: center;
             font-size: 1.5em;
             &--small{
-                @include span-columns(2 of 12);
+                @include span-columns(1 of 12);
                 @include omega();
-                text-align: right;
                 font-size: 1.4em;
                 @include media($medium-screen-up){
-                    @include span-columns(2 of 10);
+                    @include span-columns(1 of 10);
                 }
             }
         }

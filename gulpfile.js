@@ -21,9 +21,11 @@ gulp.task('js', function () {
       '*'
     ]))
     .pipe(plugins.concat('main.js'))
+    .on('error', console.log)
     .pipe(gulp.dest(dest + 'javascript'))
     .pipe(plugins.sourcemaps.init())
     .pipe(plugins.uglify())
+    .on('error', console.log)
     .pipe(plugins.sourcemaps.write())
     .pipe(gulp.dest(collect + 'javascript'))
 })

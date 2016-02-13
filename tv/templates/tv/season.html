@@ -43,16 +43,23 @@
             <ul class="single-page__list single-page__list--small">
                 {% for episode in episodes %}
                     <li class="single-page__entry single-page__entry--small">
-                        <div class="single-page__entry__number--small">
+                        <div class="single-page__entry__number single-page__entry__number--small">
                             {{ episode.number }}
                         </div>
-                        <div class="single-page__entry__link--small">
+                        <div class="single-page__entry__link single-page__entry__link--small">
                             {{ episode.name }}
                             {% if episode.air_date %}
                                 - {{ episode.air_date|date:"d.m.Y"}}
                             {% endif %}
                         </div>
-                        <div  class="single-page__entry__btn--small">
+                        <div class="single-page__entry__rating rating">
+                            <div class="rating">
+                                {% for i in 5|get_range %}
+                                    <span data-rating="{{ i }}" class="rating__btn fa fa-star-o"></span>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div  class="single-page__entry__btn single-page__entry__btn--small">
                             {% if wlog_episodes and wlog_episodes|access:episode.id == 1 %}
                                 <span class="log-btn log-btn--episode log-btn--logged" title="Unlog this episode" data-kind="episode" data-id="{{ episode.id }}">
                                     <i class="fa fa-eye" ></i>

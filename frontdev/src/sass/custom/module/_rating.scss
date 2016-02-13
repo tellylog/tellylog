@@ -1,0 +1,10 @@
+.rating{
+    cursor: pointer;
+    &__btn{
+        float: left;
+        margin-right: .1em;
+    }
+    &__btn--active{
+        color: $chery;
+    }
+}
