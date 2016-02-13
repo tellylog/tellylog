@@ -10,144 +10,6 @@ from django.core.urlresolvers import reverse
 TV_IMAGE_PATH = 'tv/{type}/{category}/{size}'
 
 
-class Person(models.Model):
-
-    """
-    Person model. Holds all information from actors, directors,...
-
-    Attributes:
-        added (models.DateTimeField): When was the Person added
-        last_update (models.DateTimeField): When was the last Update
-        name (models.CharField): Name of the Person, max 254
-        profile_large (models.ImageField): Large image of Person,
-                                           can be blank or null
-        profile_medium (models.ImageField): Medium image of Person,
-                                            can be blank or null
-        profile_small (models.ImageField): Small image of Person,
-                                           can be blank or null
-        tmdb_id (models.IntegerField): ID of the TMDB entry
-    """
-
-    name = models.CharField(max_length=254)
-    tmdb_id = models.IntegerField()
-    profile_small = models.ImageField(
-        upload_to=TV_IMAGE_PATH.format(type='profile',
-                                       category='person', size='small'),
-        max_length=254, blank=True, null=True)
-    profile_medium = models.ImageField(
-        upload_to=TV_IMAGE_PATH.format(type='profile',
-                                       category='person', size='medium'),
-        max_length=254, blank=True, null=True)
-    profile_large = models.ImageField(
-        upload_to=TV_IMAGE_PATH.format(type='profile',
-                                       category='person', size='large'),
-        max_length=254, blank=True, null=True)
-    added = models.DateTimeField(auto_now_add=True)
-    last_update = models.DateTimeField(auto_now=True)
-
-    class Meta:
-
-        """
-        Meta information of the Person.
-
-        Attributes:
-            verbose_name (str): Human readable Name of the Model
-            verbose_name_plural (str): Human readable plural Name of the Model
-        """
-
-        verbose_name = "Person"
-        verbose_name_plural = "Persons"
-
-    def __str__(self):
-        """
-        Return a string representation of a Person.
-
-        Returns:
-            str: Name of the Person
-        """
-        return self.name
-
-
-class Department(models.Model):
-
-    """
-    Department model. Holds the name of a department.
-
-    Attributes:
-        added (models.DateTimeField): When was the Department added
-        last_update (models.DateTimeField): When was the Department updated
-        name (models.CharField): Name of the Department, max 254
-    """
-
-    name = models.CharField(max_length=254)
-    added = models.DateTimeField(auto_now_add=True)
-    last_update = models.DateTimeField(auto_now=True)
-
-    class Meta:
-
-        """
-        Meta information of the Department.
-
-        Attributes:
-            verbose_name (str): Human readable Name
-            verbose_name_plural (str): Human readable Name plural
-        """
-
-        verbose_name = "Department"
-        verbose_name_plural = "Departments"
-
-    def __str__(self):
-        """
-        Return a string representation of the Department.
-
-        Returns:
-            str: Name of the Department
-        """
-        return self.name
-
-
-class Job(models.Model):
-
-    """
-    Job model. Holds the name of a job and the link to a department.
-
-    Attributes:
-        added (models.DateTimeField): When was the Job added
-        department (models.ForeignKey): Department of the Job
-        last_update (models.DateTimeField): When was the Job updated
-        name (models.CharField): Name of the Job
-    """
-
-    name = models.CharField(max_length=254)
-    department = models.ForeignKey(Department, on_delete=models.CASCADE,
-                                   related_name='jobs',
-                                   related_query_name='job')
-    added = models.DateTimeField(auto_now_add=True)
-    last_update = models.DateTimeField(auto_now=True)
-
-    class Meta:
-
-        """
-        Meta information of the Job.
-
-        Attributes:
-            verbose_name (str): Human readable Name
-            verbose_name_plural (str): Human readable Name plural
-        """
-
-        verbose_name = "Job"
-        verbose_name_plural = "Jobs"
-
-    def __str__(self):
-        """
-        Return a string representation of the Department.
-
-        Returns:
-            str: Name of the Department and Job name
-        """
-        return '%s: %s' % (self.department_id.name, self.name)
-
-
 class Genre(models.Model):
 
     """
@@ -310,18 +172,18 @@ class Series(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        """Summary
+        """Get the absolute URL of the series
 
         Returns:
-            TYPE: Description
+            str: URL of the series
         """
         return reverse('tv:series', kwargs={'series_id': str(self.id)})
 
     def get_genre_list(self):
-        """Summary
+        """Get a list of the genres of the series
 
         Returns:
-            TYPE: Description
+            list: List of all genres
         """
         genre_res = self.genres.all()
         genre_list = []
@@ -332,10 +194,10 @@ class Series(models.Model):
         return genre_list
 
     def update_needed(self):
-        """Summary
+        """Check if the series needs an update
 
         Returns:
-            TYPE: Description
+            bool: True if it needs one otherwise False
         """
         if (self.last_update < timezone.now() -
                 datetime.timedelta(weeks=1)):
@@ -354,7 +216,7 @@ class Season(models.Model):
         air_date (models.DateField): When did the Season first air
         episode_count (models.IntegerField): How many Episodes
         last_update (models.DateTimeField): When was the Season updated
-        name (TYPE): Description
+        name (TYPE): Name of the Season
         number (models.IntegerField): Number of the Season
         poster_large (models.ImageField): Large poster image of Season,
                                            can be blank or null
@@ -388,7 +250,7 @@ class Season(models.Model):
         Meta information of the Season.
 
         Attributes:
-            ordering (list): Description
+            ordering (list): Order by value
             verbose_name (str): Human readable name
             verbose_name_plural (str): Human readable name plural
         """
@@ -407,10 +269,10 @@ class Season(models.Model):
         return '%s %d' % (self.series.name, self.number)
 
     def get_absolute_url(self):
-        """Summary
+        """Get the absolute url of the season
 
         Returns:
-            TYPE: Description
+            str: Url of the season
         """
         kwargs = {
             'series_id': self.series.id,
@@ -457,7 +319,7 @@ class Episode(models.Model):
         Meta information of the Episode.
 
         Attributes:
-            ordering (list): Description
+            ordering (list): Order by value
             verbose_name (str): Human readable name
             verbose_name_plural (str): Human readable name plural
         """
@@ -478,6 +340,144 @@ class Episode(models.Model):
                                        self.number)
 
 
+class Person(models.Model):
+
+    """
+    Person model. Holds all information from actors, directors,...
+
+    Attributes:
+        added (models.DateTimeField): When was the Person added
+        last_update (models.DateTimeField): When was the last Update
+        name (models.CharField): Name of the Person, max 254
+        profile_large (models.ImageField): Large image of Person,
+                                           can be blank or null
+        profile_medium (models.ImageField): Medium image of Person,
+                                            can be blank or null
+        profile_small (models.ImageField): Small image of Person,
+                                           can be blank or null
+        tmdb_id (models.IntegerField): ID of the TMDB entry
+    """
+
+    name = models.CharField(max_length=254)
+    tmdb_id = models.IntegerField()
+    profile_small = models.ImageField(
+        upload_to=TV_IMAGE_PATH.format(type='profile',
+                                       category='person', size='small'),
+        max_length=254, blank=True, null=True)
+    profile_medium = models.ImageField(
+        upload_to=TV_IMAGE_PATH.format(type='profile',
+                                       category='person', size='medium'),
+        max_length=254, blank=True, null=True)
+    profile_large = models.ImageField(
+        upload_to=TV_IMAGE_PATH.format(type='profile',
+                                       category='person', size='large'),
+        max_length=254, blank=True, null=True)
+    added = models.DateTimeField(auto_now_add=True)
+    last_update = models.DateTimeField(auto_now=True)
+
+    class Meta:
+
+        """
+        Meta information of the Person.
+
+        Attributes:
+            verbose_name (str): Human readable Name of the Model
+            verbose_name_plural (str): Human readable plural Name of the Model
+        """
+
+        verbose_name = "Person"
+        verbose_name_plural = "Persons"
+
+    def __str__(self):
+        """
+        Return a string representation of a Person.
+
+        Returns:
+            str: Name of the Person
+        """
+        return self.name
+
+
+class Department(models.Model):
+
+    """
+    Department model. Holds the name of a department.
+
+    Attributes:
+        added (models.DateTimeField): When was the Department added
+        last_update (models.DateTimeField): When was the Department updated
+        name (models.CharField): Name of the Department, max 254
+    """
+
+    name = models.CharField(max_length=254)
+    added = models.DateTimeField(auto_now_add=True)
+    last_update = models.DateTimeField(auto_now=True)
+
+    class Meta:
+
+        """
+        Meta information of the Department.
+
+        Attributes:
+            verbose_name (str): Human readable Name
+            verbose_name_plural (str): Human readable Name plural
+        """
+
+        verbose_name = "Department"
+        verbose_name_plural = "Departments"
+
+    def __str__(self):
+        """
+        Return a string representation of the Department.
+
+        Returns:
+            str: Name of the Department
+        """
+        return self.name
+
+
+class Job(models.Model):
+
+    """
+    Job model. Holds the name of a job and the link to a department.
+
+    Attributes:
+        added (models.DateTimeField): When was the Job added
+        department (models.ForeignKey): Department of the Job
+        last_update (models.DateTimeField): When was the Job updated
+        name (models.CharField): Name of the Job
+    """
+
+    name = models.CharField(max_length=254)
+    department = models.ForeignKey(Department, on_delete=models.CASCADE,
+                                   related_name='jobs',
+                                   related_query_name='job')
+    added = models.DateTimeField(auto_now_add=True)
+    last_update = models.DateTimeField(auto_now=True)
+
+    class Meta:
+
+        """
+        Meta information of the Job.
+
+        Attributes:
+            verbose_name (str): Human readable Name
+            verbose_name_plural (str): Human readable Name plural
+        """
+
+        verbose_name = "Job"
+        verbose_name_plural = "Jobs"
+
+    def __str__(self):
+        """
+        Return a string representation of the Department.
+
+        Returns:
+            str: Name of the Department and Job name
+        """
+        return '%s: %s' % (self.department_id.name, self.name)
+
+
 class Credit(models.Model):
 
     """
@@ -486,15 +486,12 @@ class Credit(models.Model):
     Attributes:
         added (models.DateTimeField): When was the Credit added
         character (models.CharField): Optional Character Name. max 254
-        department (TYPE): Description
+        department (models.ForeignKey): Department of the credit
         job (models.ForeignKey): Job key
         last_update (models.DateTimeField): When was the Credit updated
         order (models.IntegerField): Optional order of cast importance
         person (models.ForeignKey): Person key
         series (models.ForeignKey): Series key
-
-    Deleted Attributes:
-        department_id (models.ForeignKey): Department key
     """
 
     department = models.ForeignKey(Department, on_delete=models.CASCADE,

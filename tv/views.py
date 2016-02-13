@@ -1,9 +1,7 @@
 """This file holds the views of the tv app."""
 from django.shortcuts import get_object_or_404, get_list_or_404
-from django.http import HttpResponse  # HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.views.generic import TemplateView
-# from django.utils import timezone
 from tv.models import Series, Season, Episode
 from watchlog.models import Watchlog
 from watchlist.models import Watchlist
@@ -110,7 +108,3 @@ class SeasonView(TemplateView):
         wlog_unlog_url = self.request.build_absolute_uri(wlog_unlog_url)
         context['wlog_unlog_url'] = wlog_unlog_url
         return context
-
-
-class TestView(TemplateView):
-    template_name = "tv/test.html"

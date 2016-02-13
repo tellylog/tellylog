@@ -1,7 +1,4 @@
 """This file holds the Poster class which is used to get poster Imgages."""
-import os
-from io import BytesIO
-from PIL import Image
 
 from ._parent import _Parent
 
