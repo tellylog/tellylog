@@ -46,32 +46,48 @@ class Stats(LoginRequiredMixin, TemplateView):
         user = self.request.user
         context = super(Stats, self).get_context_data(**kwargs)
 
-        # number of episodes
+        """
+        number of episodes
+        """
         user_episodes = Watchlog.objects.filter(user=user)
         context['number_of_episodes'] = user_episodes.count()
 
-        # time spent watching espisode per user
+        """
+        time spent watching espisode per user
+        if a series does not have a runtime, it is not added up and the
+        series is given to the user
+        """
         runtime_counter = 0  # couter of runtime
         episode_counter = 0  # counts episodes with runtime
-        not_included_series = []
+        not_included_series = []  # array that takes the not included series
+
         for entry_a in user_episodes:
+            # loops though entries to find series without runtimes
             if entry_a.episode.series.episode_run_time is not None:
                 runtime_counter += entry_a.episode.series.episode_run_time
             else:
                 if entry_a.episode.series.name not in not_included_series:
                     not_included_series.append(entry_a.episode.series.name)
-        context['not_included_series'] = not_included_series
-        context['time_spent'] = str(datetime.timedelta(minutes=runtime_counter))
 
-        # time spent all users together
+        context['not_included_series'] = not_included_series
+        context['time_spent'] = str(datetime.timedelta(
+            minutes=runtime_counter))
+
+        """
+        time spent all users together
+        """
         all_user_episodes = Watchlog.objects.all()
         all_user_runtime_counter = 0
         for entry in all_user_episodes:
             if entry.episode.series.episode_run_time is not None:
-                all_user_runtime_counter += entry.episode.series.episode_run_time
-        context['total_time_spent'] = str(datetime.timedelta(minutes=all_user_runtime_counter))
+                all_user_runtime_counter += entry.\
+                    episode.series.episode_run_time
+        context['total_time_spent'] = str(datetime.timedelta(
+            minutes=all_user_runtime_counter))
 
-        # user top Genre
+        """
+        user top Genre
+        """
         genre_list = {}
         for entry_a in user_episodes:
             for entry_b in entry_a.episode.series.get_genre_list():
