@@ -5,8 +5,23 @@
 {% endblock title %}
 {% block content %}
     <p>Number of episodes watched: {{ number_of_episodes }}</p>
-    <p>Time spent watching episodes: {{ time_spent }}</p>
-    
+    <p>Time spent watching these episodes: {{ time_spent }}</p>
+    <p>If the runtime of a show is not in the database, its excluded from the total time spent.<br>
+    For you the following shows were excluded:
 
+    {% for entry in not_included_series %}
+
+        {% if forloop.last and forloop.first %}
+            "{{ entry }}".
+        {% elif forloop.last %}
+            and "{{ entry }}".
+        {% else %}
+            "{{ entry }}",
+        {% endif %}
+
+    {% endfor %}</p>
+    <p>Time spent by all users: {{ total_time_spent }}.</p>
+
+    <p>Your Favourite Genre is: "{{ favourite_genre }}".</p>
 
 {% endblock content %}

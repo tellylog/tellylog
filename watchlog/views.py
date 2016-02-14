@@ -5,6 +5,7 @@ from django.views.generic import View, ListView, TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from watchlog.models import Watchlog
 from tv.models import Episode, Series
+import datetime
 
 
 class WatchlogListView(LoginRequiredMixin, ListView):
@@ -43,11 +44,49 @@ class Stats(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         user = self.request.user
-        all_episodes = Watchlog.objects.filter(user=user)
         context = super(Stats, self).get_context_data(**kwargs)
-        context['number_of_episodes'] = Watchlog.objects.filter(
-            user=user).count()
-        context['time_spent'] = Watchlog.objects.all().count()
+
+        # number of episodes
+        user_episodes = Watchlog.objects.filter(user=user)
+        context['number_of_episodes'] = user_episodes.count()
+
+        # time spent watching espisode per user
+        runtime_counter = 0  # couter of runtime
+        episode_counter = 0  # counts episodes with runtime
+        not_included_series = []
+        for entry_a in user_episodes:
+            if entry_a.episode.series.episode_run_time is not None:
+                runtime_counter += entry_a.episode.series.episode_run_time
+            else:
+                if entry_a.episode.series.name not in not_included_series:
+                    not_included_series.append(entry_a.episode.series.name)
+        context['not_included_series'] = not_included_series
+        context['time_spent'] = str(datetime.timedelta(minutes=runtime_counter))
+
+        # time spent all users together
+        all_user_episodes = Watchlog.objects.all()
+        all_user_runtime_counter = 0
+        for entry in all_user_episodes:
+            if entry.episode.series.episode_run_time is not None:
+                all_user_runtime_counter += entry.episode.series.episode_run_time
+        context['total_time_spent'] = str(datetime.timedelta(minutes=all_user_runtime_counter))
+
+        # user top Genre
+        genre_list = {}
+        for entry_a in user_episodes:
+            for entry_b in entry_a.episode.series.get_genre_list():
+                if entry_b['name'] in genre_list:
+                    genre_list[entry_b['name']] += 1
+                else:
+                    genre_list[entry_b['name']] = 1
+        highest = 0
+        favourite_genre = 'genre'
+        for key in genre_list:
+            if genre_list[key] > highest:
+                higest = genre_list[key]
+                favourite_genre = key
+        context['favourite_genre'] = favourite_genre
+
         return context
 
 
