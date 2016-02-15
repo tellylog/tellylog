@@ -4,7 +4,7 @@ from django.db.utils import IntegrityError
 from django.views.generic import View, ListView, TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from watchlog.models import Watchlog
-from tv.models import Episode, Series
+from tv.models import Episode
 import datetime
 
 
@@ -46,19 +46,16 @@ class Stats(LoginRequiredMixin, TemplateView):
         user = self.request.user
         context = super(Stats, self).get_context_data(**kwargs)
 
-        """
-        number of episodes
+        """number of episodes
         """
         user_episodes = Watchlog.objects.filter(user=user)
         context['number_of_episodes'] = user_episodes.count()
         context['all_user_number_of_episodes'] = Watchlog.objects.all().count()
-        """
-        time spent watching espisode per user
+        """time spent watching espisode per user
         if a series does not have a runtime, it is not added up and the
         series is given to the user
         """
         runtime_counter = 0  # couter of runtime
-        episode_counter = 0  # counts episodes with runtime
         not_included_series = []  # array that takes the not included series
 
         for entry_a in user_episodes:
@@ -73,8 +70,7 @@ class Stats(LoginRequiredMixin, TemplateView):
         context['time_spent'] = str(datetime.timedelta(
             minutes=runtime_counter))
 
-        """
-        time spent all users together
+        """time spent all users together
         """
         all_user_episodes = Watchlog.objects.all()
         all_user_runtime_counter = 0
@@ -85,8 +81,7 @@ class Stats(LoginRequiredMixin, TemplateView):
         context['total_time_spent'] = str(datetime.timedelta(
             minutes=all_user_runtime_counter))
 
-        """
-        user top Genre
+        """user top Genre
         """
         genre_list = {}
         for entry_a in user_episodes:
@@ -99,7 +94,7 @@ class Stats(LoginRequiredMixin, TemplateView):
         favourite_genre = 'genre'
         for key in genre_list:
             if genre_list[key] > highest:
-                higest = genre_list[key]
+                highest = genre_list[key]
                 favourite_genre = key
         context['favourite_genre'] = favourite_genre
 
