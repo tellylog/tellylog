@@ -42,7 +42,7 @@ class Stats(LoginRequiredMixin, TemplateView):
     template_name = 'watchlog/stats.html'
     context_object_name = 'stats'
 
-    def get_context_data1(self, **kwargs):
+    def get_context_data(self, **kwargs):
         user = self.request.user
         context = super(Stats, self).get_context_data(**kwargs)
 
@@ -51,11 +51,7 @@ class Stats(LoginRequiredMixin, TemplateView):
         context['number_of_episodes'] = Watchlog.objects.filter(
             user=user).count()
         context['all_user_number_of_episodes'] = Watchlog.objects.all().count()
-        return context
 
-    def get_context_data2(self, **kwargs):
-        user = self.request.user
-        context = super(Stats, self).get_context_data(**kwargs)
         """Time spent watching espisode per user
         if a series does not have a runtime, it is not added up and the
         series is given to the user
@@ -74,11 +70,7 @@ class Stats(LoginRequiredMixin, TemplateView):
         context['not_included_series'] = not_included_series
         context['time_spent'] = str(datetime.timedelta(
             minutes=runtime_counter))
-        return context
 
-    def get_context_data3(self, **kwargs):
-        user = self.request.user
-        context = super(Stats, self).get_context_data(**kwargs)
         """time spent all users together
         """
         all_user_runtime_counter = 0
@@ -88,11 +80,7 @@ class Stats(LoginRequiredMixin, TemplateView):
                     episode.series.episode_run_time
         context['total_time_spent'] = str(datetime.timedelta(
             minutes=all_user_runtime_counter))
-        return context
 
-    def get_context_data4(self, **kwargs):
-        user = self.request.user
-        context = super(Stats, self).get_context_data(**kwargs)
         """user top Genre
         """
         genre_list = {}
@@ -109,6 +97,7 @@ class Stats(LoginRequiredMixin, TemplateView):
                 highest = genre_list[key]
                 favourite_genre = key
         context['favourite_genre'] = favourite_genre
+
         """all users top Genre
         """
         all_user_genre_list = {}
