@@ -46,8 +46,8 @@ class Stats(LoginRequiredMixin, TemplateView):
         user = self.request.user
         context = super(Stats, self).get_context_data(**kwargs)
 
-    """Number of episodes
-    """
+        """Number of episodes
+        """
         user_episodes = Watchlog.objects.filter(user=user)
         context['number_of_episodes'] = user_episodes.count()
         context['all_user_number_of_episodes'] = Watchlog.objects.all().count()
@@ -97,7 +97,8 @@ class Stats(LoginRequiredMixin, TemplateView):
                 highest = genre_list[key]
                 favourite_genre = key
         context['favourite_genre'] = favourite_genre
-
+        """all users top Genre
+        """
         all_user_genre_list = {}
         for entry_a in all_user_episodes:
             for entry_b in entry_a.episode.series.get_genre_list():
