@@ -5,24 +5,38 @@
 {% endblock title %}
 {% block content %}
 <div class="about-text">
-    <p>Number of episodes watched: <strong>{{ number_of_episodes }}</strong></p>
-    <p>Time spent watching these episodes: <strong>{{ time_spent }}</strong></p>
-    <p>If the runtime of a show is not in the database, its excluded from the total time spent.<br>
-    For you the following shows were excluded:
+    <h5>Number of episodes wached:</h5>
+        <p>Number of episodes you watched: <strong>{{ number_of_episodes }}</strong></p>
+        <p>Number of episodes watchedby all tellylog users: <strong>{{ all_user_number_of_episodes }}</strong></p>
+</div>
+<div class="about-text">
+    <h5>Time spent:</h5>
+        <p>Time you spent watching these episodes: <strong>{{ time_spent }}</strong></p>
+        {% if not_included_series %}
+        <p>If the runtime of a show is not in the database, its excluded from the total time spent.<br>
+        For you the following shows were excluded:
 
-    {% for entry in not_included_series %}
+            {% for entry in not_included_series %}
 
-        {% if forloop.last and forloop.first %}
-            <strong>"{{ entry }}"</strong>.
-        {% elif forloop.last %}
-            and <strong>"{{ entry }}"</strong>.
+                {% if forloop.last and forloop.first %}
+                    <strong>"{{ entry }}"</strong>
+                {% elif forloop.last %}
+                    and <strong>"{{ entry }}"</strong>
+                {% else %}
+                    <strong>"{{ entry }}"</strong>,
+                {% endif %}
+
+            {% endfor %}</p>
         {% else %}
-            <strong>"{{ entry }}"</strong>,
+            <p>All your series had runtimes in the database, your time spent should be accurate.</p>
         {% endif %}
+        <p>Time spent by all users: <strong>{{ total_time_spent }}</strong></p>
+        <p>Some series might be included if there are no runtimes in the database.</p>
+</div>
+<div class="about-text">
+    <h5>Most viewed genre:</h5>
+        <p>Your most viewed genre is: <strong>{{ favourite_genre }}</strong></p>
+        <p>The most viewed genre of all tellylog users is: <strong>{{ all_user_favourite_genre }}</strong></p>
 
-    {% endfor %}</p>
-    <p>Time spent by all users: <strong>{{ total_time_spent }}</strong>.</p>
-
-    <p>Your most viewed genre is: <strong>{{ favourite_genre }}</strong>.</p>
 </div>
 {% endblock content %}

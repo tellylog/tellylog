@@ -51,7 +51,7 @@ class Stats(LoginRequiredMixin, TemplateView):
         """
         user_episodes = Watchlog.objects.filter(user=user)
         context['number_of_episodes'] = user_episodes.count()
-
+        context['all_user_number_of_episodes'] = Watchlog.objects.all().count()
         """
         time spent watching espisode per user
         if a series does not have a runtime, it is not added up and the
@@ -102,6 +102,21 @@ class Stats(LoginRequiredMixin, TemplateView):
                 higest = genre_list[key]
                 favourite_genre = key
         context['favourite_genre'] = favourite_genre
+
+        all_user_genre_list = {}
+        for entry_a in all_user_episodes:
+            for entry_b in entry_a.episode.series.get_genre_list():
+                if entry_b['name'] in all_user_genre_list:
+                    all_user_genre_list[entry_b['name']] += 1
+                else:
+                    all_user_genre_list[entry_b['name']] = 1
+        all_user_highest = 0
+        all_user_favourite_genre = 'genre'
+        for key in all_user_genre_list:
+            if all_user_genre_list[key] > all_user_highest:
+                all_user_highest = genre_list[key]
+                all_user_favourite_genre = key
+        context['all_user_favourite_genre'] = all_user_favourite_genre
 
         return context
 
