@@ -42,23 +42,28 @@ class Stats(LoginRequiredMixin, TemplateView):
     template_name = 'watchlog/stats.html'
     context_object_name = 'stats'
 
-    def get_context_data(self, **kwargs):
+    def get_context_data1(self, **kwargs):
         user = self.request.user
         context = super(Stats, self).get_context_data(**kwargs)
 
         """Number of episodes
         """
-        user_episodes = Watchlog.objects.filter(user=user)
-        context['number_of_episodes'] = user_episodes.count()
+        context['number_of_episodes'] = Watchlog.objects.filter(
+            user=user).count()
         context['all_user_number_of_episodes'] = Watchlog.objects.all().count()
-        """Tsime spent watching espisode per user
+        return context
+
+    def get_context_data2(self, **kwargs):
+        user = self.request.user
+        context = super(Stats, self).get_context_data(**kwargs)
+        """Time spent watching espisode per user
         if a series does not have a runtime, it is not added up and the
         series is given to the user
         """
         runtime_counter = 0  # couter of runtime
         not_included_series = []  # array that takes the not included series
 
-        for entry_a in user_episodes:
+        for entry_a in Watchlog.objects.filter(user=user):
             # loops though entries to find series without runtimes
             if entry_a.episode.series.episode_run_time is not None:
                 runtime_counter += entry_a.episode.series.episode_run_time
@@ -69,22 +74,29 @@ class Stats(LoginRequiredMixin, TemplateView):
         context['not_included_series'] = not_included_series
         context['time_spent'] = str(datetime.timedelta(
             minutes=runtime_counter))
+        return context
 
+    def get_context_data3(self, **kwargs):
+        user = self.request.user
+        context = super(Stats, self).get_context_data(**kwargs)
         """time spent all users together
         """
-        all_user_episodes = Watchlog.objects.all()
         all_user_runtime_counter = 0
-        for entry in all_user_episodes:
+        for entry in Watchlog.objects.all():
             if entry.episode.series.episode_run_time is not None:
                 all_user_runtime_counter += entry.\
                     episode.series.episode_run_time
         context['total_time_spent'] = str(datetime.timedelta(
             minutes=all_user_runtime_counter))
+        return context
 
+    def get_context_data4(self, **kwargs):
+        user = self.request.user
+        context = super(Stats, self).get_context_data(**kwargs)
         """user top Genre
         """
         genre_list = {}
-        for entry_a in user_episodes:
+        for entry_a in Watchlog.objects.filter(user=user):
             for entry_b in entry_a.episode.series.get_genre_list():
                 if entry_b['name'] in genre_list:
                     genre_list[entry_b['name']] += 1
@@ -100,7 +112,7 @@ class Stats(LoginRequiredMixin, TemplateView):
         """all users top Genre
         """
         all_user_genre_list = {}
-        for entry_a in all_user_episodes:
+        for entry_a in Watchlog.objects.all():
             for entry_b in entry_a.episode.series.get_genre_list():
                 if entry_b['name'] in all_user_genre_list:
                     all_user_genre_list[entry_b['name']] += 1
@@ -113,7 +125,6 @@ class Stats(LoginRequiredMixin, TemplateView):
                 all_user_highest = genre_list[key]
                 all_user_favourite_genre = key
         context['all_user_favourite_genre'] = all_user_favourite_genre
-
         return context
 
 
