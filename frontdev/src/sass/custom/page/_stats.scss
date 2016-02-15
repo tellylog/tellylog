@@ -1,0 +1,10 @@
+.stats-text{
+    @include span-columns(12 of 12);
+    @include pad();
+    padding-bottom: 0;
+    @include media($medium-screen-up){
+        p{
+            padding-left: 1em;
+        }
+    }
+}

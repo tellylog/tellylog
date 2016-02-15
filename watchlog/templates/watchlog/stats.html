@@ -4,12 +4,12 @@
     {{ block.super }} - Statistics
 {% endblock title %}
 {% block content %}
-<div class="about-text">
+<div class="stats-text">
     <h5>Number of episodes wached:</h5>
         <p>Number of episodes you watched: <strong>{{ number_of_episodes }}</strong></p>
         <p>Number of episodes watchedby all tellylog users: <strong>{{ all_user_number_of_episodes }}</strong></p>
 </div>
-<div class="about-text">
+<div class="stats-text">
     <h5>Time spent:</h5>
         <p>Time you spent watching these episodes: <strong>{{ time_spent }}</strong></p>
         {% if not_included_series %}
@@ -33,10 +33,25 @@
         <p>Time spent by all users: <strong>{{ total_time_spent }}</strong></p>
         <p>Some series might be included if there are no runtimes in the database.</p>
 </div>
-<div class="about-text">
+<div class="stats-text">
     <h5>Most viewed genre:</h5>
         <p>Your most viewed genre is: <strong>{{ favourite_genre }}</strong></p>
         <p>The most viewed genre of all tellylog users is: <strong>{{ all_user_favourite_genre }}</strong></p>
 
 </div>
+{% if higest_rated_series and all_users_highest_rated_episode %}
+<div class="stats-text">
+    <h5>Higest ratings:</h5>
+    {% if higest_rated_series %}
+        <p>Your highest rated series is: <strong>{{ higest_rated_series }}</strong></p>
+    {% else %}
+        <p>You have not rated any series yet.</p>
+    {% endif %}
+    {% if all_users_highest_rated_episode %}
+        <p>The highest rated episode of all tellylog users is: <strong>{{ all_users_highest_rated_episode }}</strong></p>
+    {% else %}
+        <p>Nobody has rated any episode yet. I know, lazy fucks...</p>
+    {% endif %}
+</div>
+{% endif %}
 {% endblock content %}

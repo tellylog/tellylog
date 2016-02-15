@@ -92,10 +92,10 @@ class Stats(LoginRequiredMixin, TemplateView):
                     genre_list[entry_b['name']] = 1
         highest = 0
         favourite_genre = 'genre'
-        for key in genre_list:
-            if genre_list[key] > highest:
-                highest = genre_list[key]
-                favourite_genre = key
+        for entry in genre_list:
+            if genre_list[entry] > highest:
+                highest = genre_list[entry]
+                favourite_genre = entry
         context['favourite_genre'] = favourite_genre
 
         """all users top Genre
@@ -108,12 +108,60 @@ class Stats(LoginRequiredMixin, TemplateView):
                 else:
                     all_user_genre_list[entry_b['name']] = 1
         all_user_highest = 0
-        all_user_favourite_genre = 'genre'
-        for key in all_user_genre_list:
-            if all_user_genre_list[key] > all_user_highest:
-                all_user_highest = genre_list[key]
-                all_user_favourite_genre = key
+        all_user_favourite_genre = ()
+        for entry in all_user_genre_list:
+            if all_user_genre_list[entry] > all_user_highest:
+                all_user_highest = genre_list[entry]
+                all_user_favourite_genre = entry
         context['all_user_favourite_genre'] = all_user_favourite_genre
+        """
+        highest rated eisode user
+        """
+        rating_list = {}
+        rating_counter = {}
+        for entry in Watchlog.objects.filter(user=user):
+            if entry.rating > 0:
+                if entry.series in rating_list:
+                    rating_list[entry.series] += entry.rating
+                    rating_counter[entry.series] += 1
+                else:
+                    rating_list[entry.series] = entry.rating
+                    rating_counter[entry.series] = 1
+        for entry in rating_list:
+            rating_list[entry] = rating_list[entry] / rating_counter[entry]
+        highest_rating = 0
+        highest_rated_series = ()
+        for entry in rating_list:
+            if rating_list[entry] > highest_rating:
+                rating_list[entry] = highest_rating
+                highest_rated_series = entry
+        if highest_rated_series:
+            context['higest_rated_series'] = highest_rated_series
+        """
+        higest rated episode all users
+        """
+        episode_rating_list = {}
+        episode_rating_counter = {}
+        for entry in Watchlog.objects.all():
+            if entry.episode.tmdb_id:
+                if entry.episode.tmdb_id in episode_rating_list:
+                    episode_rating_list[entry.episode.tmdb_id] += entry.rating
+                    episode_rating_counter[entry.episode.tmdb_id] += 1
+                else:
+                    episode_rating_list[entry.episode.tmdb_id] = entry.rating
+                    episode_rating_counter[entry.episode.tmdb_id] = 1
+        for entry in episode_rating_list:
+            episode_rating_list[entry] = episode_rating_list[entry] / \
+                episode_rating_counter[entry]
+        all_users_highest_rating = 0
+        all_users_highest_rated_episode = ()
+        for entry in episode_rating_list:
+            if episode_rating_list[entry] > all_users_highest_rating:
+                all_users_highest_rating = episode_rating_list[entry]
+                all_users_highest_rated_episode = entry
+        context['all_users_highest_rated_episode'] = \
+            all_users_highest_rated_episode
+
         return context
 
 
