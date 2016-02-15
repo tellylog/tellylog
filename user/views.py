@@ -7,6 +7,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.edit import FormView
 from django.views.generic import TemplateView
 from django.contrib.auth.forms import PasswordChangeForm, PasswordResetForm
+from django.contrib.auth.forms import AuthenticationForm
 from django.core.urlresolvers import reverse_lazy
 
 from user.forms import UserCreateForm
@@ -41,12 +42,14 @@ def SignIn(request):
         return render(request, 'user:sign_in', {})
 
 
-class SignInView(TemplateView):
+class SignInView(FormView):
     """
     SignInView. redirects incoming requests
     template_name : takes the given template and rendes it to the view.
     """
     template_name = "user/sign-in.html"
+    form_class = AuthenticationForm
+    success_url = reverse_lazy('main:overview')
 
 
 @login_required

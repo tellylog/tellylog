@@ -4,24 +4,25 @@
     {{ block.super }} - Statistics
 {% endblock title %}
 {% block content %}
-    <p>Number of episodes watched: {{ number_of_episodes }}</p>
-    <p>Time spent watching these episodes: {{ time_spent }}</p>
+<div class="about-text">
+    <p>Number of episodes watched: <strong>{{ number_of_episodes }}</strong></p>
+    <p>Time spent watching these episodes: <strong>{{ time_spent }}</strong></p>
     <p>If the runtime of a show is not in the database, its excluded from the total time spent.<br>
     For you the following shows were excluded:
 
     {% for entry in not_included_series %}
 
         {% if forloop.last and forloop.first %}
-            "{{ entry }}".
+            <strong>"{{ entry }}"</strong>.
         {% elif forloop.last %}
-            and "{{ entry }}".
+            and <strong>"{{ entry }}"</strong>.
         {% else %}
-            "{{ entry }}",
+            <strong>"{{ entry }}"</strong>,
         {% endif %}
 
     {% endfor %}</p>
-    <p>Time spent by all users: {{ total_time_spent }}.</p>
+    <p>Time spent by all users: <strong>{{ total_time_spent }}</strong>.</p>
 
-    <p>Your Favourite Genre is: "{{ favourite_genre }}".</p>
-
+    <p>Your most viewed genre is: <strong>{{ favourite_genre }}</strong>.</p>
+</div>
 {% endblock content %}

@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from captcha.fields import ReCaptchaField
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 
 
 class UserCreateForm(UserCreationForm):
@@ -29,3 +29,10 @@ class UserCreateForm(UserCreationForm):
                 email=email).exclude(username=username).count():
             raise forms.ValidationError(u'Email addresses must be unique.')
         return email
+
+"""
+class LoginForm(AuthenticationForm):
+    class Meta:
+        model = User
+
+"""
