@@ -11,6 +11,11 @@ def access(value, arg):
 
 
 @register.filter
+def joinby(value, arg):
+    return arg.join(value)
+
+
+@register.filter
 def get_range(value):
     """
     Filter - returns a list containing range made from given value
@@ -43,3 +48,10 @@ def active(context, pattern_or_urlname):
         return 'active'
     return ''
 
+
+@register.simple_tag
+def smart_limit(content, length=240, suffix='...'):
+    if len(content) <= length:
+        return content
+    else:
+        return ' '.join(content[:length+1].split(' ')[0:-1]) + suffix

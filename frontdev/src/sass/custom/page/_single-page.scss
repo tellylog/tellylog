@@ -110,6 +110,7 @@
         }
         &__rating{
             @include span-columns(4 of 12);
+            @include pad(1%);
             text-align: center;
             @include media($medium-screen-up){
                 @include span-columns(3 of 10)

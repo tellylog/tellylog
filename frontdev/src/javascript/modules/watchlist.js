@@ -1,4 +1,6 @@
-;(function () {
+var $ = require('jquery')
+var Cookies = require('js-cookie')
+;(function ($, Cookies) {
   /** Variable to store the settings */
   var s
   /**
@@ -14,7 +16,7 @@
       if (window.Telly !== undefined) {
         return {
           /** @type {str} CSRF Token */
-          csrftoken: window.Cookies.get('csrftoken'),
+          csrftoken: Cookies.get('csrftoken'),
           /** @type {str} Ajax url to add a series to the Watchlist */
           wlist_list_url: window.Telly.wlist_list_url,
           /** @type {str} Ajax url to remove a series from the Watchlist */
@@ -150,12 +152,5 @@
       Watchlist.bindUIActions()
     }
   }
-
-  $(document).ready(function () {
-    if ((window.Telly !== undefined) && window.Telly.wlist_list_url && window.Telly.wlist_unlist_url) {
-      /** Check if the Telly namespace and the urls are defined. */
-      /** Initialise the Watchlist */
-      Watchlist.init()
-    }
-  })
-})()
+  module.exports = Watchlist
+})($, Cookies)

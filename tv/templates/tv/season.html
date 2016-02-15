@@ -32,7 +32,7 @@
             <div class="single-page__poster">
                 {% if season.poster_small %}
                     <img src="{{ season.poster_small.url }}" srcset="{{ season.poster_large.url }} 600w" alt="{{ season.name }} Poster" class="single-page__img">
-                {% elif series.poster_small %}
+                    {% elif series.poster_small %}
                     <img src="{{ series.poster_small.url }}" srcset="{{ series.poster_large.url }} 600w" alt="{{ series.name }} Poster" class="single-page__img">
                 {% else %}
                     <img src="{% static "img/placeholder-small.jpg" %}" srcset="{% static "img/placeholder.jpg" %} 600w" alt="{{ series.name }} Poster Placeholder" class="single-page__img">
@@ -53,11 +53,11 @@
                             {% endif %}
                         </div>
                         <div class="single-page__entry__rating rating">
-                            <div class="rating">
-                                {% for i in 5|get_range %}
-                                    <span data-rating="{{ i }}" class="rating__btn fa fa-star-o"></span>
-                                {% endfor %}
-                            </div>
+                            {% if wlog_episodes and wlog_episodes|access:episode.id == 1 %}
+                                    {% for i in 5|get_range %}
+                                        <span data-rating="{{ i }}" class="rating__btn fa fa-star-o"></span>
+                                    {% endfor %}
+                            {% endif %}
                         </div>
                         <div  class="single-page__entry__btn single-page__entry__btn--small">
                             {% if wlog_episodes and wlog_episodes|access:episode.id == 1 %}

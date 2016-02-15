@@ -1,4 +1,6 @@
-;(function () {
+var $ = require('jquery')
+var Cookies = require('js-cookie')
+;(function ($, Cookies) {
   /** Variable to store the settings */
   var s
   /**
@@ -14,14 +16,14 @@
       if (window.Telly !== undefined) {
         return {
           /** @type {str} CSRF Token */
-          csrftoken: window.Cookies.get('csrftoken'),
+          csrftoken: Cookies.get('csrftoken'),
           rating_section: '.rating',
           rating_btn: '.rating__btn',
           btn_empty: 'fa-star-o',
           btn_full: 'fa-star',
           btn_active: 'rating__btn--active',
+          rating_btn_cls: 'rating__btn fa fa-star-o',
           data_rating: 'rating'
-
         }
       }
     },
@@ -59,11 +61,25 @@
       if (button.data(s.data_rating)) {
         Rating.toggleAllPrev(button.prev(s.rating_btn), action)
       }
+    },
+
+    rmRatingBtns: function (wlog_btn) {
+      wlog_btn.parent().prev(s.rating_section).empty()
+      Rating.bindUIActions()
+    },
+
+    showRatingBtns: function (wlog_btn) {
+      var rating_section = wlog_btn.parent().prev(s.rating_section)
+      if (rating_section.length <= 1) {
+        for (var i = 0; i < 5; i++) {
+          var rating_btn = $('<span/>')
+          rating_btn.attr('data-rating', i)
+          rating_btn.addClass(s.rating_btn_cls)
+          rating_section.append(rating_btn)
+        }
+        Rating.bindUIActions()
+      }
     }
   }
-  $(document).ready(function () {
-    if (window.Telly !== undefined) {
-      Rating.init()
-    }
-  })
-})()
+  module.exports = Rating
+})($, Cookies)

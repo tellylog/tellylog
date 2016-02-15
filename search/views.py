@@ -11,7 +11,6 @@ import search.tasks as tasks
 
 class SearchView(LoginRequiredMixin, TemplateView):
     """View for the search
-
     Attributes:
         http_method_names (list): Allowed http methodes, only get is allowed
         query (str): Query
@@ -26,7 +25,6 @@ class SearchView(LoginRequiredMixin, TemplateView):
 
     def get_query_param(self):
         """Get the query parameter
-
         Returns:
             str: Query parameter
         """
@@ -34,7 +32,6 @@ class SearchView(LoginRequiredMixin, TemplateView):
 
     def get_query(self, request):
         """Parses the query from the request.
-
         Args:
             request (object): HTTPRequest
         """
@@ -42,7 +39,6 @@ class SearchView(LoginRequiredMixin, TemplateView):
 
     def start_search(self):
         """Start tmdb search
-
         Returns:
             bool: False on failure or if nothing was found
             str: Task ID of the search task
@@ -61,10 +57,8 @@ class SearchView(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         """
         Fill up the context array.
-
         Args:
             **kwargs: Parameters that where given to the view.
-
         Returns:
             dict: Context dictionary with all values.
         """
@@ -90,23 +84,20 @@ class SearchView(LoginRequiredMixin, TemplateView):
 
 class SearchStatus(LoginRequiredMixin, View):
     """Returns a JSON response with the status of the task
-
     Attributes:
         http_method_names (list): Allowed http methodes, only post is allowed
     """
-    http_method_names = ['post']
+    http_method_names = ['get']
 
-    def post(self, request):
+    def get(self, request):
         """Return a JSON response with the status of the task
-
         Args:
             request (object): HTTPRequest object
-
         Returns:
             object: JsonResponse with the status of the task
         """
         # get the task id from the request
-        task_id = request.POST['task_id']
+        task_id = request.GET['task_id']
         # get the task via id
         result = AsyncResult(task_id, app=app)
         response = JsonResponse({'status': result.status})
@@ -115,23 +106,20 @@ class SearchStatus(LoginRequiredMixin, View):
 
 class SearchResult(LoginRequiredMixin, View):
     """Returns a Json response of a search query
-
     Attributes:
         http_method_names (list): Allowed http methodes, only post is allowed
     """
-    http_method_names = ['post']
+    http_method_names = ['get']
 
-    def post(self, request):
+    def get(self, request):
         """Returns a Json response of a search query
-
         Args:
             request (object): HTTPRequest
-
         Returns:
             object: JsonResponse
         """
         # get query out of request
-        query = request.POST['query']
+        query = request.GET['query']
         # search for the query in the database
         search_res = watson.search(query)
         # no search results

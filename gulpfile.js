@@ -4,7 +4,10 @@ var plugins = require('gulp-load-plugins')({
   pattern: ['gulp-*', 'gulp.*', 'main-bower-files', 'run-sequence'],
   replaceString: /\bgulp[\-.]/
 })
+var source = require('vinyl-source-stream')
+var buffer = require('vinyl-buffer')
 var browserSync = require('browser-sync').create()
+var browserify = require('browserify')
 var dest = 'frontdev/build/'
 var src = 'frontdev/src/'
 var bowerBase = src + 'bower/'
@@ -12,22 +15,15 @@ var collect = 'static/'
 
 // concatenates js files
 gulp.task('js', function () {
-  var jsFiles = [src + 'javascript/*.js', ]
-  gulp.src(plugins.mainBowerFiles().concat(jsFiles))
-    .pipe(plugins.filter('*.js'))
-    .pipe(plugins.order([
-      'jquery.js',
-      'js.cookie.js',
-      '*'
-    ]))
-    .pipe(plugins.concat('main.js'))
+  var jsFiles = src + 'javascript/main.js'
+  return browserify(jsFiles)
+    .bundle()
     .on('error', console.log)
+    .pipe(source('main.js'))
+    .pipe(buffer())
     .pipe(gulp.dest(dest + 'javascript'))
-    .pipe(plugins.sourcemaps.init())
-    .pipe(plugins.uglify())
-    .on('error', console.log)
-    .pipe(plugins.sourcemaps.write())
     .pipe(gulp.dest(collect + 'javascript'))
+
 })
 
 // compiles sass files and autoprefixes the outgoing css

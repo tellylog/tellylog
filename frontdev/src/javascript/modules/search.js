@@ -1,4 +1,6 @@
-;(function () {
+var $ = require('jquery')
+var Cookies = require('js-cookie')
+;(function ($, Cookies) {
   /** Variable to store the settings */
   var s
   /**
@@ -14,7 +16,7 @@
       if (window.Telly !== undefined) {
         return {
           /** @type {str} CSRF Token */
-          csrftoken: window.Cookies.get('csrftoken'),
+          csrftoken: Cookies.get('csrftoken'),
           /** @type {str} ID of the Task */
           task_id: window.Telly.task_id,
           /** @type {str} Ajax url to get the status of the task */
@@ -34,17 +36,17 @@
           /** @type {int} Maximum number of characters of the description  */
           max_description_length: 240,
           /** @type {String} Empty result entry. */
-          result_sceleton: '<div class="result">
-                              <a class="result__link">
-                                <img class="result__image">
-                              </a>
-                              <div class="result__text">
-                                <a class="result__link">
-                                  <h1 class="result__heading"></h1>
-                                </a>
-                                <h2 class="result__subheading"></h2>
-                                <p class="result__description"></p>
-                              </div>
+          result_sceleton: '<div class="result"> \
+                              <a class="result__link"> \
+                                <img class="result__image"> \
+                              </a> \
+                              <div class="result__text"> \
+                                <a class="result__link"> \
+                                  <h1 class="result__heading"></h1> \
+                                </a> \
+                                <h2 class="result__subheading"></h2> \
+                                <p class="result__description"></p> \
+                              </div> \
                             </div>'
         }
       }
@@ -69,7 +71,7 @@
         /** Check if the number of the request is smaller or equal the number of max requests */
         $.ajax({
           url: s.status_url,
-          type: 'POST',
+          type: 'GET',
           dataType: 'json',
           data: {
             task_id: s.task_id
@@ -123,7 +125,7 @@
     load_results: function () {
       $.ajax({
         url: s.result_url,
-        type: 'POST',
+        type: 'GET',
         dataType: 'json',
         data: {query: s.query},
         beforeSend: function (xhr) {
@@ -209,12 +211,5 @@
       s.result_list_info.replaceWith('Your search did not return any results. <i class="fa fa-meh-o"></i>')
     }
   }
-
-  $(document).ready(function () {
-    if ((window.Telly !== undefined) && window.Telly.task_id) {
-      /** Check if the Telly namespace and the task_id are defined. */
-      /** Initialise the Search */
-      Search.init()
-    }
-  })
-})()
+  module.exports = Search
+})($, Cookies)

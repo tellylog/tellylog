@@ -1,4 +1,7 @@
-;(function () {
+var $ = require('jquery')
+var Cookies = require('js-cookie')
+var Rating = require('./rating.js')
+;(function ($, Cookies, Rating) {
   /** Variable to store the settings */
   var s
   /**
@@ -13,7 +16,7 @@
     settings: function () {
       if (window.Telly !== undefined) {
         return {
-          csrftoken: window.Cookies.get('csrftoken'),
+          csrftoken: Cookies.get('csrftoken'),
           wlog_log_url: window.Telly.wlog_log_url,
           wlog_unlog_url: window.Telly.wlog_unlog_url,
           series_id: window.Telly.series_id,
@@ -45,6 +48,7 @@
      */
     init: function () {
       s = this.settings()
+      Rating.init()
       this.bindUIActions()
     },
 
@@ -53,11 +57,17 @@
       $(s.log_btn_logged).off('click').click(function (event) {
         var kind = $(this).data('kind')
         var id = $(this).data('id')
+        if (kind === 'episode') {
+          Rating.rmRatingBtns($(this))
+        }
         Watchlog.rmFromWlog($(this), kind, id)
       })
       $(s.log_btn_unlogged).off('click').click(function (event) {
         var kind = $(this).data('kind')
         var id = $(this).data('id')
+        if (kind === 'episode') {
+          Rating.showRatingBtns($(this))
+        }
         Watchlog.addToWlog($(this), kind, id)
       })
     },
@@ -152,6 +162,7 @@
           $(this).prop('title', s.unlog_episode_str)
           $(this).children('i').removeClass(s.unlogged_icon).addClass(s.logged_icon)
           $(this).removeClass('log-btn--unlogged').addClass('log-btn--logged')
+          Rating.showRatingBtns($(this))
         })
         if ($(s.log_btn_seasons).length === $(s.log_btn_logged).length) {
           /** All seasons of a series are logged */
@@ -228,7 +239,14 @@
           $(this).prop('title', s.log_episode_str)
           $(this).children('i').removeClass(s.logged_icon).addClass(s.unlogged_icon)
           $(this).removeClass('log-btn--logged').addClass('log-btn--unlogged')
+          Rating.rmRatingBtns($(this))
         })
+        if ($(s.log_btn_seasons).length === $(s.log_btn_unlogged).length - 1) {
+          /** All seasons are unlogged. Display the list button. */
+          var wlist_icon = $('<span class="list-btn list-btn--unlisted" data-id="' + s.series_id + '" title="Add to list"><i class="fa fa-bookmark-o" ></i></span>')
+          $(s.page_controlls).append(wlist_icon)
+          $(document).trigger('list:bindUI')
+        }
       } else if (kind === 'episode') {
         /** An episode was unlogged */
         /** Update icons, title and class of the episode button */
@@ -240,23 +258,10 @@
         $(s.log_btn_seasons).removeClass('log-btn--logged').addClass('log-btn--unlogged')
         $(s.log_btn_seasons).prop('title', s.log_season_str)
       }
-      if ($(s.log_btn_seasons).length === $(s.log_btn_unlogged).length - 1) {
-        /** All seasons are unlogged. Display the list button. */
-        var wlist_icon = $('<span class="list-btn list-btn--unlisted" data-id="' + s.series_id + '" title="Add to list"><i class="fa fa-bookmark-o" ></i></span>')
-        $(s.page_controlls).append(wlist_icon)
-        $(document).trigger('list:bindUI')
-      }
+
       /** Update the Eventlisteners */
       Watchlog.bindUIActions()
     }
-
   }
-
-  $(document).ready(function () {
-    if ((window.Telly !== undefined) && window.Telly.wlog_log_url && window.Telly.wlog_unlog_url) {
-      /** Check if the Telly namespace and the urls are defined. */
-      /** Initialise the Watchlog */
-      Watchlog.init()
-    }
-  })
-})()
+  module.exports = Watchlog
+})($, Cookies, Rating)
