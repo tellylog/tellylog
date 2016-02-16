@@ -157,3 +157,22 @@ class Unlog(LoginRequiredMixin, View):
             Watchlog.objects.filter(user=user, episode__in=episodes).delete()
             return JsonResponse({'error': False})
         return JsonResponse({'error': True})
+
+
+class Rate(LoginRequiredMixin, View):
+    """Add a rating to an episode in the Watchlog"""
+
+    http_method_names = ['post']
+
+    def post(self, request):
+        if 'id' in request.POST and 'rating' in request.POST:
+            rating = int('0' + request.POST['rating'])
+            episode_id = request.POST['id']
+            user = request.user
+            if (rating >= -1 and rating < 5):
+                wlog_entry = Watchlog.objects.filter(user=user,
+                                                     episode=episode_id).get()
+                wlog_entry.rating = rating + 1
+                wlog_entry.save()
+                return JsonResponse({'error': False})
+        return JsonResponse({'error': True})

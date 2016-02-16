@@ -23,7 +23,8 @@ var Cookies = require('js-cookie')
           btn_full: 'fa-star',
           btn_active: 'rating__btn--active',
           rating_btn_cls: 'rating__btn fa fa-star-o',
-          data_rating: 'rating'
+          data_rating: 'rating',
+          wlog_rate_url: window.Telly.wlog_rate_url
         }
       }
     },
@@ -48,7 +49,10 @@ var Cookies = require('js-cookie')
         Rating.toggleAllPrev($(this), false)
       })
       $(s.rating_btn).click(function () {
-        console.log($(this).data(s.data_rating))
+        var btn = $(this)
+        var rating = btn.data('rating')
+        var id = btn.parent(s.rating_section).data('id')
+        Rating.rateEpisode(btn, id, rating)
       })
     },
 
@@ -79,6 +83,26 @@ var Cookies = require('js-cookie')
         }
         Rating.bindUIActions()
       }
+    },
+
+    rateEpisode: function (btn, id, rating) {
+      $.ajax({
+        url: s.wlog_rate_url,
+        type: 'POST',
+        dataType: 'json',
+        data: {id: id,
+          rating: rating
+        },
+        beforeSend: function (xhr) {
+          xhr.setRequestHeader('X-CSRFToken', s.csrftoken)
+        }
+      })
+        .done(function (data) {
+          console.log(data)
+          if (!data.error) {
+            Rating.toggleAllPrev(btn, true)
+          }
+        })
     }
   }
   module.exports = Rating

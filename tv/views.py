@@ -90,21 +90,27 @@ class SeasonView(TemplateView):
         context['season'] = get_object_or_404(Season,
                                               series_id=context['series_id'],
                                               number=context['season_number'])
-        context['episodes'] = get_list_or_404(Episode,
-                                              series_id=context['series_id'],
-                                              season_id=context['season'].id)
-        context['wlog'] = Watchlog.objects.filter(
-            user_id=self.request.user.id,
-            episode__season_id=context['season'].id).count()
-        context['wlog_episodes'] = {}
-        for episode in context['episodes']:
-            context['wlog_episodes'][episode.id] = (
-                Watchlog.objects.filter(user_id=self.request.user.id,
-                                        episode_id=episode.id).count())
+        episodes = get_list_or_404(Episode,
+                                   series_id=context['series_id'],
+                                   season_id=context['season'].id)
+        context['wlog_count'] = 0
+        context['episodes'] = list()
+        for episode in episodes:
+            try:
+                wlog_entry = Watchlog.objects.get(user_id=self.request.user.id,
+                                                  episode_id=episode.id)
+            except Watchlog.DoesNotExist:
+                wlog_entry = None
+            context['episodes'].append((episode, wlog_entry))
+            if wlog_entry:
+                context['wlog_count'] += 1
         wlog_log_url = reverse('wlog:log')
         wlog_log_url = self.request.build_absolute_uri(wlog_log_url)
         context['wlog_log_url'] = wlog_log_url
         wlog_unlog_url = reverse('wlog:unlog')
         wlog_unlog_url = self.request.build_absolute_uri(wlog_unlog_url)
         context['wlog_unlog_url'] = wlog_unlog_url
+        wlog_rate_url = reverse('wlog:rate')
+        wlog_rate_url = self.request.build_absolute_uri(wlog_rate_url)
+        context['wlog_rate_url'] = wlog_rate_url
         return context

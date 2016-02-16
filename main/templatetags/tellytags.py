@@ -55,3 +55,13 @@ def smart_limit(content, length=240, suffix='...'):
         return content
     else:
         return ' '.join(content[:length+1].split(' ')[0:-1]) + suffix
+
+
+@register.simple_tag
+def fill_rating(current, rating):
+    if rating is 0:
+        return 'fa-star-o'
+    if current < rating:
+        return 'fa-star rating__btn--active'
+    else:
+        return 'fa-star-o'

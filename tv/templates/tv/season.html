@@ -18,7 +18,7 @@
                 <a href="{{ series.get_absolute_url }}">{{ series.name }}</a>
                 </h2>
                 <div class="single-page__controls">
-                    {% if wlog and wlog == season.episode_count %}
+                    {% if wlog_count and wlog_count == season.episode_count %}
                         <span class=" log-btn log-btn--season log-btn--logged" title="Unlog the whole season" data-id="{{ season.id }}" data-kind="season">
                             <i class="fa fa-eye" ></i>
                         </span>
@@ -39,9 +39,10 @@
                 {% endif %}
             </div>
         </div>
+
         <div class="row">
             <ul class="single-page__list single-page__list--small">
-                {% for episode in episodes %}
+                {% for episode, wlog_entry in episodes %}
                     <li class="single-page__entry single-page__entry--small">
                         <div class="single-page__entry__number single-page__entry__number--small">
                             {{ episode.number }}
@@ -52,15 +53,15 @@
                                 - {{ episode.air_date|date:"d.m.Y"}}
                             {% endif %}
                         </div>
-                        <div class="single-page__entry__rating rating">
-                            {% if wlog_episodes and wlog_episodes|access:episode.id == 1 %}
+                        <div class="single-page__entry__rating rating" data-id="{{ episode.id }}">
+                            {% if wlog_entry %}
                                     {% for i in 5|get_range %}
-                                        <span data-rating="{{ i }}" class="rating__btn fa fa-star-o"></span>
+                                        <span data-rating="{{ i }}" class="rating__btn fa {% fill_rating i wlog_entry.rating %}"></span>
                                     {% endfor %}
                             {% endif %}
                         </div>
                         <div  class="single-page__entry__btn single-page__entry__btn--small">
-                            {% if wlog_episodes and wlog_episodes|access:episode.id == 1 %}
+                            {% if wlog_entry %}
                                 <span class="log-btn log-btn--episode log-btn--logged" title="Unlog this episode" data-kind="episode" data-id="{{ episode.id }}">
                                     <i class="fa fa-eye" ></i>
                                 </span>
@@ -77,9 +78,10 @@
 {% endblock content %}
 {% block customjs %}
     <script type="text/javascript">
-    window.Telly = {};
+    window.Telly = window.Telly || {};
     window.Telly.series_id = {{ series.id }}
     window.Telly.wlog_log_url = "{{ wlog_log_url }}"
     window.Telly.wlog_unlog_url = "{{ wlog_unlog_url }}"
+    window.Telly.wlog_rate_url = "{{ wlog_rate_url }}"
     </script>
 {% endblock customjs %}
