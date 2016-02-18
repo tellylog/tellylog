@@ -13,7 +13,7 @@
     <h5>Time spent:</h5>
         <p>Time you spent watching these episodes: <strong>{{ time_spent }}</strong></p>
         {% if not_included_series %}
-        <p>If the runtime of a show is not in the database, its excluded from the total time spent.<br>
+        <p>If the runtime of a show is not in the database, it's excluded from the total time spent.<br>
         For you the following shows were excluded:
 
             {% for entry in not_included_series %}
@@ -30,8 +30,8 @@
         {% else %}
             <p>All your series had runtimes in the database, your time spent should be accurate.</p>
         {% endif %}
-        <p>Time spent by all users: <strong>{{ total_time_spent }}</strong></p>
-        <p>Some series might be included if there are no runtimes in the database.</p>
+        <p>Time spent by all users: <strong>{{ all_user_time_spent }}</strong></p>
+        <p>Some series might not be included if there are no runtimes in the database.</p>
 </div>
 <div class="stats-text">
     <h5>Most viewed genre:</h5>
@@ -39,7 +39,7 @@
         <p>The most viewed genre of all tellylog users is: <strong>{{ all_user_favourite_genre }}</strong></p>
 
 </div>
-{% if higest_rated_series and all_users_highest_rated_episode %}
+{% if higest_rated_series or all_users_highest_rated_episode %}
 <div class="stats-text">
     <h5>Higest ratings:</h5>
     {% if higest_rated_series %}

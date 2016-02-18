@@ -4,6 +4,7 @@ from django.db.utils import IntegrityError
 from django.views.generic import View, ListView, TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from watchlog.models import Watchlog
+from tv.models import Series
 from tv.models import Episode
 import datetime
 
@@ -17,7 +18,7 @@ class WatchlogListView(LoginRequiredMixin, ListView):
         paginate_by (int): Entries per page
         template_name (str): Name of the template
     """
-    model = Watchlog
+    model = Watchlog, Series
     template_name = 'watchlog/watchlog.html'
     context_object_name = 'wlog_list'
     paginate_by = 12
@@ -38,129 +39,135 @@ class WatchlogListView(LoginRequiredMixin, ListView):
 
 
 class Stats(LoginRequiredMixin, TemplateView):
+    """Displays statistics about the user and all users of tellylog
+
+    """
     model = Watchlog
     template_name = 'watchlog/stats.html'
     context_object_name = 'stats'
 
-    def get_context_data(self, **kwargs):
-        user = self.request.user
-        context = super(Stats, self).get_context_data(**kwargs)
-
-        """Number of episodes
+    def number_of_episodes(self, user, user_entries):
+        """number of episodes the user has watched
         """
-        context['number_of_episodes'] = Watchlog.objects.filter(
-            user=user).count()
-        context['all_user_number_of_episodes'] = Watchlog.objects.all().count()
+        return len(user_entries)
 
-        """Time spent watching espisode per user
-        if a series does not have a runtime, it is not added up and the
-        series is given to the user
+    def all_user_number_of_episodes(self, all_user_entries):
+        """Number of episodes all users haves watched
         """
-        runtime_counter = 0  # couter of runtime
-        not_included_series = []  # array that takes the not included series
+        return len(all_user_entries)
 
-        for entry_a in Watchlog.objects.filter(user=user):
-            # loops though entries to find series without runtimes
-            if entry_a.episode.series.episode_run_time is not None:
-                runtime_counter += entry_a.episode.series.episode_run_time
-            else:
-                if entry_a.episode.series.name not in not_included_series:
-                    not_included_series.append(entry_a.episode.series.name)
+    def time_spent_watching(self, entries):
+        time_total = 0
+        for entry in entries:
+            time_total += entry
+        return str(datetime.timedelta(minutes=time_total))
 
-        context['not_included_series'] = not_included_series
-        context['time_spent'] = str(datetime.timedelta(
-            minutes=runtime_counter))
+    def not_included_series(self, entries):
+        not_included_series = []
+        for entry in entries:
+            if entry not in not_included_series:
+                not_included_series.append(entry)
+        return not_included_series
 
-        """time spent all users together
-        """
-        all_user_runtime_counter = 0
-        for entry in Watchlog.objects.all():
-            if entry.episode.series.episode_run_time is not None:
-                all_user_runtime_counter += entry.\
-                    episode.series.episode_run_time
-        context['total_time_spent'] = str(datetime.timedelta(
-            minutes=all_user_runtime_counter))
-
-        """user top Genre
-        """
+    def favourite_genre(self, user_entries):
         genre_list = {}
-        for entry_a in Watchlog.objects.filter(user=user):
-            for entry_b in entry_a.episode.series.get_genre_list():
-                if entry_b['name'] in genre_list:
-                    genre_list[entry_b['name']] += 1
+        for entry in user_entries:
+                if entry in genre_list:
+                    genre_list[entry] += 1
                 else:
-                    genre_list[entry_b['name']] = 1
+                    genre_list[entry] = 1
         highest = 0
-        favourite_genre = 'genre'
+        favourite_genre = ()
         for entry in genre_list:
             if genre_list[entry] > highest:
                 highest = genre_list[entry]
                 favourite_genre = entry
-        context['favourite_genre'] = favourite_genre
+        return favourite_genre
 
-        """all users top Genre
-        """
-        all_user_genre_list = {}
-        for entry_a in Watchlog.objects.all():
-            for entry_b in entry_a.episode.series.get_genre_list():
-                if entry_b['name'] in all_user_genre_list:
-                    all_user_genre_list[entry_b['name']] += 1
-                else:
-                    all_user_genre_list[entry_b['name']] = 1
-        all_user_highest = 0
-        all_user_favourite_genre = ()
-        for entry in all_user_genre_list:
-            if all_user_genre_list[entry] > all_user_highest:
-                all_user_highest = genre_list[entry]
-                all_user_favourite_genre = entry
-        context['all_user_favourite_genre'] = all_user_favourite_genre
-        """
-        highest rated eisode user
-        """
+    def higest_rating(self, entries):
         rating_list = {}
         rating_counter = {}
-        for entry in Watchlog.objects.filter(user=user):
-            if entry.rating > 0:
-                if entry.series in rating_list:
-                    rating_list[entry.series] += entry.rating
-                    rating_counter[entry.series] += 1
-                else:
-                    rating_list[entry.series] = entry.rating
-                    rating_counter[entry.series] = 1
-        for entry in rating_list:
-            rating_list[entry] = rating_list[entry] / rating_counter[entry]
-        highest_rating = 0
+        for entry in entries:
+            if entry[0] in rating_list:
+                rating_list[entry[0]] += entry[1]
+                rating_counter[entry[0]] += 1
+            else:
+                rating_list[entry[0]] = entry[1]
+                rating_counter[entry[0]] = 1
+        highest = 0
         highest_rated_series = ()
         for entry in rating_list:
-            if rating_list[entry] > highest_rating:
-                rating_list[entry] = highest_rating
+            rating_list[entry] = rating_list[entry] / rating_counter
+            if rating_list[entry] > highest:
+                highest = rating_list[entry]
                 highest_rated_series = entry
-        if highest_rated_series:
-            context['higest_rated_series'] = highest_rated_series
-        """
-        higest rated episode all users
-        """
-        episode_rating_list = {}
-        episode_rating_counter = {}
-        for entry in Watchlog.objects.all():
-            if entry.episode.tmdb_id:
-                if entry.episode.tmdb_id in episode_rating_list:
-                    episode_rating_list[entry.episode.tmdb_id] += entry.rating
-                    episode_rating_counter[entry.episode.tmdb_id] += 1
-                else:
-                    episode_rating_list[entry.episode.tmdb_id] = entry.rating
-                    episode_rating_counter[entry.episode.tmdb_id] = 1
-        for entry in episode_rating_list:
-            episode_rating_list[entry] = episode_rating_list[entry] / \
-                episode_rating_counter[entry]
-        all_users_highest_rating = 0
-        all_users_highest_rated_episode = ()
-        for entry in episode_rating_list:
-            if episode_rating_list[entry] > all_users_highest_rating:
-                all_users_highest_rating = episode_rating_list[entry]
-                all_users_highest_rated_episode = entry
-        context['all_users_highest_rated_episode'] = \
-            all_users_highest_rated_episode
+        return highest_rated_series
+
+
+
+
+
+
+    def get_context_data(self, **kwargs):
+        user = self.request.user
+        context = super(Stats, self).get_context_data(**kwargs)
+        user_entries = Watchlog.objects.filter(user=user)
+        all_user_entries = Watchlog.objects.all()
+        context['number_of_episodes'] = self.number_of_episodes(
+            user, user_entries)
+        context['all_user_number_of_episodes'] = self.\
+            all_user_number_of_episodes(all_user_entries)
+        time_time = 0
+
+        # user runtimes
+        user_runtimes = Series.objects.filter(episode__watchlog__user=user).\
+            exclude(episode_run_time=None).values_list(
+            'episode_run_time', flat=True)
+        context['time_spent'] = self.time_spent_watching(user_runtimes)
+        # user episodes without runtimes
+        user_runtime_exceptions = Series.objects.filter(
+            episode__watchlog__user=user, episode_run_time=None).\
+            values_list('name', flat=True)
+        context['not_included_series'] = self.not_included_series(
+            user_runtime_exceptions)
+
+        # runtimes for all users
+        all_user_runtimes = Watchlog.objects.all().exclude(
+            episode__series__episode_run_time=None).values_list(
+            'episode__series__episode_run_time', flat=True)
+
+        context['all_user_time_spent'] = self.\
+            time_spent_watching(all_user_runtimes)
+
+        # favourite genre for the user
+        user_favourite_genre = Watchlog.objects.filter(
+            user=user).exclude(episode__series__genres=None).values_list(
+            'episode__series__genres__name', flat=True)
+        context['favourite_genre'] = self.favourite_genre(user_favourite_genre)
+
+        # favourite genre all users
+        all_user_favourite_genre = Watchlog.objects.all().exclude(
+            episode__series__genres=None).values_list(
+            'episode__series__genres__name', flat=True)
+
+        context['all_user_favourite_genre'] = self.favourite_genre(
+            all_user_favourite_genre)
+
+        # user highest rated series
+        user_highest_rated_series = Watchlog.objects.filter(
+            user=user).exclude(rating=0).values_list(
+            'episode__series__name', 'rating')
+
+        context['higest_rated_series'] = self.favourite_genre(
+            user_highest_rated_series)
+
+        # user highest rated series
+        all_user_most_viewed_episode = Watchlog.objects.all().exclude(
+            rating=0).values_list('episode__series__name', 'rating')
+
+        context['higest_rated_series'] = self.higest_rating(
+            all_user_most_viewed_episode)
+
 
         return context
 
