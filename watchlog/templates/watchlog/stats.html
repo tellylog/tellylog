@@ -7,14 +7,14 @@
 <div class="stats-text">
     <h5>Number of episodes wached:</h5>
         <p>Number of episodes you watched: <strong>{{ number_of_episodes }}</strong></p>
-        <p>Number of episodes watchedby all tellylog users: <strong>{{ all_user_number_of_episodes }}</strong></p>
+        <p>Number of episodes watched by all tellylog users: <strong>{{ all_user_number_of_episodes }}</strong></p>
 </div>
 <div class="stats-text">
     <h5>Time spent:</h5>
-        <p>Time you spent watching these episodes: <strong>{{ time_spent }}</strong></p>
+        <p>Time spent watching these episodes by you: <strong>{{ time_spent }}</strong></p>
         {% if not_included_series %}
-        <p>If the runtime of a show is not in the database, it's excluded from the total time spent.<br>
-        For you the following shows were excluded:
+            <p>If the runtime of a show is not in the database, it's excluded from the total time spent.<br>
+            For you the following shows were excluded:
 
             {% for entry in not_included_series %}
 
@@ -28,7 +28,7 @@
 
             {% endfor %}</p>
         {% else %}
-            <p>All your series had runtimes in the database, your time spent should be accurate.</p>
+            <p>All your series have runtimes in the database so your time spent should be accurate.</p>
         {% endif %}
         <p>Time spent by all users: <strong>{{ all_user_time_spent }}</strong></p>
         <p>Some series might not be included if there are no runtimes in the database.</p>
