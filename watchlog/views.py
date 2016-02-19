@@ -138,7 +138,7 @@ class Stats(LoginRequiredMixin, TemplateView):
         user_entries = Watchlog.objects.filter(user=user)
         all_user_entries = Watchlog.objects.all()
         context['number_of_episodes'] = self.number_of_episodes(
-            user, user_entries)
+            user_entries)
         context['all_user_number_of_episodes'] = self.\
             all_user_number_of_episodes(all_user_entries)
 
