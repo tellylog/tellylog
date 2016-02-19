@@ -57,21 +57,31 @@ class Stats(LoginRequiredMixin, TemplateView):
         return len(all_user_entries)
 
     def time_spent_watching(self, entries):
+        """adds up all of the given episode_run_times
+        """
         time_total = 0
         for entry in entries:
             time_total += entry
         return str(datetime.timedelta(minutes=time_total))
 
     def not_included_series(self, entries):
+        """Takes the array of Series without episode_run_times and only returns
+        each of them one time into a list
+        """
         not_included_series = []
         for entry in entries:
             if entry not in not_included_series:
+                # if series is not in list already it is appended
                 not_included_series.append(entry)
         return not_included_series
 
     def favourite_genre(self, user_entries):
+        """Takes the list of genres and calculates which is in the list the most
+        times. Then it returns that genre
+        """
         genre_list = {}
         for entry in user_entries:
+            # adds a counter to each genre
             if entry in genre_list:
                 genre_list[entry] += 1
             else:
@@ -79,15 +89,20 @@ class Stats(LoginRequiredMixin, TemplateView):
         highest = 0
         favourite_genre = ()
         for entry in genre_list:
+            # goes through list again to check which has the highes counter
             if genre_list[entry] > highest:
                 highest = genre_list[entry]
                 favourite_genre = entry
         return favourite_genre
 
     def higest_rating(self, entries):
+        """Goes through a list with episodes/series and returns the one with
+        the higest rating
+        """
         rating_list = {}
         rating_counter = {}
         for entry in entries:
+            # here the ratings of every series are added up
             if entry[0] in rating_list:
                 rating_list[entry[0]] += entry[1]
                 rating_counter[entry[0]] += 1
@@ -97,6 +112,8 @@ class Stats(LoginRequiredMixin, TemplateView):
         highest = 0
         highest_rated_series = ()
         for entry in rating_list:
+            # here the average rating for a series is calculated
+            # and the highest rated series is found out
             rating_list[entry] = rating_list[entry] / rating_counter
             if rating_list[entry] > highest:
                 highest = rating_list[entry]
@@ -104,6 +121,9 @@ class Stats(LoginRequiredMixin, TemplateView):
         return highest_rated_series
 
     def most_viewed_episode(self, entries):
+        """Tales a list of episodes by tmdb_id and returns the one with the most
+        user that have checked them
+        """
         most_viewed_list = {}
         most_viewed_counter = {}
 
@@ -133,6 +153,15 @@ class Stats(LoginRequiredMixin, TemplateView):
         return most_viewed_episode_with_users
 
     def get_context_data(self, **kwargs):
+        """
+        Fill up the context array.
+
+        Args:
+            **kwargs: Parameters that where given to the view.
+
+        Returns:
+            dict: Context dictionary with all values.
+        """
         user = self.request.user
         context = super(Stats, self).get_context_data(**kwargs)
         user_entries = Watchlog.objects.filter(user=user)
