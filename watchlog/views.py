@@ -46,7 +46,7 @@ class Stats(LoginRequiredMixin, TemplateView):
     template_name = 'watchlog/stats.html'
     context_object_name = 'stats'
 
-    def number_of_episodes(self, user, user_entries):
+    def number_of_episodes(self, user_entries):
         """number of episodes the user has watched
         """
         return len(user_entries)
@@ -72,10 +72,10 @@ class Stats(LoginRequiredMixin, TemplateView):
     def favourite_genre(self, user_entries):
         genre_list = {}
         for entry in user_entries:
-                if entry in genre_list:
-                    genre_list[entry] += 1
-                else:
-                    genre_list[entry] = 1
+            if entry in genre_list:
+                genre_list[entry] += 1
+            else:
+                genre_list[entry] = 1
         highest = 0
         favourite_genre = ()
         for entry in genre_list:
@@ -128,7 +128,8 @@ class Stats(LoginRequiredMixin, TemplateView):
                 extra_episodes.append(most_viewed_list[entry])
 
 
-        most_viewed_episode_with_users = (most_viewed_episode, extra_episodes, highest)
+        most_viewed_episode_with_users = (
+            most_viewed_episode, extra_episodes, highest)
         return most_viewed_episode_with_users
 
 
@@ -147,7 +148,6 @@ class Stats(LoginRequiredMixin, TemplateView):
             user, user_entries)
         context['all_user_number_of_episodes'] = self.\
             all_user_number_of_episodes(all_user_entries)
-        time_time = 0
 
         # user runtimes
         user_runtimes = Series.objects.filter(episode__watchlog__user=user).\
@@ -202,7 +202,8 @@ class Stats(LoginRequiredMixin, TemplateView):
             'episode__tmdb_id', 'episode__name', 'episode__season__number',
             'episode__number', 'episode__series__name')
 
-        context['most_viewed_ep'] = self.most_viewed_episode(all_users_most_viewed_episode)
+        context['most_viewed_ep'] = self.most_viewed_episode(
+            all_users_most_viewed_episode)
 
 
         return context

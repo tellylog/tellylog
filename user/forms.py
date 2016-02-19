@@ -29,10 +29,3 @@ class UserCreateForm(UserCreationForm):
                 email=email).exclude(username=username).count():
             raise forms.ValidationError(u'Email addresses must be unique.')
         return email
-
-"""
-class LoginForm(AuthenticationForm):
-    class Meta:
-        model = User
-
-"""
