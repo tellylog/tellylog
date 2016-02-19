@@ -104,7 +104,6 @@ class Stats(LoginRequiredMixin, TemplateView):
         return highest_rated_series
 
     def most_viewed_episode(self, entries):
-        most_viewed_episode = []
         most_viewed_list = {}
         most_viewed_counter = {}
 
@@ -112,17 +111,24 @@ class Stats(LoginRequiredMixin, TemplateView):
             if entry[0] in most_viewed_list:
                 most_viewed_counter[entry[0]] += 1
             else:
-                most_viewed_list = {entry[0]: (entry[1], entry[2],
-                                               entry[3], entry[4])}
-                most_viewed_counter = {entry[0]: 1}
+                most_viewed_list[entry[0]] = (entry[1], entry[2],
+                                              entry[3], entry[4])
+                most_viewed_counter[entry[0]] = 1
+
         highest = 0
+        most_viewed_episode = []
+        extra_episodes = []
+
         for entry in most_viewed_list:
             if most_viewed_counter[entry] > highest:
                 highest = most_viewed_counter[entry]
                 most_viewed_episode = most_viewed_list[entry]
+                extra_episodes = []
             elif most_viewed_counter[entry] is highest:
-                most_viewed_episode.append(most_viewed_list[entry])
-        most_viewed_episode_with_users = (most_viewed_episode, highest)
+                extra_episodes.append(most_viewed_list[entry])
+
+
+        most_viewed_episode_with_users = (most_viewed_episode, extra_episodes, highest)
         return most_viewed_episode_with_users
 
 
@@ -195,23 +201,6 @@ class Stats(LoginRequiredMixin, TemplateView):
         all_users_most_viewed_episode = Watchlog.objects.all().values_list(
             'episode__tmdb_id', 'episode__name', 'episode__season__number',
             'episode__number', 'episode__series__name')
-
-        """
-        temp_list = []
-        temp_dict = {}
-        counter = 0
-        for entry_a in all_users_most_viewed_episode:
-            if entry_a in temp_dict:
-                temp_dict[entry_a[1]] += 1
-            else:
-                temp_dict[entry_a[1]] = 1
-        for entry in temp_dict:
-            print (entry)
-            print (temp_dict[entry])
-            counter += 1
-            if counter is 50:
-                break
-        """
 
         context['most_viewed_ep'] = self.most_viewed_episode(all_users_most_viewed_episode)
 

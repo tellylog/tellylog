@@ -55,7 +55,19 @@
 </div>
 {% endif %}
 <div class="stats-text">
-    Most viewed EP: {{ most_viewed_ep }}
+    <h5>Most viewed episode:</h5>
+    {% if not most_viewed_ep.1 %}
+        <p>Most viewed episode is: <strong>{{ most_viewed_ep.0.0 }}</strong> of the series <strong>{{ most_viewed_ep.0.3 }}</strong> season <strong>{{ most_viewed_ep.0.1 }}</strong> episode <strong>{{ most_viewed_ep.0.2 }}</strong> and it was viewed by <strong>{{ most_viewed_ep.2 }}</strong> users.</p>
+    {% else %}
+        <p>Most viewed episodes are: <br>
+        <strong>{{ most_viewed_ep.0.0 }}</strong> of the series <strong>{{ most_viewed_ep.0.3 }}</strong> season <strong>{{ most_viewed_ep.0.1 }}</strong> episode <strong>{{ most_viewed_ep.0.2 }}</strong>
+        {% for entry in most_viewed_ep.1 %}
+            {% if forloop.counter < 8 %}
+            <strong>{{ entry.0 }}</strong> of the series <strong>{{ entry.3 }}</strong> season <strong>{{ entry.1 }}</strong> episode <strong>{{ entry.2 }}</strong><br>
+            {% endif %}
+        {% endfor %}
+    And they were watched by <strong>{{ most_viewed_ep.2 }}</strong> users.</p>
+    {% endif %}
 </div>
 
 {% endblock content %}
