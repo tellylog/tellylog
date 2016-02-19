@@ -132,13 +132,6 @@ class Stats(LoginRequiredMixin, TemplateView):
             most_viewed_episode, extra_episodes, highest)
         return most_viewed_episode_with_users
 
-
-
-
-
-
-
-
     def get_context_data(self, **kwargs):
         user = self.request.user
         context = super(Stats, self).get_context_data(**kwargs)
