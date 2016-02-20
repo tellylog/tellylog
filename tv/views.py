@@ -2,7 +2,8 @@
 from django.shortcuts import get_object_or_404, get_list_or_404
 from django.core.urlresolvers import reverse
 from django.views.generic import TemplateView
-from tv.models import Series, Season, Episode
+from django.contrib.auth.mixins import LoginRequiredMixin
+from tv.models import Series, Season, Episode, Genre
 from watchlog.models import Watchlog
 from watchlist.models import Watchlist
 
@@ -107,4 +108,51 @@ class SeasonView(TemplateView):
         wlog_unlog_url = reverse('wlog:unlog')
         wlog_unlog_url = self.request.build_absolute_uri(wlog_unlog_url)
         context['wlog_unlog_url'] = wlog_unlog_url
+        return context
+
+
+class GenresView(LoginRequiredMixin, TemplateView):
+    template_name = "tv/genres.html"
+
+    def get_genres(self, entries):
+        """Takes a list of genres from the database and returns a list with
+        every genre just once, and sorts them alphabetically
+        """
+        genre_list = []
+        for entry in entries:
+            if entry not in genre_list:
+                genre_list.append(entry)
+        genre_list.sort()
+        return genre_list
+
+    def get_context_data(self, **kwargs):
+        context = super(GenresView, self).get_context_data(**kwargs)
+
+        watchlog_genres = Watchlog.objects.all().exclude(
+            episode__series__genres=None).values_list(
+            'episode__series__genres__name', 'episode__series__genres__tmdb_id')
+        context['genres'] = self.get_genres(watchlog_genres)
+        return context
+
+
+class GenresSingle(LoginRequiredMixin, TemplateView):
+    template_name = "tv/genres_single.html"
+
+    def get_series_by_genre(self, entries, genre_id):
+        series_list = []
+        for entry in entries:
+            if entry[2] is genre_id:
+                series_list.append(entry)
+        return series_list
+
+    def get_context_data(self, **kwargs):
+        context = super(GenresSingle, self).get_context_data(**kwargs)
+        genre_id = \
+            get_object_or_404(Genre, pk=context['genre_id'])
+
+        watchlog_genres = Watchlog.objects.all().exclude(
+            episode__series__genres=None).values_list(
+            'episode__series__genres__name', 'episode__series_name',
+            'episode_series_genres_tmdb_id')
+        context['series'] = self.get_series_by_genre(watchlog_genres, genre_id)
         return context

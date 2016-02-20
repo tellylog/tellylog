@@ -1,0 +1,18 @@
+{% extends "layout/base.html" %}
+{% load staticfiles %}
+{% load tellytags %}
+{% block title %}
+    {{ block.super }} - Genres
+{% endblock title %}
+{% block content %}
+<div class="stats-text">
+Here is a list of genres already in our database:<br>
+
+{% for entry in genres %}
+
+    <a href="/tv/genres/{{ entry.1 }}">{{ entry.0 }}</a><br>
+{% endfor %}
+</div>
+
+
+{% endblock content %}
