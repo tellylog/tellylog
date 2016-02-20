@@ -1,12 +1,9 @@
 .rating{
     cursor: pointer;
+    color: $third-background-color;
     &__btn{
         float: left;
         margin-right: .1em;
-        transition: font-size 0.5s;
-        &:hover{
-            font-size: 1.2em;
-        }
     }
     &__btn--active{
         color: $chery;

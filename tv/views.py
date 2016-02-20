@@ -1,4 +1,5 @@
 """This file holds the views of the tv app."""
+from django.db.models import Count, Avg
 from django.shortcuts import get_object_or_404, get_list_or_404
 from django.core.urlresolvers import reverse
 from django.views.generic import TemplateView
@@ -17,6 +18,21 @@ class SeriesView(TemplateView):
 
     template_name = "tv/series.html"
 
+    def get_wlog_log_url(self):
+        return self.request.build_absolute_uri(reverse('wlog:log'))
+
+    def get_wlog_unlog_url(self):
+        return self.request.build_absolute_uri(reverse('wlog:unlog'))
+
+    def get_wlog_rate_url(self):
+        return self.request.build_absolute_uri(reverse('wlog:rate'))
+
+    def get_wlist_list_url(self):
+        return self.request.build_absolute_uri(reverse('wlist:list'))
+
+    def get_wlist_unlist_url(self):
+        return self.request.build_absolute_uri(reverse('wlist:unlist'))
+
     def get_context_data(self, **kwargs):
         """
         Fill up the context array.
@@ -30,25 +46,38 @@ class SeriesView(TemplateView):
         context = super(SeriesView, self).get_context_data(**kwargs)
         context['series'] = \
             get_object_or_404(Series, pk=context['series_id'])
-        context['seasons'] = get_list_or_404(Season,
-                                             series_id=context['series_id'],
-                                             episode_count__gt=0)
-        context['wlog'] = Watchlog.objects.filter(
-            user_id=self.request.user.id,
-            episode__series_id=context['series_id']).count()
-        context['wlog_seasons'] = {}
-        for season in context['seasons']:
-            context['wlog_seasons'][season.id] = (
-                Watchlog.objects.filter(user_id=self.request.user.id,
-                                        episode__season_id=season.id).count())
+        seasons = get_list_or_404(Season,
+                                  series_id=context['series_id'],
+                                  episode_count__gt=0)
+        context['seasons'] = list()
+        avg_rating = Watchlog.objects \
+            .filter(user_id=self.request.user.id,
+                    episode__series_id=context['series'].id, rating__gt=0) \
+            .aggregate(avg_rating=Avg('rating'))
+        avg_rating = avg_rating['avg_rating']
+        context['avg_rating'] = avg_rating
+        context['wlog_count'] = 0
+        for season in seasons:
+            wlog_entry = {}
+            wlog_entry['wlog_count'] = Watchlog.objects \
+                .filter(user_id=self.request.user.id,
+                        episode__season_id=season.id) \
+                .aggregate(wlog_count=Count('id'))
+            wlog_entry['wlog_count'] = wlog_entry['wlog_count']['wlog_count']
+            wlog_entry['avg_rating'] = Watchlog.objects \
+                .filter(user_id=self.request.user.id,
+                        episode__season_id=season.id, rating__gt=0) \
+                .aggregate(avg_rating=Avg('rating'))
+            wlog_entry['avg_rating'] = wlog_entry['avg_rating']['avg_rating']
+
+            if(wlog_entry['wlog_count'] is 0):
+                wlog_entry = None
+            context['seasons'].append((season, wlog_entry))
+            if wlog_entry:
+                context['wlog_count'] += wlog_entry['wlog_count']
 
         context['genre_list'] = context['series'].get_genre_list()
-        wlog_log_url = reverse('wlog:log')
-        wlog_log_url = self.request.build_absolute_uri(wlog_log_url)
-        context['wlog_log_url'] = wlog_log_url
-        wlog_unlog_url = reverse('wlog:unlog')
-        wlog_unlog_url = self.request.build_absolute_uri(wlog_unlog_url)
-        context['wlog_unlog_url'] = wlog_unlog_url
+
         try:
             context['wlist'] = Watchlist.objects.get(user=self.request.user,
                                                      series_id=context[
@@ -56,12 +85,12 @@ class SeriesView(TemplateView):
                                                      )
         except Watchlist.DoesNotExist:
             context['wlist'] = False
-        wlist_list_url = reverse('wlist:list')
-        wlist_list_url = self.request.build_absolute_uri(wlist_list_url)
-        context['wlist_list_url'] = wlist_list_url
-        wlist_unlist_url = reverse('wlist:unlist')
-        wlist_unlist_url = self.request.build_absolute_uri(wlist_unlist_url)
-        context['wlist_unlist_url'] = wlist_unlist_url
+
+        # URLs for AJAX requests
+        context['wlog_log_url'] = self.get_wlog_log_url()
+        context['wlog_unlog_url'] = self.get_wlog_unlog_url()
+        context['wlist_list_url'] = self.get_wlist_list_url()
+        context['wlist_unlist_url'] = self.get_wlist_unlist_url()
         return context
 
 
@@ -74,6 +103,21 @@ class SeasonView(TemplateView):
     """
 
     template_name = "tv/season.html"
+
+    def get_wlog_log_url(self):
+        return self.request.build_absolute_uri(reverse('wlog:log'))
+
+    def get_wlog_unlog_url(self):
+        return self.request.build_absolute_uri(reverse('wlog:unlog'))
+
+    def get_wlog_rate_url(self):
+        return self.request.build_absolute_uri(reverse('wlog:rate'))
+
+    def get_wlist_list_url(self):
+        return self.request.build_absolute_uri(reverse('wlist:list'))
+
+    def get_wlist_unlist_url(self):
+        return self.request.build_absolute_uri(reverse('wlist:unlist'))
 
     def get_context_data(self, **kwargs):
         """
@@ -104,13 +148,8 @@ class SeasonView(TemplateView):
             context['episodes'].append((episode, wlog_entry))
             if wlog_entry:
                 context['wlog_count'] += 1
-        wlog_log_url = reverse('wlog:log')
-        wlog_log_url = self.request.build_absolute_uri(wlog_log_url)
-        context['wlog_log_url'] = wlog_log_url
-        wlog_unlog_url = reverse('wlog:unlog')
-        wlog_unlog_url = self.request.build_absolute_uri(wlog_unlog_url)
-        context['wlog_unlog_url'] = wlog_unlog_url
-        wlog_rate_url = reverse('wlog:rate')
-        wlog_rate_url = self.request.build_absolute_uri(wlog_rate_url)
-        context['wlog_rate_url'] = wlog_rate_url
+        # URLs for AJAX requests
+        context['wlog_log_url'] = self.get_wlog_log_url()
+        context['wlog_unlog_url'] = self.get_wlog_unlog_url()
+        context['wlog_rate_url'] = self.get_wlog_rate_url()
         return context

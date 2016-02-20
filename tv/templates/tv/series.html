@@ -20,7 +20,7 @@
                 {% endfor %}
                 </h2>
                 <div class="single-page__controls">
-                    {% if wlog and wlog == series.number_of_episodes %}
+                    {% if wlog_count and wlog_count == series.number_of_episodes %}
                         <span class=" log-btn log-btn--series log-btn--logged" title="Unlog the whole series" data-id="{{ series.id }}" data-kind="series">
                             <i class="fa fa-eye" ></i>
                         </span>
@@ -29,7 +29,7 @@
                             <i class="fa fa-eye-slash" ></i>
                         </span>
                     {% endif %}
-                    {% if wlog == 0 %}
+                    {% if wlog_count == 0 %}
                         {% if wlist %}
                             <span class="list-btn list-btn--listed" title="Remove from list" data-id="{{ series.id }}">
                                 <i class="fa fa-bookmark" ></i>
@@ -55,24 +55,26 @@
         </div>
         <div class="row">
             <ul class="single-page__list">
-                {% for season in seasons %}
+                {% for season, wlog_entry in seasons %}
                     <li class="single-page__entry">
                         <a href="{{ season.get_absolute_url }}" class="single-page__entry__link">Season {{ season.number }}
                             {% if season.air_date %}
                                 ({{ season.air_date.year }})
                             {% endif %}
                         </a>
-                        <div  class="single-page__entry__btn">
-                            {% if wlog_seasons and wlog_seasons|access:season.id == season.episode_count %}
-                                <span class="log-btn log-btn--season log-btn--logged" title="Unlog the whole season" data-kind="season" data-id="{{ season.id }}">
-                                    <i class="fa fa-eye" ></i>
-                                </span>
-                            {% else %}
-                                <span class="log-btn log-btn--season log-btn--unlogged" title="Log the whole season" data-kind="season" data-id="{{ season.id }}">
-                                    <i class="fa fa-eye-slash" ></i>
-                                </span>
-                            {% endif %}
-                        </div>
+                        {% if not season.airs_in_future %}
+                            <div  class="single-page__entry__btn">
+                                {% if wlog_entry and wlog_entry.wlog_count == season.episode_count %}
+                                    <span class="log-btn log-btn--season log-btn--logged" title="Unlog the whole season" data-kind="season" data-id="{{ season.id }}">
+                                        <i class="fa fa-eye" ></i>
+                                    </span>
+                                {% else %}
+                                    <span class="log-btn log-btn--season log-btn--unlogged" title="Log the whole season" data-kind="season" data-id="{{ season.id }}">
+                                        <i class="fa fa-eye-slash" ></i>
+                                    </span>
+                                {% endif %}
+                            </div>
+                        {% endif %}
                     </li>
                 {% endfor %}
             </ul>
@@ -81,16 +83,16 @@
 {% endblock content %}
 {% block customjs %}
     <script type="text/javascript">
-        window.Telly = {};
-        window.Telly.series_id = {{ series_id }}
-        window.Telly.wlog_log_url = "{{ wlog_log_url }}"
-        window.Telly.wlog_unlog_url = "{{ wlog_unlog_url }}"
-        window.Telly.wlist_list_url = "{{ wlist_list_url }}"
-        window.Telly.wlist_unlist_url = "{{ wlist_unlist_url }}"
-        {% if wlist %}
-            window.Telly.on_wlist = true
-        {% else %}
-            window.Telly.on_wlist = false
-        {% endif %}
+    window.Telly = {};
+    window.Telly.series_id = {{ series_id }}
+    window.Telly.wlog_log_url = "{{ wlog_log_url }}"
+    window.Telly.wlog_unlog_url = "{{ wlog_unlog_url }}"
+    window.Telly.wlist_list_url = "{{ wlist_list_url }}"
+    window.Telly.wlist_unlist_url = "{{ wlist_unlist_url }}"
+    {% if wlist %}
+        window.Telly.on_wlist = true
+    {% else %}
+        window.Telly.on_wlist = false
+    {% endif %}
     </script>
 {% endblock customjs %}

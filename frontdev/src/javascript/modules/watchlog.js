@@ -37,7 +37,9 @@ var Rating = require('./rating.js')
           list_btn: '.list-btn',
           list_btn_unlisted: '.list-btn--unlisted',
           list_btn_listed: '.list-btn--listed',
-          page_controlls: '.single-page__controls'
+          page_controlls: '.single-page__controls',
+          log_btn_logged_hover: 'log-btn--logged-hover',
+          log_btn_unlogged_hover: 'log-btn--unlogged-hover'
         }
       }
     },
@@ -54,7 +56,16 @@ var Rating = require('./rating.js')
 
     /** Sets up all element listeners for the module */
     bindUIActions: function () {
+      $(s.log_btn_logged).hover(function () {
+        /* Stuff to do when the mouse enters the element */
+        $(this).addClass(s.log_btn_logged_hover)
+      }, function () {
+        /* Stuff to do when the mouse leaves the element */
+        $(this).removeClass(s.log_btn_logged_hover)
+      })
       $(s.log_btn_logged).off('click').click(function (event) {
+        $(this).removeClass(s.log_btn_logged_hover)
+        $(this).removeClass(s.log_btn_unlogged_hover)
         var kind = $(this).data('kind')
         var id = $(this).data('id')
         if (kind === 'episode') {
@@ -62,7 +73,16 @@ var Rating = require('./rating.js')
         }
         Watchlog.rmFromWlog($(this), kind, id)
       })
+      $(s.log_btn_unlogged).hover(function () {
+        /* Stuff to do when the mouse enters the element */
+        $(this).addClass(s.log_btn_unlogged_hover)
+      }, function () {
+        /* Stuff to do when the mouse leaves the element */
+        $(this).removeClass(s.log_btn_unlogged_hover)
+      })
       $(s.log_btn_unlogged).off('click').click(function (event) {
+        $(this).removeClass(s.log_btn_logged_hover)
+        $(this).removeClass(s.log_btn_unlogged_hover)
         var kind = $(this).data('kind')
         var id = $(this).data('id')
         if (kind === 'episode') {

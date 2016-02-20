@@ -2,14 +2,14 @@
     color: $greyish;
     cursor: pointer;
     @include transition(color 0.5s);
-    &--unlogged:hover{
+    &--unlogged-hover{
         color: $green;
         @include pulse();
     }
     &--logged{
         color: $green;
     }
-    &--logged:hover{
+    &--logged-hover{
         color: $light-chery;
     }
 }

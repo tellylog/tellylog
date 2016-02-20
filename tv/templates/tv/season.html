@@ -39,38 +39,40 @@
                 {% endif %}
             </div>
         </div>
-
         <div class="row">
             <ul class="single-page__list single-page__list--small">
                 {% for episode, wlog_entry in episodes %}
-                    <li class="single-page__entry single-page__entry--small">
-                        <div class="single-page__entry__number single-page__entry__number--small">
-                            {{ episode.number }}
-                        </div>
-                        <div class="single-page__entry__link single-page__entry__link--small">
-                            {{ episode.name }}
-                            {% if episode.air_date %}
-                                - {{ episode.air_date|date:"d.m.Y"}}
+                        <li class="single-page__entry single-page__entry--small">
+                            <div class="single-page__entry__number single-page__entry__number--small">
+                                {{ episode.number }}
+                            </div>
+                            <div class="single-page__entry__link single-page__entry__link--small">
+                                {{ episode.name }}
+                                {% if episode.air_date %}
+                                    - {{ episode.air_date|date:"d.m.Y"}}
+                                {% endif %}
+                            </div>
+                            {% if not episode.airs_in_future %}
+                                <div class="single-page__entry__rating rating" data-id="{{ episode.id }}">
+                                    {% if wlog_entry %}
+                                        {% for i in 5|get_range %}
+                                            <span data-rating="{{ i }}" class="rating__btn fa {% fill_rating i wlog_entry.rating %}"></span>
+                                        {% endfor %}
+                                    {% endif %}
+                                </div>
+                                <div  class="single-page__entry__btn single-page__entry__btn--small">
+                                    {% if wlog_entry %}
+                                        <span class="log-btn log-btn--episode log-btn--logged" title="Unlog this episode" data-kind="episode" data-id="{{ episode.id }}">
+                                            <i class="fa fa-eye" ></i>
+                                        </span>
+                                    {% else %}
+                                        <span class="log-btn log-btn--episode log-btn--unlogged" title="Log this episode" data-kind="episode" data-id="{{ episode.id }}">
+                                        <i class="fa fa-eye-slash" ></i></span>
+                                    {% endif %}
+                                </div>
                             {% endif %}
-                        </div>
-                        <div class="single-page__entry__rating rating" data-id="{{ episode.id }}">
-                            {% if wlog_entry %}
-                                    {% for i in 5|get_range %}
-                                        <span data-rating="{{ i }}" class="rating__btn fa {% fill_rating i wlog_entry.rating %}"></span>
-                                    {% endfor %}
-                            {% endif %}
-                        </div>
-                        <div  class="single-page__entry__btn single-page__entry__btn--small">
-                            {% if wlog_entry %}
-                                <span class="log-btn log-btn--episode log-btn--logged" title="Unlog this episode" data-kind="episode" data-id="{{ episode.id }}">
-                                    <i class="fa fa-eye" ></i>
-                                </span>
-                            {% else %}
-                                <span class="log-btn log-btn--episode log-btn--unlogged" title="Log this episode" data-kind="episode" data-id="{{ episode.id }}">
-                                <i class="fa fa-eye-slash" ></i></span>
-                            {% endif %}
-                        </div>
-                    </li>
+                        </li>
+
                 {% endfor %}
             </ul>
         </div>

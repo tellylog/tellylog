@@ -59,7 +59,12 @@ var Cookies = require('js-cookie')
         Rating.rateEpisode(btn, id, rating)
       })
     },
-
+    /**
+     * Toggle the classes of the previous buttons
+     * @param  {object} button Current button
+     * @param  {bool} action true adds active class and false removes the active class
+     * @return {void}        Does not return anything
+     */
     toggleAllPrev: function (button, action) {
       if (action) {
         button.removeClass(s.btn_empty).addClass(s.btn_full + ' ' + s.btn_active)
@@ -68,16 +73,27 @@ var Cookies = require('js-cookie')
           button.removeClass(s.btn_full + ' ' + s.btn_active).addClass(s.btn_empty)
         }
       }
+      /** Check if current rating is above 0 */
       if (button.data(s.data_rating)) {
         Rating.toggleAllPrev(button.prev(s.rating_btn), action)
       }
     },
 
+    /**
+     * Remove the rating buttons of an entry
+     * @param  {object} wlog_btn Watchlog button of the entry
+     * @return {void}
+     */
     rmRatingBtns: function (wlog_btn) {
       wlog_btn.parent().prev(s.rating_section).empty()
       Rating.bindUIActions()
     },
 
+    /**
+     * Append the rating buttons to an entry
+     * @param  {object} wlog_btn Watchlog button of the entry
+     * @return {void}
+     */
     showRatingBtns: function (wlog_btn) {
       var rating_section = wlog_btn.parent().prev(s.rating_section)
       if (rating_section.length <= 1) {
@@ -90,23 +106,41 @@ var Cookies = require('js-cookie')
         Rating.bindUIActions()
       }
     },
+    /**
+     * Fill or empty the rating buttons of an entry according to a given rating.
+     * @param  {object} btn    current button
+     * @param  {int} rating Rating to show
+     * @return {void}
+     */
     redoRatingBtns: function (btn, rating) {
       var max_btn = btn
-
+      /** Get the button for the highest rating */
       while (max_btn.data(s.data_rating) !== s.max_rating) {
         max_btn = max_btn.next(s.rating_btn)
       }
+      /** @type {array} All buttons previous of the button with the highest rating + the button with the highest rating */
       var all_prev = max_btn.prevAll().addBack()
 
       all_prev.each(function (index) {
+        /** Get rid of all classes of the button */
         $(this).removeClass()
+        /** Check if the rating is bigger than the desired rating. */
         if ($(this).data(s.data_rating) > rating) {
+          /** Add the empty class to the button */
           $(this).addClass(s.rating_btn_empty_cls)
         } else {
+          /** Button is in the desired range. Add the active class */
           $(this).addClass(s.rating_btn_active_cls)
         }
       })
     },
+    /**
+     * Make an AJAX request to rate an Episode
+     * @param  {object} btn    Clicked rating button
+     * @param  {int} id     Episode id
+     * @param  {int} rating Rating
+     * @return {void}
+     */
     rateEpisode: function (btn, id, rating) {
       $.ajax({
         url: s.wlog_rate_url,
@@ -120,7 +154,6 @@ var Cookies = require('js-cookie')
         }
       })
         .done(function (data) {
-          console.log(data)
           if (!data.error) {
             Rating.redoRatingBtns(btn, rating)
           }

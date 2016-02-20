@@ -65,3 +65,15 @@ def fill_rating(current, rating):
         return 'fa-star rating__btn--active'
     else:
         return 'fa-star-o'
+
+
+@register.simple_tag
+def fill_avg_rating(current, rating):
+    rating = round(rating * 2) / 2
+    current = current + 1.0
+    if (current <= rating):
+        return 'fa-star chery-font'
+    elif ((current > rating) and (current == rating + 0.5)):
+        return 'fa-star-half-o chery-font'
+    else:
+        return 'fa-star-o semilight-font'

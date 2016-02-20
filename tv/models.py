@@ -280,6 +280,16 @@ class Season(models.Model):
         }
         return reverse('tv:season', kwargs=kwargs)
 
+    def airs_in_future(self):
+        """Determine if an episode airs in the future.
+
+        Returns:
+            bool: True if it airs in the future
+        """
+        if self.air_date is None:
+            return False
+        return self.air_date > timezone.now().date()
+
 
 class Episode(models.Model):
 
@@ -338,6 +348,16 @@ class Episode(models.Model):
         return '%s Season %d Ep %d' % (self.series.name,
                                        self.season.number,
                                        self.number)
+
+    def airs_in_future(self):
+        """Determine if an episode airs in the future.
+
+        Returns:
+            bool: True if it airs in the future
+        """
+        if self.air_date is None:
+            return False
+        return self.air_date > timezone.now().date()
 
 
 class Person(models.Model):
