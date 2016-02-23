@@ -66,7 +66,13 @@
             <strong>{{ entry.0 }}</strong> of the series <strong>{{ entry.3 }}</strong> season <strong>{{ entry.1 }}</strong> episode <strong>{{ entry.2 }}</strong><br>
             {% endif %}
         {% endfor %}
-    And they were watched by <strong>{{ most_viewed_ep.2 }}</strong> users.</p>
+
+        And they were watched by <strong>{{ most_viewed_ep.2 }}</strong>
+        {% if most_viewed_ep.2 = 1 %}
+            user.</p>
+        {% else %}
+            users.</p>
+        {% endif %}
     {% endif %}
 </div>
 

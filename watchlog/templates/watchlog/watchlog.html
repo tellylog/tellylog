@@ -9,7 +9,6 @@
             <h2 class="gallery__heading"><a href="{% url 'wlog:index' %}">Watchlog</a></h2>
             {% if wlog_list %}
                 <p class="gallery__info">Your latest Watchlog entries:</p>
-                <p class="gallery__info">View your stats here: <a href="{% url 'wlog:stats' %}">Stats</a> </p>
                 {% if is_paginated %}
                     <div class="row">
                         <div class="pagination">
