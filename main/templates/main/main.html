@@ -47,15 +47,18 @@
             <div class="gallery">
                 <h2 class="gallery__heading">Trending</h2>
                 <div class="gallery__wrapper">
-                    {% for wlog_entry in wlog_list %}
-                        <div class="gallery__poster">
-                            {% if wlog_entry.episode.series.poster_small %}
-                                <img src="{{ wlog_entry.episode.series.poster_small.url }}" srcset="{{ wlog_entry.episode.series.poster_large.url }} 600w" alt="{{ wlog_entry.episode.series.name }} Poster" class="gallery__image">
-                            {% else %}
-                                <img src="{% static "img/placeholder-small.jpg" %}" srcset="{% static "img/placeholder.jpg" %} 600w" alt="{{ series.name }} Poster Placeholder" class="gallery__image">
-                            {% endif %}
-                        </div>
-                    {% endfor %}
+
+                        {% for wlog_entry in wlog_list %}
+                            <div class="gallery__poster">
+                                <a href="{{ wlog_entry.episode.series.get_absolute_url }}" title="{{ wlog_entry.episode.series.name }}">
+                                    {% if wlog_entry.episode.series.poster_small %}
+                                        <img src="{{ wlog_entry.episode.series.poster_small.url }}" srcset="{{ wlog_entry.episode.series.poster_large.url }} 600w" alt="{{ wlog_entry.episode.series.name }} Poster" class="gallery__image">
+                                    {% else %}
+                                        <img src="{% static "img/placeholder-small.jpg" %}" srcset="{% static "img/placeholder.jpg" %} 600w" alt="{{ series.name }} Poster Placeholder" class="gallery__image">
+                                    {% endif %}
+                                </a>
+                            </div>
+                        {% endfor %}
                 </div>
             </div>
         </div>

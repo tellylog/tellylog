@@ -8,7 +8,7 @@ from watchlog.models import Watchlog
 from watchlist.models import Watchlist
 
 
-class SeriesView(TemplateView):
+class SeriesView(LoginRequiredMixin, TemplateView):
     """
     Series view. Gets a Series and a list of its Seasons.
 
@@ -66,7 +66,7 @@ class SeriesView(TemplateView):
         return context
 
 
-class SeasonView(TemplateView):
+class SeasonView(LoginRequiredMixin, TemplateView):
     """
     Season view. Gets a Season and a list of its Episodes.
 
@@ -142,25 +142,27 @@ class GenresSingle(LoginRequiredMixin, TemplateView):
     def get_series_by_genre(self, entries, genre_id):
         series_list = []
         for entry in entries:
-            if entry[1] is int(genre_id) and entry not in series_list:
+            if (entry[1] is int(genre_id)) and (entry[3] not in series_list):
                 series_list.append(entry)
         return series_list
 
     def get_context_data(self, **kwargs):
         context = super(GenresSingle, self).get_context_data(**kwargs)
         genre_id = self.kwargs['genre_id']
-        print (genre_id)
+        context['series'] = get_object_or_404(Series, genres__tmdb_id=context['genre_id'])
 
         watchlog_genres = Watchlog.objects.all().exclude(
             episode__series__genres=None).values_list(
-            'episode__series__genres__name', 'episode__series__genres__tmdb_id',
-            'episode__series__name', 'episode__series__tmdb_id')
+            'episode__series__genres__name',
+            'episode__series__genres__tmdb_id',
+            'episode__series__name', 'episode__series__tmdb_id', 'id')
+
         count = 0
         for entry in watchlog_genres:
-            if count is 10:
+            count += 1
+            if count is 20:
                 break
             print (entry)
-            count += 1
         context['series'] = self.get_series_by_genre(watchlog_genres, genre_id)
 
         return context
