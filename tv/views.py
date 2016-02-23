@@ -1,7 +1,7 @@
 """This file holds the views of the tv app."""
 from django.shortcuts import get_object_or_404, get_list_or_404
 from django.core.urlresolvers import reverse
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from tv.models import Series, Season, Episode, Genre
 from watchlog.models import Watchlog
@@ -114,55 +114,25 @@ class SeasonView(LoginRequiredMixin, TemplateView):
 class GenresView(LoginRequiredMixin, TemplateView):
     template_name = "tv/genres.html"
 
-    def get_genres(self, entries):
-        """Takes a list of genres from the database and returns a list with
-        every genre just once, and sorts them alphabetically
-        """
-        genre_list = []
-        for entry in entries:
-            if entry not in genre_list:
-                genre_list.append(entry)
-        genre_list.sort()
-        return genre_list
-
     def get_context_data(self, **kwargs):
         context = super(GenresView, self).get_context_data(**kwargs)
-
-        watchlog_genres = Watchlog.objects.all().exclude(
-            episode__series__genres=None).values_list(
-            'episode__series__genres__name',
-            'episode__series__genres__tmdb_id')
-        context['genres'] = self.get_genres(watchlog_genres)
+        context['genres'] = list(Genre.objects.all().order_by('name'))
         return context
 
 
-class GenresSingle(LoginRequiredMixin, TemplateView):
+class GenresSingleView(LoginRequiredMixin, ListView):
+    model = Series
     template_name = "tv/genres_single.html"
+    context_object_name = 'series'
+    paginate_by = 12
 
-    def get_series_by_genre(self, entries, genre_id):
-        series_list = []
-        for entry in entries:
-            if (entry[1] is int(genre_id)) and (entry[3] not in series_list):
-                series_list.append(entry)
-        return series_list
+    def get_queryset(self, **kwargs):
+        """Get the list of entries
 
-    def get_context_data(self, **kwargs):
-        context = super(GenresSingle, self).get_context_data(**kwargs)
+        Returns:
+            list: Series entries
+        """
         genre_id = self.kwargs['genre_id']
-        context['series'] = get_object_or_404(Series, genres__tmdb_id=context['genre_id'])
-
-        watchlog_genres = Watchlog.objects.all().exclude(
-            episode__series__genres=None).values_list(
-            'episode__series__genres__name',
-            'episode__series__genres__tmdb_id',
-            'episode__series__name', 'episode__series__tmdb_id', 'id')
-
-        count = 0
-        for entry in watchlog_genres:
-            count += 1
-            if count is 20:
-                break
-            print (entry)
-        context['series'] = self.get_series_by_genre(watchlog_genres, genre_id)
-
-        return context
+        series = list(Series.objects.filter(genres__id=genre_id).order_by(
+            'name'))
+        return series

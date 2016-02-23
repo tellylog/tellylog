@@ -26,6 +26,6 @@ urlpatterns = [
     url(r'^series/(?P<series_id>[0-9]+)/season/(?P<season_number>[0-9]+)/$',
         views.SeasonView.as_view(), name='season'),
     url(r'^genres/$', views.GenresView.as_view(), name='genres'),
-    url(r'^genres/(?P<genre_id>[0-9]+)$', views.GenresSingle.as_view(),
-        name='genres_individual')
+    url(r'^genres/(?P<genre_id>[0-9]+)$', views.GenresSingleView.as_view(),
+        name='genres_single')
 ]

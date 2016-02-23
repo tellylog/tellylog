@@ -5,5 +5,62 @@
     {{ block.super }} - Genres
 {% endblock title %}
 {% block content %}
-Here are some series of the Genre: {{ series }}
+<div class="row">
+    <div class="gallery">
+        <h2 class="gallery__heading"><a href="{% url 'tv:genres' %}">Genres</a></h2>
+                {% if series %}
+                    {% if is_paginated %}
+                        <div class="row">
+                            <div class="pagination">
+                                <span class="pagination__step-links">
+                                    {% if page_obj.has_previous %}
+                                        <a class="pagination__link" href="?page={{ page_obj.previous_page_number }}"><i class="fa fa-arrow-left"></i></a>
+                                    {% endif %}
+                                    <span class="pagination__current">
+                                        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+                                    </span>
+                                    {% if page_obj.has_next %}
+                                        <a class="pagination__link" href="?page={{ page_obj.next_page_number }}"><i class="fa fa-arrow-right"></i></a>
+                                    {% endif %}
+                                </span>
+                            </div>
+                        </div>
+                    {% endif %}
+                    <div class="gallery__wrapper">
+                        {% for entry in series %}
+                            <div class="gallery__poster">
+                                <a href="{{ entry.get_absolute_url }}" title="{{ entry.name }}">
+                                    {% if entry.poster_small %}
+                                        <img src="{{ entry.poster_small.url }}" srcset="{{ entry.poster_large.url }} 600w" alt="{{ entry.name }} Poster" class="gallery__image">
+                                    {% else %}
+                                        <img src="{% static "img/placeholder-small.jpg" %}" srcset="{% static "img/placeholder.jpg" %} 600w" alt="{{ series.name }} Poster Placeholder" class="gallery__image">
+                                    {% endif %}
+                                </a>
+                            </div>
+                        {% endfor %}
+                {% else %}
+                    <h3>No Genres present in our database.</h3>
+                {% endif %}
+                </div>
+            </div>
+        </div>
+        {% if is_paginated %}
+            <div class="row">
+                <div class="pagination">
+                    <span class="pagination__step-links">
+                        {% if page_obj.has_previous %}
+                            <a class="pagination__link" href="?page={{ page_obj.previous_page_number }}"><i class="fa fa-arrow-left"></i></a>
+                        {% endif %}
+                        <span class="pagination__current">
+                            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+                        </span>
+                        {% if page_obj.has_next %}
+                            <a class="pagination__link" href="?page={{ page_obj.next_page_number }}"><i class="fa fa-arrow-right"></i></a>
+                        {% endif %}
+                    </span>
+                </div>
+            </div>
+        {% endif %}
+
+
 {% endblock content %}

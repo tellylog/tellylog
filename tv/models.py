@@ -40,6 +40,14 @@ class Genre(models.Model):
         verbose_name = "Genre"
         verbose_name_plural = "Genres"
 
+    def get_absolute_url(self):
+        """Get the absolute URL of the series
+
+        Returns:
+            str: URL of the genre
+        """
+        return reverse('tv:genres_single', kwargs={'genre_id': str(self.id)})
+
     def __str__(self):
         """
         Return a string representation of the Genre.
