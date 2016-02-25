@@ -9,8 +9,18 @@
     Here is a list of genres already in our database:<br>
 
     {% for genre in genres %}
-
         <a href="{{ genre.get_absolute_url }}">{{ genre.name }}</a><br>
+        {% for entry_series in series %}
+            {% for entry_genres in entry_series.genres.name %}
+                {% if entry_genres.name is genre.name %}
+                    {% if entry.poster_small %}
+                        <img width="20%" height="20%" src="{{ entry.poster_small.url }}" srcset="{{ entry.poster_large.url }} 600w" alt="{{ entry.name }} Poster" class="gallery__image">
+                    {% else %}
+                        <img src="{% static "img/placeholder-small.jpg" %}" srcset="{% static "img/placeholder.jpg" %} 600w" alt="{{ series.name }} Poster Placeholder" class="gallery__image">
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+        {% endfor %}
     {% endfor %}
 
 </div>

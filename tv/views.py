@@ -117,6 +117,8 @@ class GenresView(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = super(GenresView, self).get_context_data(**kwargs)
         context['genres'] = list(Genre.objects.all().order_by('name'))
+        context['series'] = Series.objects.all().order_by('genres')
+
         return context
 
 
