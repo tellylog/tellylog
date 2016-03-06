@@ -22,4 +22,5 @@ urlpatterns = [
     url(r'^log/$', views.Log.as_view(), name='log'),
     url(r'^unlog/$', views.Unlog.as_view(), name='unlog'),
     url(r'^rate/$', views.Rate.as_view(), name='rate'),
+    url(r'^rating/$', views.CalcRating.as_view(), name='calc_rating')
 ]

@@ -9,7 +9,6 @@ var Rating = require('./modules/rating.js')
   $(document).ready(function () {
     SlidingPanel.init()
     if (window.Telly !== undefined) {
-      Rating.init()
       if (window.Telly.wlist_list_url && window.Telly.wlist_unlist_url) {
         /** Check if the Telly namespace and the urls are defined. */
         /** Initialise the Watchlist */
@@ -24,6 +23,9 @@ var Rating = require('./modules/rating.js')
         /** Check if the Telly namespace and the urls are defined. */
         /** Initialise the Watchlog */
         Watchlog.init()
+      }
+      if (window.Telly.wlog_rate_url || window.Telly.wlog_calc_rating_url) {
+        Rating.init()
       }
     }
   })

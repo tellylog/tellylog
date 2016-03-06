@@ -71,6 +71,9 @@ var Rating = require('./rating.js')
         if (kind === 'episode') {
           Rating.rmRatingBtns($(this))
         }
+        if ($(s.log_btn_series).length && (kind === 'season' || kind === 'series')) {
+          window.setTimeout(function () {Rating.recalcSeriesRating($(s.log_btn_series).data('id'))}, 500)
+        }
         Watchlog.rmFromWlog($(this), kind, id)
       })
       $(s.log_btn_unlogged).hover(function () {
@@ -87,6 +90,9 @@ var Rating = require('./rating.js')
         var id = $(this).data('id')
         if (kind === 'episode') {
           Rating.showRatingBtns($(this))
+        }
+        if ($(s.log_btn_series).length && (kind === 'season' || kind === 'series')) {
+          window.setTimeout(function () {Rating.recalcSeriesRating($(s.log_btn_series).data('id'))}, 500)
         }
         Watchlog.addToWlog($(this), kind, id)
       })

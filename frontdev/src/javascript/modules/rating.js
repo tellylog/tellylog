@@ -27,7 +27,11 @@ var Cookies = require('js-cookie')
           rating_btn_cls: 'rating__btn',
           rating_btn_empty_cls: 'rating__btn fa fa-star-o',
           data_rating: 'rating',
+          series_rating: '.single-page__rating',
+          series_rating_cls: 'single-page__rating',
+          series_subheading: '.single-page__subheading',
           wlog_rate_url: window.Telly.wlog_rate_url,
+          wlog_calc_rating_url: window.Telly.wlog_calc_rating_url,
           max_rating: 4
         }
       }
@@ -158,6 +162,48 @@ var Cookies = require('js-cookie')
             Rating.redoRatingBtns(btn, rating)
           }
         })
+    },
+
+    recalcSeriesRating: function (id) {
+      $.ajax({
+        url: s.wlog_calc_rating_url,
+        type: 'Get',
+        dataType: 'json',
+        data: {'id': id},
+        beforeSend: function (xhr) {
+          xhr.setRequestHeader('X-CSRFToken', s.csrftoken)
+        }
+      })
+        .done(function (data) {
+          if (!data.error) {
+            Rating.updateSeriesRating(data.avg_rating)
+          }
+        })
+    },
+    updateSeriesRating: function (new_rating) {
+      if (new_rating === null) {
+        $(s.series_rating).remove()
+      } else {
+        if (!$(s.series_rating).length) {
+          var new_series_rating = $('<div/>')
+          new_series_rating.addClass(s.series_rating_cls)
+          $(s.series_subheading).after(new_series_rating)
+        }
+        var rating = $(s.series_rating)
+        rating.empty()
+        for (var i = 1; i <= 5; i++) {
+          var new_star = $('<span/>')
+          new_star.addClass('fa')
+          if (i <= new_rating) {
+            new_star.addClass('fa-star chery-font')
+          } else if ((i > new_rating) && (i === new_rating + 0.5)) {
+            new_star.addClass('fa-star-half-o chery-font')
+          } else {
+            new_star.addClass('fa-star-o semilight-font')
+          }
+          rating.append(new_star)
+        }
+      }
     }
   }
   module.exports = Rating

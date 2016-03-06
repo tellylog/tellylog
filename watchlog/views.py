@@ -3,6 +3,7 @@ from django.http import JsonResponse
 from django.db.utils import IntegrityError
 from django.views.generic import View, ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Avg
 from watchlog.models import Watchlog
 from tv.models import Episode
 
@@ -175,4 +176,23 @@ class Rate(LoginRequiredMixin, View):
                 wlog_entry.rating = rating + 1
                 wlog_entry.save()
                 return JsonResponse({'error': False})
+        return JsonResponse({'error': True})
+
+
+class CalcRating(LoginRequiredMixin, View):
+    """Get the Rating of a series."""
+
+    http_method_names = ['get']
+
+    def get(self, request):
+        if 'id' in request.GET:
+            series_id = request.GET['id']
+            avg_rating = Watchlog.objects \
+                .filter(user_id=request.user.id,
+                        episode__series_id=series_id, rating__gt=0) \
+                .aggregate(avg_rating=Avg('rating'))
+            avg_rating = avg_rating['avg_rating']
+            if avg_rating:
+                avg_rating = round(avg_rating * 2) / 2
+            return JsonResponse({'error': False, 'avg_rating': avg_rating})
         return JsonResponse({'error': True})

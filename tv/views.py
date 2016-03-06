@@ -27,6 +27,9 @@ class SeriesView(TemplateView):
     def get_wlog_rate_url(self):
         return self.request.build_absolute_uri(reverse('wlog:rate'))
 
+    def get_wlog_calc_rating_url(self):
+        return self.request.build_absolute_uri(reverse('wlog:calc_rating'))
+
     def get_wlist_list_url(self):
         return self.request.build_absolute_uri(reverse('wlist:list'))
 
@@ -89,6 +92,7 @@ class SeriesView(TemplateView):
         # URLs for AJAX requests
         context['wlog_log_url'] = self.get_wlog_log_url()
         context['wlog_unlog_url'] = self.get_wlog_unlog_url()
+        context['wlog_calc_rating_url'] = self.get_wlog_calc_rating_url()
         context['wlist_list_url'] = self.get_wlist_list_url()
         context['wlist_unlist_url'] = self.get_wlist_unlist_url()
         return context

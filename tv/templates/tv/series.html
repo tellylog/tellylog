@@ -16,9 +16,16 @@
                 </h1>
                 <h2 class="single-page__subheading">
                 {% for genre in genre_list %}
-                    {{ genre.name }}
+                    {{ genre.name }}{% if forloop.last %}{% else %}, {% endif %}
                 {% endfor %}
                 </h2>
+                {% if avg_rating %}
+                    <div class="single-page__rating">
+                        {% for i in 5|get_range %}
+                            <span class="fa {% fill_avg_rating i avg_rating %}"></span>
+                        {% endfor %}
+                    </div>
+                {% endif %}
                 <div class="single-page__controls">
                     {% if wlog_count and wlog_count == series.number_of_episodes %}
                         <span class=" log-btn log-btn--series log-btn--logged" title="Unlog the whole series" data-id="{{ series.id }}" data-kind="series">
@@ -89,6 +96,7 @@
     window.Telly.wlog_unlog_url = "{{ wlog_unlog_url }}"
     window.Telly.wlist_list_url = "{{ wlist_list_url }}"
     window.Telly.wlist_unlist_url = "{{ wlist_unlist_url }}"
+    window.Telly.wlog_calc_rating_url= "{{ wlog_calc_rating_url }}"
     {% if wlist %}
         window.Telly.on_wlist = true
     {% else %}
